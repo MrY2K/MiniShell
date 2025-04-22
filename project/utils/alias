@@ -1,0 +1,3 @@
+alias pp='~/Scripts/push_and_pull.sh'
+alias leaks_finder='cd ~/Code/42cursus/_CC/C\ III/-\>\ M.\ S./MiniShell/project/utils/ && ./make_a_docker_container.sh'
+alias leaks_finder='cd /Users/achoukri/Code/42cursus/_CC/C\ III/-\>\ M.\ S./MiniShell/project/utils/ && ./make_a_docker_container.sh'

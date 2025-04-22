@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-#todo Define the deadline
-DEADLINE="2025-04-20 18:37:00"
+DEADLINE="2025-06-13 18:00:00"
 
 # Get current time
 NOW=$(date +%s)

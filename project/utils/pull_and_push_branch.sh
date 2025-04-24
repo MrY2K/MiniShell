@@ -24,7 +24,7 @@
 # Navigate to your Minishell repo
 cd ~/Code/42cursus/_CC/C\ III/-\>\ M.\ S./MiniShell/ || exit
 
-echo -e "\n👋 ${BOLD}Good Day, Leo!${RESET}\n"
+echo -e "\n👋 ${BOLD}Good Day!${RESET}\n"
 
 # Sync refs
 git fetch

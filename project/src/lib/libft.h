@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 21:36:30 by achoukri          #+#    #+#             */
-/*   Updated: 2025/04/24 10:29:04 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/04/24 11:58:01 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <limits.h>
+# include <stdint.h>
 # include <stdarg.h>
 
 # ifndef BUFFER_SIZE

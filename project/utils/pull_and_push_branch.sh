@@ -56,8 +56,6 @@ if git show-ref --verify --quiet "refs/heads/$BRANCH_NAME"; then
         git pull --rebase
     fi
 
-
-    
 else 
     echo "❌ Branch '$BRANCH_NAME' not found."
     read -e -p "Do you want to create it? (y/n) > " ANSWER
@@ -74,5 +72,4 @@ else
         git pull --rebase
     fi
 fi
-
 

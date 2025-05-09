@@ -37,9 +37,7 @@ SRC_DIR      = src
 
 BUILD_DIR    = $(SRC_DIR)/build
 
-HELPER_DIR   = $(SRC_DIR)/helpers
-
-INCLUDE_DIR  = $(SRC_DIR)/include
+INCLUDE_DIR  = includes
 
 INCLUDE      = $(INCLUDE_DIR)/minishell.h
 

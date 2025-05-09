@@ -2,7 +2,7 @@
 
 # todo add project root folder here
 # Navigate to the repository directory
-cd ~/Code/42cursus || exit
+cd /Users/ajelloul/Desktop/unix_bash || exit
 
 git pull
 

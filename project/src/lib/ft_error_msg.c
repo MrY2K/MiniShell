@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_error_msg.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/04/24 12:14:33 by achoukri         ###   ########.fr       */
+/*   Created: 2025/04/24 10:00:40 by achoukri          #+#    #+#             */
+/*   Updated: 2025/04/24 10:26:06 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "libft.h"
 
-int	main(void)
+void	ft_error_msg(const char *msg)
 {
-	write(1, "Hi\n", 3);
+	ft_perror(msg);
+	exit(EXIT_FAILURE);
 }

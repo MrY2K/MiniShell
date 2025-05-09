@@ -1,18 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putchar.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/04/24 12:14:33 by achoukri         ###   ########.fr       */
+/*   Created: 2024/11/01 21:44:40 by achoukri          #+#    #+#             */
+/*   Updated: 2025/04/24 10:23:06 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "libft.h"
 
-int	main(void)
+int	ft_putchar(char c)
 {
-	write(1, "Hi\n", 3);
+	return (write(1, &c, 1));
 }
+// int main()
+// {
+// 	close(1);
+// 	return 0;
+// }

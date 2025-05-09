@@ -1,18 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putadd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/04/24 12:14:33 by achoukri         ###   ########.fr       */
+/*   Created: 2024/12/03 22:44:00 by achoukri          #+#    #+#             */
+/*   Updated: 2025/04/24 10:23:14 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "libft.h"
 
-int	main(void)
+int	ft_putadd(void *add)
 {
-	write(1, "Hi\n", 3);
+	unsigned long	nbr_l;
+	int				count;
+
+	nbr_l = (unsigned long)add;
+	count = 0;
+	count += ft_putstr("0x");
+	count += ft_putnbr_hex(nbr_l, 'x');
+	return (count);
 }
+
+// #include <stdio.h>
+// int main()
+// {
+// 	void *ptr;
+// 	int m = ft_putadd(ptr);
+// 	printf("\n\n");
+// 	int o = printf("%p", ptr);
+// 	printf("\n\n%d  %d \n\n", m, o);
+// }

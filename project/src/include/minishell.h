@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/04/24 12:14:33 by achoukri         ###   ########.fr       */
+/*   Created: 2025/04/24 10:41:11 by achoukri          #+#    #+#             */
+/*   Updated: 2025/04/24 11:03:27 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-int	main(void)
-{
-	write(1, "Hi\n", 3);
-}
+#include <unistd.h>
+
+#endif

@@ -1,18 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/04/24 12:14:33 by achoukri         ###   ########.fr       */
+/*   Created: 2024/10/23 19:02:47 by achoukri          #+#    #+#             */
+/*   Updated: 2025/04/24 10:21:53 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "libft.h"
 
-int	main(void)
+size_t	ft_strlen(const char *s)
 {
-	write(1, "Hi\n", 3);
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
 }
+/*
+int main(void)
+{
+	char *str = "NULL";
+
+	printf("EXPECTING:\n");
+	printf("%lu\n\n", strlen(str));
+
+	printf("GOT:\n");
+	printf("%zu\n", ft_strlen(str));
+
+	return 0;
+}
+*/

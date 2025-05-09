@@ -1,18 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   sort_int_tab.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/04/24 12:14:33 by achoukri         ###   ########.fr       */
+/*   Created: 2025/04/24 10:28:27 by achoukri          #+#    #+#             */
+/*   Updated: 2025/04/24 10:32:48 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "libft.h"
 
-int	main(void)
+void	sort_int_tab(int *tab, unsigned int size)
 {
-	write(1, "Hi\n", 3);
+	unsigned int	i;
+	unsigned int	j;
+
+	i = 0;
+	while (i < size - 1)
+	{
+		j = 0;
+		while (j < size - 1)
+		{
+			if (tab[j] > tab[j + 1])
+			{
+				ft_swap(&tab[j], &tab[j + 1]);
+			}
+			j++;
+		}
+		i++;
+	}
 }

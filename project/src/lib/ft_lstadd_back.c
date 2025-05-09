@@ -1,18 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/04/24 12:14:33 by achoukri         ###   ########.fr       */
+/*   Created: 2024/11/07 19:48:41 by achoukri          #+#    #+#             */
+/*   Updated: 2025/04/24 12:10:27 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "libft.h"
 
-int	main(void)
+void	ft_lstadd_back(t_list **lst, t_list *_new)
 {
-	write(1, "Hi\n", 3);
+	t_list	*last;
+
+	if (lst == NULL || _new == NULL)
+		return ;
+	if (*lst == NULL)
+	{
+		*lst = _new;
+	}
+	else
+	{
+		last = ft_lstlast(*lst);
+		last->next = _new;
+	}
 }

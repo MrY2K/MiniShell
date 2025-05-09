@@ -1,18 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/04/24 12:14:33 by achoukri         ###   ########.fr       */
+/*   Created: 2024/10/25 17:02:43 by achoukri          #+#    #+#             */
+/*   Updated: 2025/04/24 10:21:12 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "libft.h"
 
-int	main(void)
+int	ft_tolower(int c)
 {
-	write(1, "Hi\n", 3);
+	if (c >= 'A' && c <= 'Z')
+		return (c + 32);
+	else
+		return (c);
 }
+/*
+int main()
+{
+	char c = 'H';
+	printf("Expect: %c\n", tolower(c));
+	printf("Got: %c\n", ft_tolower(c));
+	return 0;
+}
+*/

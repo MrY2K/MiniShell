@@ -1,18 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/04/24 12:14:33 by achoukri         ###   ########.fr       */
+/*   Created: 2024/10/25 16:58:46 by achoukri          #+#    #+#             */
+/*   Updated: 2025/04/24 10:21:08 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "libft.h"
 
-int	main(void)
+int	ft_toupper(int c)
 {
-	write(1, "Hi\n", 3);
+	if (c >= 'a' && c <= 'z')
+		return (c - 32);
+	else
+		return (c);
 }
+/*
+int main()
+{
+	char c = 'h';
+	printf("Expect: %c\n", toupper(c));
+	printf("Got: %c\n", ft_toupper(c));
+	return 0;
+}
+*/

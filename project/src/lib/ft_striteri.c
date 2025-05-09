@@ -1,18 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/04/24 12:14:33 by achoukri         ###   ########.fr       */
+/*   Created: 2024/11/01 22:48:27 by achoukri          #+#    #+#             */
+/*   Updated: 2025/04/24 10:22:16 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "libft.h"
 
-int	main(void)
+void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 {
-	write(1, "Hi\n", 3);
+	unsigned int	i;
+
+	if (s == NULL || f == NULL)
+		return ;
+	i = 0;
+	while (s[i]) 
+	{
+		f(i, &s[i]);
+		i++;
+	}
 }
+/*
+void	func(unsigned int i, char *c)
+{
+	(void)i;
+	*c = ft_toupper(*c);
+}
+int main()
+{
+	char str[] = "ayoub fjfj wwww llll";
+	ft_striteri(str, func);
+	printf("Modifade array: %s\n", str);
+	return 0;
+}
+*/

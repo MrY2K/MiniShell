@@ -1,0 +1,9 @@
+# Ignore all object files
+*.o
+*.out
+
+*.DS_Store
+
+
+# Debugging Folders
+a.out.dSYM/

@@ -30,7 +30,7 @@ SRC = ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c \
 		ft_printf.c ft_putadd.c ft_putchar.c ft_putnbr_hex.c ft_putnbr_unsigned.c ft_putnbr.c ft_putstr.c \
 		ft_swap.c \
 		hex_to_int.c sort_int_tab.c \
-		ft_atoi_base.c \
+		ft_atoi_base.c  ft_strcmp.c
 
 OBJ = $(SRC:%.c=$(BUILD_DIR)/%.o)
 
@@ -58,7 +58,7 @@ $(NAME): $(OBJ)
 
 # Compiling into object files
 $(BUILD_DIR)/%.o: %.c libft.h
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 ################################################
 #                 CLEANING                     #

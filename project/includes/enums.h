@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 09:56:20 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/11 09:59:07 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/05/13 11:21:47 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,25 @@ typedef enum e_status
 	STATUS_PERMISSION_DENIED,
 	STATUS_EXECUTION_FAILURE
 }	t_status;
+
+typedef enum e_env_type
+{
+	ENV_NAME,
+	ENV_VALUE,
+	ENV_OLDPWD,
+	ENV_PWD,
+	ENV_PATH,
+	ENV_EXEC,
+	CMD_SIMPLE,
+	CMD_COMPLEX,
+	REDIRECT,
+	HEREDOC,
+	ALLOC_TYPE,
+	ERROR_TYPE,
+	CLEANUP,
+	BUILTIN,
+	CHILD_PROC,
+	PARENT_PROC
+}	t_env_type;
 
 #endif

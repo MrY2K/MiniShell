@@ -1,37 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   structs.h                                          :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/11 09:25:15 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/13 11:21:06 by ajelloul         ###   ########.fr       */
+/*   Created: 2025/05/15 09:50:57 by ajelloul          #+#    #+#             */
+/*   Updated: 2025/05/15 10:10:30 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STRUCTS_H
-# define STRUCTS_H
+#include "../../includes/minishell.h"
 
-# include "minishell.h"
-
-typedef struct s_cmd
+void	pwd(t_minibash *bash)
 {
-	char	*main_cmd;
-	char	**argument;
-}	t_cmd;
+	char	*current_dir;
+	char	buffer[PATH_MAX];
 
-typedef struct s_env
-{
-	char			*name;
-	char			*value;
-	struct s_env	*next;
-}	t_env;
-
-typedef struct s_minibash
-{
-	t_env	*env;
-	int		exit_status;
-}	t_minibash;
-
-#endif
+	current_dir = getcwd(buffer, PATH_MAX);
+	if (!current_dir)
+		return (exit_with_error("getcwd", 1, bash));
+	ft_putendl_fd(current_dir, 1);
+	bash->exit_status = 0;
+}

@@ -1,37 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   structs.h                                          :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/11 09:25:15 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/13 11:21:06 by ajelloul         ###   ########.fr       */
+/*   Created: 2025/05/15 10:16:33 by ajelloul          #+#    #+#             */
+/*   Updated: 2025/05/15 10:30:49 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STRUCTS_H
-# define STRUCTS_H
+#include "../includes/minishell.h"
 
-# include "minishell.h"
-
-typedef struct s_cmd
+void	env(t_minibash *bash)
 {
-	char	*main_cmd;
-	char	**argument;
-}	t_cmd;
+	t_env	*_env;
 
-typedef struct s_env
-{
-	char			*name;
-	char			*value;
-	struct s_env	*next;
-}	t_env;
-
-typedef struct s_minibash
-{
-	t_env	*env;
-	int		exit_status;
-}	t_minibash;
-
-#endif
+	if (!bash || !bash->env)
+		return ;
+	_env = bash->env;
+	while (_env)
+	{
+		if (_env->name && _env->value)
+			printf("%s=%s\n", _env->name, _env->value);
+		_env = _env->next;
+	}
+	bash->exit_status = 0;
+}

@@ -50,6 +50,7 @@ REDIR_DIR    = $(SRC_DIR)/redirection
 SIGNALS_DIR  = $(SRC_DIR)/signals
 TOKEN_DIR    = $(SRC_DIR)/tokenizer
 LIB_DIR      = $(SRC_DIR)/lib
+ERROR_DIR    = $(SRC_DIR)/Error
 
 # HEADERS
 
@@ -72,6 +73,7 @@ PARSING_SRC  = $(wildcard $(PARSING_DIR)/*.c)
 REDIR_SRC    = $(wildcard $(REDIR_DIR)/*.c)
 SIGNALS_SRC  = $(wildcard $(SIGNALS_DIR)/*.c)
 TOKEN_SRC    = $(wildcard $(TOKEN_DIR)/*.c)
+ERROR_SRC	 = $(wildcard $(ERROR_DIR)/*.c)
 
 # Combine all sources
 SRCS         = $(MAIN_SRC) \
@@ -82,7 +84,8 @@ SRCS         = $(MAIN_SRC) \
                $(PARSING_SRC) \
                $(REDIR_SRC) \
                $(SIGNALS_SRC) \
-               $(TOKEN_SRC)
+               $(TOKEN_SRC) \
+			   $(ERROR_SRC)
 
 
 # Generate object file paths
@@ -113,7 +116,9 @@ $(BUILD_DIR):
 	@mkdir -p $(BUILD_DIR)/redirection
 	@mkdir -p $(BUILD_DIR)/signals
 	@mkdir -p $(BUILD_DIR)/tokenizer
+	@mkdir -p $(BUILD_DIR)/Error
 	@printf "$(CYAN)$(BOLD)%s$(RESET)\n" "Build directory structure created"
+
 
 # Compile libft
 $(LIB): 

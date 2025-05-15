@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:28:31 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/13 11:09:07 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/05/15 09:28:15 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ t_status	cd(t_cmd *cmd, t_minibash *info)
 		}
 	}
 	else
-		directory = ft_strdup(cmd->argument[0]);
+		directory = ft_strdup(cmd->argument[0]); // edite from 0 to 1
 	if (chdir(directory) != 0)
 	{
 		exit_with_error("minishell: cd", 1, info);

@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:54:40 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/13 10:55:04 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/05/15 09:10:28 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
 ** @param exit_status: Exit status to set
 ** @param bash: Pointer to the minibash structure
 */
-void	exit_with_error(const char *msg, int exit_status, t_minibash *bash)
+void	exit_with_error(const char *msg, int exit, t_minibash *bash)
 {
 	if (!bash)
 		return ;
-	bash->exit_status = exit_status;
+	bash->exit_status = exit;
 	perror(msg);
 }

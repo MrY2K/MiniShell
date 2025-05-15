@@ -17,7 +17,7 @@
 
 typedef struct s_cmd
 {
-	char	*man_cmd;
+	char	*main_cmd;
 	char	**argument;
 }	t_cmd;
 

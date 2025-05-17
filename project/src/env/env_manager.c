@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:43:22 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/13 11:09:26 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/05/17 12:43:03 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,41 @@ void	initialize_environment(t_minibash *info, char **env)
 		if (new_node)
 			add_node_to_env(&info->env, new_node);
 		i++;
+	}
+}
+
+void	free_environment_node(t_env **node)
+{
+	free ((*node)->name);
+	free ((*node)->value);
+	(*node)->name = NULL;
+	(*node)->value = NULL;
+	free (*node);
+	*node = NULL;
+}
+
+/* Node is at the beginning of the list */
+
+void	remove_env_variable(t_env **env, char *var)
+{
+	t_env	*cur;
+	t_env	*prev;
+
+	cur = *env;
+	prev = NULL;
+	while (cur && ft_strcmp(var, cur->name))
+	{
+		prev = cur;
+		cur = cur->next;
+	}
+	if (cur)
+	{
+		if (!prev)
+			*env = cur->next;
+		else if (cur->next)
+			prev->next = cur->next;
+		else
+			prev->next = NULL;
+		free_environment_node(&cur);
 	}
 }

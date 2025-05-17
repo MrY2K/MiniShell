@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:34:10 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/13 10:51:54 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/05/17 19:56:17 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ t_env	*create_env_node(char *data)
 ** @param name: Name of the environment variable
 ** @return: Newly allocated environment node
 */
-t_env	*create_empty_env_node(const char *name)
+t_env	*create_empty_env_node(char *name)
 {
 	t_env	*new_node;
 

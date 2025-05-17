@@ -1,46 +1,24 @@
-# ANSI Color codes
-RESET        = \033[0m
-BOLD         = \033[1m
-BLACK        = \033[30m
-RED          = \033[31m
-GREEN        = \033[32m
-YELLOW       = \033[33m
-BLUE         = \033[34m
-MAGENTA      = \033[35m
-CYAN         = \033[36m
-WHITE        = \033[37m
-BGBLACK      = \033[40m
-BGRED        = \033[41m
-BGGREEN      = \033[42m
-BGYELLOW     = \033[43m
-BGBLUE       = \033[44m
-BGMAGENTA    = \033[45m
-BGCYAN       = \033[46m
-BGWHITE      = \033[47m
+################################################ MANDATORY #############################################
 
-
-# Define the executable name
-NAME         = minishell
-
-# COMPILER SETTINGS
+################################################
+#             COMPILER SETTINGS                #
+################################################
 
 CC           = cc
-CFLAGS       = -Wall -Wextra -Werror -I$(INCLUDE_DIR) -g
+CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code -I$(INCLUDE_DIR)
+#CFLAGS      += -Wall -Wextra -Werror -fsanitize=address -g3
 LDFLAGS      = -lreadline
 
-# Uncomment for extra optimization or debug flags
-#CFLAGS      += -Ofast
-#CFLAGS      += -fsanitize=address -g3
-#CFLAGS      += -Wunreachable-code
 
-# DIRECTORIES
+################################################
+#                 DIRECTORIES                  #
+################################################
 
 SRC_DIR      = src
-BUILD_DIR    = .build
+BUILD_DIR    = $(SRC_DIR)/.build
 INCLUDE_DIR  = includes
 
-
-# Module directories
+# Sub directories
 BUILTINS_DIR = $(SRC_DIR)/builtins
 ENV_DIR      = $(SRC_DIR)/env
 EXEC_DIR     = $(SRC_DIR)/exec
@@ -52,11 +30,16 @@ TOKEN_DIR    = $(SRC_DIR)/tokenizer
 LIB_DIR      = $(SRC_DIR)/lib
 ERROR_DIR    = $(SRC_DIR)/Error
 
+
+################################################
+#                  FILES                       #
+################################################
+
+# Define the executable name
+NAME         = minishell
+
 # HEADERS
-
 HEADERS      = $(wildcard $(INCLUDE_DIR)/*.h)
-
-
 
 # Define source files
 MAIN_SRC     = $(SRC_DIR)/main.c
@@ -64,8 +47,7 @@ MAIN_SRC     = $(SRC_DIR)/main.c
 # Builtin sources
 BUILTINS_SRC = $(wildcard $(BUILTINS_DIR)/*.c)
 
-
-# Other module sources
+# Other sub sources
 ENV_SRC      = $(wildcard $(ENV_DIR)/*.c)
 EXEC_SRC     = $(wildcard $(EXEC_DIR)/*.c)
 HEREDOC_SRC  = $(wildcard $(HEREDOC_DIR)/*.c)
@@ -97,8 +79,9 @@ DEPS         = $(OBJS:.o=.d)
 LIB          = $(LIB_DIR)/libft.a
 LIB_HDR      = $(LIB_DIR)/libft.h
 
-
-# RULES
+################################################
+#                   RULES                      #
+################################################
 
 .PHONY: all clean fclean re libclean libfclean debug norm banner practice
 
@@ -165,14 +148,6 @@ fclean: clean libfclean
 # Rebuild
 re: fclean all
 
-# Debug mode
-debug: CFLAGS += -g3 -fsanitize=address
-debug: re
-	@printf "$(MAGENTA)%s$(RESET)\n" "Debug mode enabled with -g3 and -fsanitize=address"
-
-# Banner
-
-
 # Norminette check
 norm:
 	@printf "$(YELLOW)%s$(RESET)\n" "Running norminette..."
@@ -186,3 +161,26 @@ practice : all clean
 
 # Include dependencies
 -include $(DEPS)
+
+################################################
+#                 COLORS                       #
+################################################
+
+RESET        = \033[0m
+BOLD         = \033[1m
+BLACK        = \033[30m
+RED          = \033[31m
+GREEN        = \033[32m
+YELLOW       = \033[33m
+BLUE         = \033[34m
+MAGENTA      = \033[35m
+CYAN         = \033[36m
+WHITE        = \033[37m
+BGBLACK      = \033[40m
+BGRED        = \033[41m
+BGGREEN      = \033[42m
+BGYELLOW     = \033[43m
+BGBLUE       = \033[44m
+BGMAGENTA    = \033[45m
+BGCYAN       = \033[46m
+BGWHITE      = \033[47m

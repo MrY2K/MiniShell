@@ -5,10 +5,11 @@
 ################################################
 
 CC           = cc
-CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code -I$(INCLUDE_DIR)
+CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code -I$(INCLUDE_DIR) -I$(READLINE_DIR)/include
 #CFLAGS      += -Wall -Wextra -Werror -fsanitize=address -g3
-LDFLAGS      = -lreadline
-
+READLINE_DIR := $(shell brew --prefix readline)
+LDFLAGS      = -L$(READLINE_DIR)/lib -lreadline -lhistory -lncurses
+# LDFLAGS      = -L/Users/achoukri/.brew/readline/lib -I/Users/achoukri/.brew/readline/include -lreadline
 
 ################################################
 #                 DIRECTORIES                  #
@@ -20,16 +21,15 @@ INCLUDE_DIR  = includes
 
 # Sub directories
 BUILTINS_DIR = $(SRC_DIR)/builtins
-ENV_DIR      = $(SRC_DIR)/env
-EXEC_DIR     = $(SRC_DIR)/exec
-HEREDOC_DIR  = $(SRC_DIR)/heredoc
-PARSING_DIR  = $(SRC_DIR)/parsing
-REDIR_DIR    = $(SRC_DIR)/redirection
-SIGNALS_DIR  = $(SRC_DIR)/signals
-TOKEN_DIR    = $(SRC_DIR)/tokenizer
 LIB_DIR      = $(SRC_DIR)/lib
+ENV_DIR      = $(SRC_DIR)/env
 ERROR_DIR    = $(SRC_DIR)/Error
-
+# EXEC_DIR     = $(SRC_DIR)/exec
+# HEREDOC_DIR  = $(SRC_DIR)/heredoc
+PARSING_DIR  = $(SRC_DIR)/parsing
+# REDIR_DIR    = $(SRC_DIR)/redirection
+# SIGNALS_DIR  = $(SRC_DIR)/signals
+# TOKEN_DIR    = $(SRC_DIR)/tokenizer
 
 ################################################
 #                  FILES                       #
@@ -112,7 +112,7 @@ $(LIB):
 # Compile minishell
 $(NAME): $(BUILD_DIR) $(LIB) $(OBJS)
 	@printf "$(CYAN)$(BOLD)%s$(RESET)\n" "Linking minishell..."
-	@$(CC) $(CFLAGS) $(OBJS) $(LIB) $(LDFLAGS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIB) $(LDFLAGS) -o $(NAME)
 	@printf "$(GREEN)$(BOLD)%s$(RESET)\n" "✓ $(NAME) successfully built!"
 	@printf "$(GREEN)$(BOLD)%s$(RESET)\n" "Run ./minishell to start your shell!"
 

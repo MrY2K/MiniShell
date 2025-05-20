@@ -6,10 +6,9 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 09:34:18 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/19 10:00:11 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:18:23 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../includes/minishell.h"
 

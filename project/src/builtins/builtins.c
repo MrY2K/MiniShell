@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 06:57:14 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/20 16:11:49 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:14:32 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static void	execute_builtins(t_minibash *bash, t_cmd *cmd)
 	else if (!ft_strcmp(cmd->argument[0], "exit"))
 		builtin_exit(bash, cmd);
 }
+
 void	builtins(t_cmd *cmd, t_minibash *bash)
 {
 	if (is_exist(cmd))

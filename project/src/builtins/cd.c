@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:28:31 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/15 09:28:15 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:05:58 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,17 @@
 ** @param info: Pointer to the minibash structure
 */
 
-void	ensure_path_variables_exist(t_minibash *info)
+void	ensure_path_variables_exist(t_minibash *bash)
 {
 	t_env	*env;
 	bool	found_pwd;
 	bool	found_oldpwd;
 
-	if (!info)
+	if (!bash)
 		return ;
 	found_pwd = false;
 	found_oldpwd = false;
-	env = info->env;
+	env = bash->env;
 	while (env)
 	{
 		if (!ft_strcmp(env->name, "PWD"))
@@ -37,9 +37,9 @@ void	ensure_path_variables_exist(t_minibash *info)
 		env = env->next;
 	}
 	if (!found_pwd)
-		add_node_to_env(&info->env, create_empty_env_node("PWD"));
+		add_node_to_env(&bash->env, create_empty_env_node("PWD"));
 	if (!found_oldpwd)
-		add_node_to_env(&info->env, create_empty_env_node("OLDPWD"));
+		add_node_to_env(&bash->env, create_empty_env_node("OLDPWD"));
 }
 
 /*
@@ -47,22 +47,22 @@ void	ensure_path_variables_exist(t_minibash *info)
 ** @param type: Type of update (PWD or OLDPWD)
 ** @param info: Pointer to the minibash structure
 */
-void	update_env_working_dir(t_env_type type, t_minibash *info)
+void	update_env_working_dir(t_env_type type, t_minibash *bash)
 {
 	t_env	*env;
 	char	buffer[PATH_MAX];
 	char	*var_name;
 
-	if (!info)
+	if (!bash)
 		return ;
-	env = info->env;
+	env = bash->env;
 	if (type == ENV_OLDPWD)
 		var_name = "OLDPWD";
 	else
 		var_name = "PWD";
-	ensure_path_variables_exist(info);
+	ensure_path_variables_exist(bash);
 	if (!getcwd(buffer, PATH_MAX))
-		return (exit_with_error("getcwd", 1, info));
+		return (exit_with_error("getcwd", 1, bash));
 	while (env)
 	{
 		if (!ft_strcmp(env->name, var_name))
@@ -78,34 +78,34 @@ void	update_env_working_dir(t_env_type type, t_minibash *info)
 /*
 ** Built-in cd command implementation
 ** @param cmd: Command structure containing arguments
-** @param info: Pointer to the minibash structure
+** @param bash: Pointer to the minibash structure
 ** @return: Status of the command execution
 */
-t_status	cd(t_cmd *cmd, t_minibash *info)
+t_status	cd(t_cmd *cmd, t_minibash *bash)
 {
 	char	*directory;
 
-	if (!info)
+	if (!bash)
 		return (EXIT_FAILURE);
-	update_env_working_dir(ENV_OLDPWD, info);
+	update_env_working_dir(ENV_OLDPWD, bash);
 	if (!cmd->argument || (cmd->argument[0] && cmd->argument[0][0] == '~'))
 	{
-		directory = get_environment("HOME", info);
+		directory = get_environment("HOME", bash);
 		if (!directory)
 		{
 			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
-			info->exit_status = 1;
+			bash->exit_status = 1;
 			return (EXIT_FAILURE);
 		}
 	}
 	else
-		directory = ft_strdup(cmd->argument[0]); // edite from 0 to 1
+		directory = ft_strdup(cmd->argument[0]);
 	if (chdir(directory) != 0)
 	{
-		exit_with_error("minishell: cd", 1, info);
+		exit_with_error("minishell: cd", 1, bash);
 		return (free(directory), EXIT_FAILURE);
 	}
-	update_env_working_dir(ENV_PWD, info);
-	info->exit_status = 0;
+	update_env_working_dir(ENV_PWD, bash);
+	bash->exit_status = 0;
 	return (free(directory), EXIT_SUCCESS);
 }

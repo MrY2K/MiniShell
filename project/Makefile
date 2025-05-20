@@ -40,7 +40,7 @@ BUILD_DIR    = .build
 INCLUDE_DIR  = includes
 
 
-# Module directories
+# directories
 BUILTINS_DIR = $(SRC_DIR)/builtins
 ENV_DIR      = $(SRC_DIR)/env
 EXEC_DIR     = $(SRC_DIR)/exec
@@ -50,7 +50,7 @@ REDIR_DIR    = $(SRC_DIR)/redirection
 SIGNALS_DIR  = $(SRC_DIR)/signals
 TOKEN_DIR    = $(SRC_DIR)/tokenizer
 LIB_DIR      = $(SRC_DIR)/lib
-ERROR_DIR    = $(SRC_DIR)/Error
+ERROR_DIR    = $(SRC_DIR)/error
 
 # HEADERS
 
@@ -100,7 +100,7 @@ LIB_HDR      = $(LIB_DIR)/libft.h
 
 # RULES
 
-.PHONY: all clean fclean re libclean libfclean debug norm banner practice
+.PHONY: all clean fclean re libclean libfclean debug norm  practice
 
 # Default target
 all:  $(NAME)
@@ -116,7 +116,7 @@ $(BUILD_DIR):
 	@mkdir -p $(BUILD_DIR)/redirection
 	@mkdir -p $(BUILD_DIR)/signals
 	@mkdir -p $(BUILD_DIR)/tokenizer
-	@mkdir -p $(BUILD_DIR)/Error
+	@mkdir -p $(BUILD_DIR)/error
 	@printf "$(CYAN)$(BOLD)%s$(RESET)\n" "Build directory structure created"
 
 
@@ -181,8 +181,6 @@ norm:
 	@printf "$(GREEN)%s$(RESET)\n" "✓ Norminette check completed"
 
 
-practice : all clean 
+practice : all clean
 	@clear
 
-# Include dependencies
--include $(DEPS)

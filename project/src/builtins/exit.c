@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 08:33:49 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/16 09:25:08 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:12:40 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static bool	is_valid_exit_argument(t_minibash *bash, char **argument)
 	return (true);
 }
 
-void	builtin_exit(t_cmd *cmd, t_minibash *bash)
+void	builtin_exit(t_minibash *bash, t_cmd *cmd)
 {
 	int	exit_status;
 

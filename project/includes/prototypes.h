@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/19 10:39:56 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:05:12 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 
 /* Built-in */
 t_status		echo(t_cmd *cmd);
-t_status		cd(t_cmd *cmd, t_minibash *info);
+t_status		cd(t_cmd *cmd, t_minibash *bash);
 void			pwd(t_minibash *bash);
 void			env(t_minibash *bash);
-void			builtin_exit(t_cmd *cmd, t_minibash *bash);
+void			builtin_exit(t_minibash *bash, t_cmd *cmd);
 void			unset(t_minibash *bash, char **args);
 void			export(t_minibash *bash, t_cmd *cmd);
 

@@ -6,12 +6,13 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/05/24 17:31:22 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/05/24 21:18:15 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "lib/libft.h"
+#include <signal.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -47,41 +48,41 @@ int ft_isspace(char c)
 	return (0);
 }
 
-static volatile sig_atomic_t g_sig = 0;   // the *one* global
-
-/* SIGINT handler -- prints new prompt like Bash */
 static void  sigint_handler(int signum)
 {
-    g_sig = signum;
-    rl_on_new_line();          /* say “we’re on a new empty line” */    /*:contentReference[oaicite:6]{index=6}*/
-    rl_replace_line("", 0);    /* clear current buffer               */    /*:contentReference[oaicite:7]{index=7}*/
-    rl_redisplay();            /* show fresh prompt                  */    /*:contentReference[oaicite:8]{index=8}*/
+	(void)signum;
+	write(1, "\n", 1);           // ← explicit newline
+	rl_on_new_line();          /* say “we’re on a new empty line” */
+	rl_replace_line("", 0);    /* clear current buffer            */
+	rl_redisplay();            /* show fresh prompt               */
 }
 
-static void sigterm_handler(int signum)
+void	signals(void)
 {
-	
+	rl_catch_signals = 0;
+    signal(SIGINT,  sigint_handler);   /* Ctrl-C  */
+    signal(SIGQUIT, SIG_IGN);          /* Ctrl-\  */
 }
+
 
 int main(void)
 {
-    signal(SIGINT,  sigint_handler);   /* Ctrl-C  */            /*:contentReference[oaicite:9]{index=9}*/
-    signal(SIGQUIT, SIG_IGN);          /* Ctrl-\  */
+	signals();
     char *line;
 
     while (1)
     {
-        line = readline("minishell$ ");                           /*:contentReference[oaicite:10]{index=10}*/
-        if (!line)        /* Ctrl-D: readline returns NULL */
+        line = readline("minishell$ ");
+        if (!line) /* Ctrl-D: readline returns NULL */
             break;
-        if (*line)        /* non-empty → remember it      */
-            add_history(line);                                   /*:contentReference[oaicite:11]{index=11}*/
+        if (*line)
+            add_history(line);
 
-        /* …call your tokenizer / parser here… */
+        /* => Lexer => tokenizer => parser */
 
         free(line);
     }
-    rl_clear_history();                                            /*:contentReference[oaicite:12]{index=12}*/
+    rl_clear_history();
     write(1, "exit\n", 5);
     return (0);
 }

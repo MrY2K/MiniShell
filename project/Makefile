@@ -159,6 +159,17 @@ norm:
 practice : all clean 
 	@clear
 
+cl:
+	$(shell cl)
+
+readline:
+	$(shell 42-wizzard-brew)
+	$(shell brew install readline)
+	$(shell brew install ncurses)
+	$(shell brew link readline --force)
+	$(shell export LDFLAGS="-L$(brew --prefix readline)/lib")
+	$(shell export CPPFLAGS="-I$(brew --prefix readline)/include")
+
 # Include dependencies
 -include $(DEPS)
 

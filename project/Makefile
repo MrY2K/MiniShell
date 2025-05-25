@@ -28,7 +28,7 @@ ERROR_DIR    = $(SRC_DIR)/Error
 # HEREDOC_DIR  = $(SRC_DIR)/heredoc
 PARSING_DIR  = $(SRC_DIR)/parsing
 # REDIR_DIR    = $(SRC_DIR)/redirection
-# SIGNALS_DIR  = $(SRC_DIR)/signals
+SIGNALS_DIR  = $(SRC_DIR)/signals
 # TOKEN_DIR    = $(SRC_DIR)/tokenizer
 
 ################################################
@@ -42,7 +42,7 @@ NAME         = minishell
 HEADERS      = $(wildcard $(INCLUDE_DIR)/*.h)
 
 # Define source files
-MAIN_SRC     = $(SRC_DIR)/main.c
+MAIN_SRC     = $(SRC_DIR)/main.c $(SRC_DIR)/utils.c
 
 # Builtin sources
 BUILTINS_SRC = $(wildcard $(BUILTINS_DIR)/*.c)

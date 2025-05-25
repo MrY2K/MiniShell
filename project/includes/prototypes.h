@@ -6,15 +6,29 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/17 19:54:45 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/05/25 20:15:26 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PROTOTYPES_H
 # define PROTOTYPES_H
 
+#include "../src/lib/libft.h"
+#include <signal.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 # include "structs.h"     
 # include "enums.h"     
+
+/* Signals */
+// void     sigint_handler(int signum);
+void            signals(void);
+
+/* Parsing */
+int             ft_isspace(char c);
 
 
 /* Built-in */

@@ -1,3 +1,8 @@
+rm -rf Library/Application\ Support/Slack/*
+rm -rf Library/Application\ Support/CLion2019.3/*
+rm -rf Library/Application\ Support/BraveSoftware/*
+rm -rf Library/Application\ Support/discord/*
+
 42-wizzard-brew
 
 sleep 0.5

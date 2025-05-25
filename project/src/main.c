@@ -6,161 +6,103 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/05/25 17:25:29 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/05/25 20:48:05 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include "lib/libft.h"
-#include <signal.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-//
 
-char **split_tokens(const char *line);
+char	**split_tokens(const char *line);
 void	ll(void) { system("leaks -q minishell"); }
 
-typedef enum e_tokentype 
+typedef struct s_redir
 {
-    T_WORD,
-    T_PIPE,
-    T_REDIR_IN,    // <
-    T_REDIR_OUT,   // >
-    T_HEREDOC,     // <<
-    T_APPEND,      // >>
-	//...
 	
-}   t_tokentype;
+    int            type;      		// e.g. REDIR_IN, REDIR_OUT, APPEND, HERE_DOC
+    char          *filename;  		// target file name (from next token)
+    struct s_redir *next;    		// next redirection
+
+} t_redir;
+
+typedef struct s_command
+{
+	
+    char       **argv;       		// argv array (command + arguments), NULL-terminated
+    t_redir    *redirs;     		// linked list of redirections for this command
+    struct s_command *next;  		// next command in pipeline (or NULL)
+
+} t_command;
+
+typedef enum e_token_type
+{
+	nothing,
+	WORD = -1,
+	PIPE_LINE = '|',
+	HERE_DOC,
+	DREDIR_OUT,
+	REDIR_OUT = '>',
+	REDIR_IN = '<',
+	
+	WHITE_SPACE = ' ',
+	NEW_LINE = '\n',
+	DOUBLE_QUOTE = '\"',
+	QOUTE = '\'',
+	ENV = '$',
+
+}					t_token_type;
 
 typedef struct	s_token 
 {
-	t_tokentype	type;
-	char		*value;
+	
+	t_token_type	type;
+	char			*value;
+	struct s_token *next;
+
 }	t_token;
 
-int ft_isspace(char c)
+
+int main(int ac, char **av, char **env)
 {
-	if (c == ' ')
-		return (1);
+	char *line;
+
+	signals();
+	(void)ac;
+	(void)av;
+	(void)env;
+	env = NULL;
+	// env = // GET_ENV(emv)
+	while (1)
+	{
+		line = readline("minishell$ ");
+		if (!line) /* Ctrl-D: readline returns NULL */
+			return (rl_clear_history(), write(1, "exit\n", 5), 1);
+		if (ft_strlen(line) > 0)
+		{
+			add_history(line);
+			// INIT	
+			printf("|line: %s\n|", line);		//  echo "Hello $USER" > output.txt
+												// [ WORD:echo ] → [ WORD:"Hello $USER" ] → [ REDIR_OUT:> ] → [ WORD:output.txt ]
+			
+			ft_lexer(line, int **x)
+			// parser()
+		}
+
+		/* => Lexer => tokenizer => parser */
+		
+		// call the lexter on line = minishell$ echo "Hello $USER" > output.txt 
+		// if (lexer(line, ) == BAD)
+		// {
+		// 	// Print Syntax Error 
+		// 	// return 258 in the Last exit status 
+		// 	// free
+		// }
+		// // the token list looks like this:  ["echo" (WORD), "Hello $USER" (WORD), ">" (REDIR_OUT), "output.txt" (WORD)]
+		
+		
+		free(line);
+	}
+
 	return (0);
 }
 
-static void  sigint_handler(int signum)
-{
-	(void)signum;
-	write(1, "\n", 1);           // ← explicit newline
-	rl_on_new_line();          /* say “we’re on a new empty line” */
-	rl_replace_line("", 0);    /* clear current buffer            */
-	rl_redisplay();            /* show fresh prompt               */
-}
-
-void	signals(void)
-{
-	rl_catch_signals = 0;
-    signal(SIGINT,  sigint_handler);   /* Ctrl-C  */
-    signal(SIGQUIT, SIG_IGN);          /* Ctrl-\  */
-}
-
-
-void init_env(char **envp);
-void init_env(char **envp)
-{
-    
-}
-
-int main(int ac, char **av, char **envp)
-{
-    char *line;
-
-	signals();
-    init_env();
-    while (1)
-    {
-        line = readline("minishell$ ");
-        if (!line) /* Ctrl-D: readline returns NULL */
-            break;
-        if (*line)
-        {
-            add_history(line);
-            handle_env();
-        }
-        /* => Lexer => tokenizer => parser */
-        free(line);
-    }
-    rl_clear_history();
-    write(1, "exit\n", 5);
-    return (0);
-}
-
-
-
-// char **split_tokens(const char *line)
-// {
-// 	int i = 0;
-// 	while (line[i])
-// 	{
-// 		// 1. skip whitespace
-// 		while (line[i] && ft_isspace(line[i]))
-// 			i++;
-
-// 		if (!line[i])
-// 			break;
-
-// 		// 2. mark token start
-// 		start = i;
-
-// 		// 3. advance to token end
-// 		while (line[i] && !ft_isspace(line[i]) && !is_metachar(line[i]))
-// 			i++;
-
-// 		// 4. extract substring line[start..i)
-// 		token = ft_substr(...)
-// 		append_token(token_array, token);
-// 	}
-// 	// 5. terminate array with NULL
-
-// }
-
-// static volatile sig_atomic_t g_sig = 0;   // the *one* global
-
-// /* SIGINT handler -- prints new prompt like Bash */
-// static void  sigint_handler(int signum)
-// {
-//     g_sig = signum;
-// 	write(1, "\n", 1);           // ← explicit newline
-//     rl_on_new_line();          /* say “we’re on a new empty line” */
-//     rl_replace_line("", 0);    /* clear current buffer            */
-//     rl_redisplay();            /* show fresh prompt               */
-// }
-
-// // void	init_sigaction(void)
-// // {
-// // }
-
-// int main(void)
-// {
-// 	atexit(ll);
-// 	// init_sigaction();
-// 	signal(SIGINT,  sigint_handler);   /* Ctrl-C  */
-// 	signal(SIGQUIT, SIG_IGN);          /* Ctrl-\  */
-//     char *line;
-
-//     while (1)
-//     {
-//         line = readline("minishell$ ");
-//         if (!line)        /* Ctrl-D: readline returns NULL */
-//             break;
-//         if (*line)        /* non-empty → remember it       */
-//             add_history(line);
-
-//         /* …call your tokenizer / parser here… */
-
-//         free(line);
-//     }
-//     rl_clear_history();
-//     write(1, "exit\n", 5);
-//     return (0);
-// }

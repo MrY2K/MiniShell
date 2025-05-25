@@ -1,35 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   structs.h                                          :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/11 09:25:15 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/25 20:16:57 by achoukri         ###   ########.fr       */
+/*   Created: 2025/05/25 20:07:48 by achoukri          #+#    #+#             */
+/*   Updated: 2025/05/25 20:07:51 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STRUCTS_H
-# define STRUCTS_H
-
-typedef struct	s_cmd
+int ft_isspace(char c)
 {
-	char	*main_cmd;
-	char	**argument;
-}	t_cmd;
-
-typedef struct	s_env
-{
-	char			*name;
-	char			*value;
-	struct s_env	*next;
-}	t_env;
-
-typedef struct s_minibash
-{
-	t_env	*env;
-	int		exit_status;
-}	t_minibash;
-
-#endif
+	if (c == ' ')
+		return (1);
+	return (0);
+}

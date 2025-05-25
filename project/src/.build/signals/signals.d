@@ -1,5 +1,5 @@
-src/.build/builtins/cd.o: src/builtins/cd.c \
-  src/builtins/../../includes/minishell.h includes/enums.h \
+src/.build/signals/signals.o: src/signals/signals.c \
+  src/signals/../../includes/minishell.h includes/enums.h \
   includes/structs.h includes/prototypes.h includes/../src/lib/libft.h \
   /goinfre/achoukri/homebrew/opt/readline/include/readline/readline.h \
   /goinfre/achoukri/homebrew/opt/readline/include/readline/rlstdc.h \

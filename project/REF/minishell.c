@@ -3,25 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bouhammo <bouhammo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 13:08:06 by rel-mora          #+#    #+#             */
-/*   Updated: 2025/05/25 16:28:22 by achoukri         ###   ########.fr       */
+/*   Updated: 2024/10/05 19:28:59 by bouhammo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void	handle_sig(int sig)
-// {
-// 	if (sig == SIGINT)
-// 	{
-// 		printf("\n");
-// 		rl_replace_line("", 0);
-// 		rl_on_new_line();
-// 		rl_redisplay();
-// 	}
-// }
+void	handle_sig(int sig)
+{
+	if (sig == SIGINT)
+	{
+		printf("\n");
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
+}
 
 void	ft_initialize(t_splitor *x, t_command **cmd, t_environment **my_env)
 {
@@ -70,8 +70,8 @@ int	main(int ac, char **av, char **env)
 	t_environment	*my_env;
 	t_command		*cmd;
 
-	// signal(SIGINT, handle_sig);
-	// signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, handle_sig);
+	signal(SIGQUIT, SIG_IGN);
 	(void)ac;
 	(void)av;
 	my_env = NULL;

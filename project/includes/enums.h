@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 09:56:20 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/13 11:21:47 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/05/25 14:03:00 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,26 @@ typedef enum e_env_type
 	CHILD_PROC,
 	PARENT_PROC
 }	t_env_type;
+
+/*		Parsing	*/
+typedef enum e_state
+{
+	Normal,
+	Single,
+	Double,
+	NUL,
+}	t_state;
+
+typedef enum e_token_type 
+{
+    TOKEN_WORD,         // command olla argument olla chi filename
+    TOKEN_PIPE,         // |
+    TOKEN_REDIR_IN,     // <
+    TOKEN_REDIR_OUT,    // >
+    TOKEN_REDIR_APPEND, // >> 
+    TOKEN_HEREDOC,      // << 
+    TOKEN_NEWLINE,      // Potentially for internal use or if line ends unexpectedly
+    TOKEN_EOF           // End of input 
+} t_token_type;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 06:55:52 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/19 10:34:29 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/05/21 10:13:46 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,6 @@ void	export(t_minibash *bash, t_cmd *cmd)
 {
 	if (!cmd->argument || !cmd->argument[0] || cmd->argument[0][0] == '#')
 		display_exported_variable(bash);
-	else
+	else 
 		export_env_variable(bash, cmd);
 }

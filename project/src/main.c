@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/05/24 21:18:15 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/05/25 17:25:29 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-// #include "/goinfre/achoukri/homebrew/opt/readline/include/readline/readline.h"
+//
 
 char **split_tokens(const char *line);
 void	ll(void) { system("leaks -q minishell"); }
@@ -65,21 +65,29 @@ void	signals(void)
 }
 
 
-int main(void)
+void init_env(char **envp);
+void init_env(char **envp)
 {
-	signals();
+    
+}
+
+int main(int ac, char **av, char **envp)
+{
     char *line;
 
+	signals();
+    init_env();
     while (1)
     {
         line = readline("minishell$ ");
         if (!line) /* Ctrl-D: readline returns NULL */
             break;
         if (*line)
+        {
             add_history(line);
-
+            handle_env();
+        }
         /* => Lexer => tokenizer => parser */
-
         free(line);
     }
     rl_clear_history();

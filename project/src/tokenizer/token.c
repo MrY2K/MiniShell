@@ -36,21 +36,145 @@ void handle_word(char *input, t_lexer_state *ls, t_token **tokens)
 	}
 	value = ft_substr(input, ls->start, ls->len);
 	ft_lstadd_back_token(tokens, ft_lstnew_token(value, ls->len, TOKEN_WORD, ls->state));
+	free (value);
+}
+
+void	env_variables(char *input, t_lexer_state *ls)
+{
+	// Case 1: Numeric variables $1, $2
+	if (ft_isdigit(input[ls->i + 1]))
+	{
+		ls->state = get_state(input[ls->i++], ls);
+		ls->len++;
+	}
+	else // Alphanumeric
+	{
+		while (input[ls->i] && input[ls->i + 1] && !is_metachar(input[ls->i + 1]) && ft_isalnum(input[ls->i + 1]))
+		{
+			ls->state = get_state(input[ls->i], ls);
+			ls->len++;
+		}
+	}
+}
+
+void	shell_variable(char *input, t_lexer_state *ls)
+{
+	// $1 $HOME   $PATH 
+	if (input[ls->i] && input[ls->i] == '$' && input[ls->i + 1] &&  ft_isalnum(input[ls->i + 1]) && !is_metachar(input[ls->i + 1]))
+	{
+		env_variables(input, ls);
+	}
+	else if (input[ls->i] && input[ls->i] == '$' && input[ls->i + 1] && input[ls->i + 1] == '?') // $? Exit Status
+	{
+		ls->state = get_state(input[ls->i], ls);
+		ls->i++;
+		ls->len++;
+	}
+	else if (input[ls->i] && input[ls->i] == '$' && !ft_isalnum(input[ls->i + 1]) && !is_metachar(input[ls->i + 1]))// Invalid/Edge Cases $@, $#
+	{
+		while (input[ls->i] && input[ls->i] == '$' && !ft_isalnum(input[ls->i + 1]) && !is_metachar(input[ls->i + 1]))
+		{
+			ls->state = get_state(input[ls->i], ls);
+			ls->len++;
+		}
+	}
+	else
+		ls->state = get_state(input[ls->i], ls); // $$ $> $" $ (space)  $| 
+}
+
+void	handle_env_variables(char *input, t_lexer_state *ls, t_token **tokens)
+{
+	char	*value;
+
+	 // Handles cases like $"" or $''
+	if ((input[ls->i] && input[ls->i + 1] && input[ls->i + 2] && input[ls->i] == '$')
+		&& ((input[ls->i + 1] == '\"' && input[ls->i + 2] == '\"') || (input[ls->i + 1] == '\'' && input[ls->i + 2] == '\'')))
+	{
+		ls->state = Normal;
+		ls->i += 3;
+		ls->len += 3;
+	}
+	// Handles cases like $" or $' but not closed
+	else if ((input[ls->i] && input[ls->i + 1] && input[ls->i + 2] && input[ls->i] == '$')
+		&& ((input[ls->i + 1] == '\"') || (input[ls->i + 1] == '\'')) && (input[ls->i
+				+ 2] != '\'' || input[ls->i + 2] != '\"'))
+	{
+		ls->i++; // Move past the '$' to the quote character
+		ls->state= get_state(input[ls->i], ls); // Update lexer state based on quote type
+		ls->len++;// Increment the length counter
+	}
+	else // handell $? $PATH
+		shell_variable(input, ls);
+	value = ft_substr(input, ls->start, ls->len);
+	ft_lstadd_back_token(tokens, ft_lstnew_token(value, ls->len, TOKEN_ENV, ls->state));
+	free(value);
+}
+
+void	handell_append_herdoc(t_token **tokens, char *input, t_lexer_state *ls)
+{
+	char	*value;
+
+	ls->i++;
+	ls->len++;
+	if (input[ls->i] == '>')
+	{
+		value = ft_substr(input, ls->start, ls->len);
+		ft_lstadd_back_token(tokens, ft_lstnew_token(value, ls->len, TOKEN_REDIR_APPEND, ls->state));
+		free(value);
+	}
+	else if (input[ls->i] == '<')
+	{
+		value = ft_substr(input, ls->start, ls->len);
+		ft_lstadd_back_token(tokens, ft_lstnew_token(value, ls->len, TOKEN_HEREDOC, ls->state));
+		free(value);
+	}
+}
+
+
+t_token_type	get_token_type(char c)
+{
+	if (c == '$')
+		return (TOKEN_ENV);
+	else if (c == '|')
+		return (TOKEN_PIPE);
+	else if (c == '\n')
+		return (TOKEN_NEWLINE);
+	else if (c == '\'')
+		return (TOKEN_SINGLE_QUOTE);
+	else if (c == '\"')
+		return (TOKEN_DOUBLE_QUOTE);
+	else if (c == '>')
+		return (TOKEN_REDIR_OUT);
+	else if (c == '<')
+		return (TOKEN_REDIR_IN);
+	else if (c == ' ' || c == '\t' || c == '\n')
+		return (TOKEN_WHITE_SPACE);
+	return (0);
+
 }
 
 void	handle_metachar(char *input, t_lexer_state *ls, t_token **tokens)
 {
-	(void)tokens;
+	char *value;
+
 	ls->len++;
-	if ((input[ls->i] && input[ls->i + 1] && input[ls->i + 2] && input[ls->i] == '$') // echo $"" echo $''
-		&& ((input[ls->i + 1] == '\"' && input[ls->i + 2] == '\"') || (input[ls->i + 1] == '\'' && input[ls->i + 2] == '\'')))
+	if (input[ls->i] && input[ls->i] == '$') // handell env variables $
+		handle_env_variables(input, ls, tokens);
+		// >> append  and   << here doc
+	else if (input[ls->i] && ((input[ls->i] == '>' && input[ls->i + 1] && input[ls->i + 1] == '>')
+		|| (input[ls->i] == '<' && input[ls->i + 1] && input[ls->i + 1] == '<')))
 	{
-		ls->state = get_state(input[ls->i], ls);
-		ls->i += 3;
-		ls->len += 3;
+		handell_append_herdoc(tokens, input, ls);
 	}
-	// handel
+	else // all case like > - Output redirection  < - Input redirection ' or "   |  
+	{
+		value = ft_substr(input, ls->start, ls->len);
+		ft_lstadd_back_token(tokens, ft_lstnew_token(value, ls->len,get_token_type(input[ls->i]) , get_state(input[ls->i], ls)));
+		free(value);
+	}
+	ls->i++;
 }
+//
 
 int	lexer(char *input, t_token **tokens)
 {
@@ -71,9 +195,7 @@ int	lexer(char *input, t_token **tokens)
 			handle_metachar(input, &ls, tokens); // start with char / < .. 
 		else if (input[ls.i] && !is_metachar(input[ls.i]))
 			handle_word(input, &ls, tokens);// start with string 
-		
-		if (ls.len == 0)
-        	ls.i++;
 	}
+	// handell syntax error not done yet 
 	return (0);
 }

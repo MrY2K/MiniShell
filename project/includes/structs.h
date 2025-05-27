@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 09:25:15 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/25 15:00:33 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/05/27 11:19:24 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_env
 	char			*value;
 	struct s_env	*next;
 }	t_env;
+
 
 typedef struct s_cmd
 {

@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/25 15:09:45 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:05:12 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,11 @@ int				is_metachar(char c);
 void			ft_lstadd_back_token(t_token **lst, t_token *new_node);
 t_token 		*ft_lstnew_token(char *value, int len, t_token_type type, t_state state);
 int				lexer(char *input, t_token **tokens);
+
+// lexer handell syntx error 
+
+int				has_syntax_error_at_start(t_token **start);
+void			skip_spaces(t_token	**cur_node);
+int				check_middle_syntax(t_token **middle);
+
 #endif

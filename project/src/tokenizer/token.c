@@ -17,7 +17,7 @@ t_state	get_state(char c, t_lexer_state *ls)
 	else if (ls->double_q == -1 && ls->single_q == 1 && ft_isprint(c))
 		return (Single); // we're inside single quote 
 	else if (ls->double_q == -1 && ls->single_q == -1 && ft_isprint(c) && c != '\"')
-		return (Normal); // $
+		return (Normal); // $ 5
 	return (NUL);
 }
 
@@ -38,6 +38,8 @@ void handle_word(char *input, t_lexer_state *ls, t_token **tokens)
 	ft_lstadd_back_token(tokens, ft_lstnew_token(value, ls->len, TOKEN_WORD, ls->state));
 	free (value);
 }
+
+// *********   handell char ✅   ✅    ✅   ✅ 
 
 void	env_variables(char *input, t_lexer_state *ls)
 {
@@ -174,7 +176,38 @@ void	handle_metachar(char *input, t_lexer_state *ls, t_token **tokens)
 	}
 	ls->i++;
 }
-//
+// ******* ✅   ✅   ✅   ✅  handell syntax error  ✅   ✅    ✅   ✅  *************** 
+
+
+void	skip_spaces(t_token	**cur_node)
+{
+	while ((*cur_node) && (*cur_node)->type == 32)
+	{
+		(*cur_node) = (*cur_node)->next;
+	}
+}
+
+
+
+int	is_syntax_error(t_token **tokens)
+{
+	t_token	*start;
+
+	if (!tokens || !(*tokens))
+		return (0);
+	start = *tokens;
+	skip_spaces(&start);
+	if (has_syntax_error_at_start(&start))
+	{
+		return (1);
+	}
+	if (check_middle_syntax(&start))
+		return (1);
+	
+	
+	return (0);
+}
+
 
 int	lexer(char *input, t_token **tokens)
 {
@@ -196,6 +229,8 @@ int	lexer(char *input, t_token **tokens)
 		else if (input[ls.i] && !is_metachar(input[ls.i]))
 			handle_word(input, &ls, tokens);// start with string 
 	}
-	// handell syntax error not done yet 
+	// handell syntax error 
+	if (is_syntax_error(tokens) ||  ls.double_q == 1 || ls.single_q == 1)
+		return (1);
 	return (0);
 }

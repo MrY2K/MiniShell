@@ -29,14 +29,13 @@ void handle_word(char *input, t_lexer_state *ls, t_token **tokens)
 	i = 0;
 	while (input[ls->i] && !is_metachar(input[ls->i]))
 	{
+		ls->state = get_state(input[ls->i], ls);
 		ls->i++;
 		ls->len++;
-		ls->state = get_state(input[ls->i], ls);
 		i++;
 	}
 	value = ft_substr(input, ls->start, ls->len);
 	ft_lstadd_back_token(tokens, ft_lstnew_token(value, ls->len, TOKEN_WORD, ls->state));
-	free (value);
 }
 
 // *********   handell char ✅   ✅    ✅   ✅ 
@@ -163,16 +162,18 @@ void	handle_metachar(char *input, t_lexer_state *ls, t_token **tokens)
 	if (input[ls->i] && input[ls->i] == '$') // handell env variables $
 		handle_env_variables(input, ls, tokens);
 		// >> append  and   << here doc
-	else if (input[ls->i] && ((input[ls->i] == '>' && input[ls->i + 1] && input[ls->i + 1] == '>')
-		|| (input[ls->i] == '<' && input[ls->i + 1] && input[ls->i + 1] == '<')))
+	else
 	{
-		handell_append_herdoc(tokens, input, ls);
-	}
-	else // all case like > - Output redirection  < - Input redirection ' or "   |  
-	{
-		value = ft_substr(input, ls->start, ls->len);
-		ft_lstadd_back_token(tokens, ft_lstnew_token(value, ls->len,get_token_type(input[ls->i]) , get_state(input[ls->i], ls)));
-		free(value);
+		if (input[ls->i] && ((input[ls->i] == '>' && input[ls->i + 1] && input[ls->i + 1] == '>')
+			|| (input[ls->i] == '<' && input[ls->i + 1] && input[ls->i + 1] == '<')))
+		{
+			handell_append_herdoc(tokens, input, ls);
+		}
+		else // all case like > - Output redirection  < - Input redirection ' or "   |  
+		{
+			value = ft_substr(input, ls->start, ls->len);
+			ft_lstadd_back_token(tokens, ft_lstnew_token(value, ls->len,get_token_type(input[ls->i]) , get_state(input[ls->i], ls)));
+		}
 	}
 	ls->i++;
 }
@@ -187,47 +188,70 @@ void	skip_spaces(t_token	**cur_node)
 	}
 }
 
+t_token	*last_node(t_token *lst)
+{
+	t_token	*last;
 
+	last = lst;
+	if (!lst)
+		return (NULL);
+	while (last->next)
+	{
+		last = last->next;
+	}
+	return (last);
+}
 
 int	is_syntax_error(t_token **tokens)
 {
 	t_token	*start;
+	t_token	*last;
 
 	if (!tokens || !(*tokens))
 		return (0);
 	start = *tokens;
 	skip_spaces(&start);
+
 	if (has_syntax_error_at_start(&start))
 	{
+
 		return (1);
 	}
 	if (check_middle_syntax(&start))
+	{
+		//ft_putendl_fd("minishell: syntax error", 2);
 		return (1);
-	
-	
+	}
+	start = *tokens;
+	last = last_node(start);
+	if (last && last->type == '|')
+	{
+		return (1);
+	}
 	return (0);
 }
-
 
 int	lexer(char *input, t_token **tokens)
 {
 	t_lexer_state	ls;
-	int				input_len;
+	int				len;
 
 	if (!input || !tokens)
 		return (1);
-	input_len = ft_strlen(input);
+	len = ft_strlen(input);
 	ls.i = 0;
 	ls.double_q = -1;
 	ls.single_q = -1;
-	while (ls.i < input_len)
+	while (ls.i < len)
 	{
 		ls.start = ls.i;
 		ls.len = 0;
-		if (input[ls.i] && is_metachar(input[ls.i]))
+		// else if (input[ls.i] && !is_metachar(input[ls.i]))
+		// 	handle_word(input, &ls, tokens);// start with string 
+		if (input[ls.i] && !is_metachar(input[ls.i]))
+    		handle_word(input, &ls, tokens);
+		else if (input[ls.i] && is_metachar(input[ls.i]))
 			handle_metachar(input, &ls, tokens); // start with char / < .. 
-		else if (input[ls.i] && !is_metachar(input[ls.i]))
-			handle_word(input, &ls, tokens);// start with string 
 	}
 	// handell syntax error 
 	if (is_syntax_error(tokens) ||  ls.double_q == 1 || ls.single_q == 1)

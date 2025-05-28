@@ -31,11 +31,13 @@ t_token *ft_lstnew_token(char *value, int len, t_token_type type, t_state state)
     new_node->state = state;
     new_node->len = len;
     new_node->next = NULL;
-    return new_node;
+    return (new_node);
 }
 
 void	ft_lstadd_back_token(t_token **lst, t_token *new_node)
 {
+	t_token *current;
+
 	if (!new_node || !lst)
 		return;
 	if (!*lst)
@@ -43,7 +45,7 @@ void	ft_lstadd_back_token(t_token **lst, t_token *new_node)
 		*lst = new_node;
 		return ;
 	}
-	t_token *current = *lst;
+	current = *lst;
 	while (current->next)
 	{
 		current = current->next;

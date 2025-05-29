@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 18:00:47 by rel-mora          #+#    #+#             */
-/*   Updated: 2025/05/27 12:21:45 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/05/29 20:32:48 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ void	ft_command(t_splitor **x, t_command **cmd, t_environment *my_env)
 
 	tmp_cmd = cmd;
 	tmp_x = *x;
-	
 	while (tmp_x != NULL)
 		ft_add_command(cmd, ft_new_command(&tmp_x, my_env));
 	ft_fill_red(tmp_cmd, x, my_env);
 }
 
+// ? appends new_command to the end of the command linked list
 void	ft_add_command(t_command **lst, t_command *new)
 {
 	t_command	*last;
@@ -40,6 +40,7 @@ void	ft_add_command(t_command **lst, t_command *new)
 	}
 }
 
+// ? Find the last node in the linked list
 t_command	*ft_last_command(t_command *lst)
 {
 	t_command	*last;
@@ -52,11 +53,14 @@ t_command	*ft_last_command(t_command *lst)
 	return (last);
 }
 
+// ? Creates a command node   //     echo "Hi" | echo 'Bye'
+
 t_command	*ft_new_command(t_splitor **tmp_x, t_environment *my_env)
 {
 	t_command	*new_node;
 
 	new_node = malloc(sizeof(t_command));
+	
 	new_node->arg = NULL;
 	new_node->content = NULL;
 	new_node->len = 0;
@@ -64,17 +68,23 @@ t_command	*ft_new_command(t_splitor **tmp_x, t_environment *my_env)
 	new_node->doc = NULL;
 	new_node->her = NULL;
 	new_node->ar_env = NULL;
+	
+	// ? Found a Pipe
 	if (((*tmp_x) != NULL && ((*tmp_x)->type == '|' && (*tmp_x)->state == G)))
 	{
 		ft_join_arr(&(new_node->arg), (*tmp_x)->in);
 		new_node->is_pipe = 1;
 		(*tmp_x) = (*tmp_x)->next;
 	}
+	
 	else if ((*tmp_x) != NULL)
 		ft_not_pipe(&new_node, tmp_x, my_env);
+	
 	if (new_node->arg != NULL && new_node->arg[0] != NULL)
 		new_node->content = new_node->arg[0];
+	
 	new_node->next = NULL;
+	
 	return (new_node);
 }
 
@@ -170,7 +180,7 @@ void	ft_not_pipe(t_command **new_node, t_splitor **tmp_x,
 		if ((*tmp_x) != NULL && (*tmp_x)->state == G && ((*tmp_x)->type != -1
 				&& (*tmp_x)->type != '$'))
 			ft_skip_not_word(tmp_x, my_env);
-		if ((*tmp_x) != NULL && !((*tmp_x)->type == 32 && (*tmp_x)->state == G))
+		if ((*tmp_x) != NULL && !((*tmp_x)->type == ' ' && (*tmp_x)->state == G))
 			ft_neuter_cmd(new_node, tmp_x, my_env, &join);
 		if ((*tmp_x) != NULL && ((*tmp_x)->type == ' ' && (*tmp_x)->state == G))
 			ft_skip_spaces(tmp_x);

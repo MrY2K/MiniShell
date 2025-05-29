@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structures.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bouhammo <bouhammo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 07:58:38 by rel-mora          #+#    #+#             */
-/*   Updated: 2024/09/29 14:52:59 by bouhammo         ###   ########.fr       */
+/*   Updated: 2025/05/29 20:14:38 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,20 @@ typedef struct s_splitor
 	struct s_splitor	*prev;
 }						t_splitor;
 
+typedef struct s_command
+{
+	char				*content;
+	char				**arg;
+	t_redirect			*doc;
+	t_here_doc			*her;
+	char				**ar_env;
+	int					is_amb;
+	int					is_exp;
+	int					is_pipe;
+	int					len;
+	struct s_command	*next;
+}						t_command;
+
 typedef struct s_envarment
 {
 	char				*var;
@@ -108,19 +122,6 @@ typedef struct s_here_doc
 	struct s_here_doc	*next;
 }						t_here_doc;
 
-typedef struct s_command
-{
-	char				*content;
-	char				**arg;
-	t_redirect			*doc;
-	t_here_doc			*her;
-	char				**ar_env;
-	int					is_amb;
-	int					is_exp;
-	int					is_pipe;
-	int					len;
-	struct s_command	*next;
-}						t_command;
 
 typedef struct s_array_env
 {

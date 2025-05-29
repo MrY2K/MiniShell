@@ -6,13 +6,13 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 20:07:48 by achoukri          #+#    #+#             */
-/*   Updated: 2025/05/25 20:07:51 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/05/29 18:38:07 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int ft_isspace(char c)
-{
-	if (c == ' ')
-		return (1);
-	return (0);
-}
+// int ft_isspace(char c)
+// {
+// 	if (c == ' ')
+// 		return (1);
+// 	return (0);
+// }

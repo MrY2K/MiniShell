@@ -24,12 +24,12 @@ BUILTINS_DIR = $(SRC_DIR)/builtins
 LIB_DIR      = $(SRC_DIR)/lib
 ENV_DIR      = $(SRC_DIR)/env
 ERROR_DIR    = $(SRC_DIR)/Error
-# EXEC_DIR     = $(SRC_DIR)/exec
-# HEREDOC_DIR  = $(SRC_DIR)/heredoc
+EXEC_DIR     = $(SRC_DIR)/exec
+HEREDOC_DIR  = $(SRC_DIR)/heredoc
 PARSING_DIR  = $(SRC_DIR)/parsing
-# REDIR_DIR    = $(SRC_DIR)/redirection
+REDIR_DIR    = $(SRC_DIR)/redirection
 SIGNALS_DIR  = $(SRC_DIR)/signals
-# TOKEN_DIR    = $(SRC_DIR)/tokenizer
+TOKEN_DIR    = $(SRC_DIR)/tokenizer
 
 ################################################
 #                  FILES                       #

@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/29 17:52:38 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/05/29 18:35:43 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 void            signals(void);
 
 /* Parsing */
-int             ft_isspace(char c);
+// int             ft_isspace(char c);
 
 
 /* Built-in */

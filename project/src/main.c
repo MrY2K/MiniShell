@@ -6,103 +6,142 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/05/26 16:20:25 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/05/29 17:58:28 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <stdio.h>
 
-char	**split_tokens(const char *line);
+#include <string.h>
+#define CYAN    "\033[0;36m"
+#define RESET   "\033[0m"
+
 void	ll(void) { system("leaks -q minishell"); }
 
-typedef struct s_redir
+const char *token_type_to_str(t_token_type type)
 {
-	
-    int            type;      		// e.g. REDIR_IN, REDIR_OUT, APPEND, HERE_DOC
-    char          *filename;  		// target file name (from next token)
-    struct s_redir *next;    		// next redirection
+	switch (type)
+	{
+		case TOKEN_WORD: return "WORD";
+		case TOKEN_SPACE: return "SPACE";
+		case TOKEN_PIPE: return "PIPE";
+		case TOKEN_ENV: return "ENV";
+		case TOKEN_REDIR_IN: return "REDIR_IN";
+		case TOKEN_REDIR_OUT: return "REDIR_OUT";
+		case TOKEN_REDIR_APPEND: return "APPEND";
+		case TOKEN_HEREDOC: return "HEREDOC";
+		case TOKEN_NEWLINE: return "NEWLINE";
+		case TOKEN_EOF: return "EOF";
+		case TOKEN_WHITE_SPACE: return "WHITESPACE";
+		case TOKEN_SINGLE_QUOTE: return "SINGLE_QUOTE";
+		case TOKEN_DOUBLE_QUOTE: return "DOUBLE_QUOTE";
+		default: return "UNKNOWN";
+	}
+}
 
-} t_redir;
-
-typedef struct s_command
+const char *state_to_str(t_state state)
 {
-	
-    char       **argv;       		// argv array (command + arguments), NULL-terminated
-    t_redir    *redirs;     		// linked list of redirections for this command
-    struct s_command *next;  		// next command in pipeline (or NULL)
+	switch (state)
+	{
+		case Normal: return "NORMAL";
+		case Single: return "SINGLE";
+		case Double: return "DOUBLE";
+		case NUL: return "NULL";
+		default: return "UNKNOWN";
+	}
+}
 
-} t_command;
-
-typedef enum e_token_type
+void	print_tokens(t_token *tokens)
 {
-	nothing,
-	WORD = -1,
-	PIPE_LINE = '|',
-	HERE_DOC,
-	DREDIR_OUT,
-	REDIR_OUT = '>',
-	REDIR_IN = '<',
-	
-	WHITE_SPACE = ' ',
-	NEW_LINE = '\n',
-	DOUBLE_QUOTE = '\"',
-	QOUTE = '\'',
-	ENV = '$',
+	int i = 0;
+	printf(CYAN "\n--- Token Debug ---\n" RESET);
+	while (tokens)
+	{
+		if (tokens->value)
+		{
+			printf(CYAN "[%02d] Token: %-20s | Len: %-2d | Type: %-14s | State: %-10s\n" RESET,
+				i++,
+				tokens->value,
+				tokens->len,
+				token_type_to_str(tokens->type),
+				state_to_str(tokens->state));
+		}
+		else
+		{
+			printf(CYAN "[%02d] Token: %-20s | Len: %-2d | Type: %-14s | State: %-10s\n" RESET,
+				i++,
+				"(null)",
+				tokens->len,
+				token_type_to_str(tokens->type),
+				state_to_str(tokens->state));
+		}
+		tokens = tokens->next;
+	}
+	printf(CYAN "--- End Debug ---\n\n" RESET);
+}
 
-}					t_token_type;
 
-typedef struct	s_token 
+
+
+// ******  Readline
+
+void	free_lexer(t_token **token)
 {
-	
-	t_token_type	type;
-	char			*value;
-	struct s_token *next;
+	t_token	*cur;
 
-}	t_token;
+	while (*token)
+	{
+		cur = *token;
+		*token = (*token)->next;
+		if (cur->value)
+		{
+			free(cur->value);
+			cur->value = NULL;
+		}
+		free(cur);
+		cur = NULL;
+	}
+}
 
-
-int main(int ac, char **av, char **env)
+void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env *env)
 {
-	char *line;
-
-	signals();
-	(void)ac;
-	(void)av;
 	(void)env;
-	env = NULL;
-	// env = // GET_ENV(emv)
-	while (1)
+	(void)cmd;
+	char	*line;
+
+	while (true)
 	{
 		line = readline("minishell$ ");
-		if (!line) /* Ctrl-D: readline returns NULL */
-			return (rl_clear_history(), write(1, "exit\n", 5), 1);
-		if (ft_strlen(line) > 0)
+		if (!line)
 		{
-			add_history(line);
-			// INIT	
-			printf("|line: %s\n|", line);		//  echo "Hello $USER" > output.txt
-												// [ WORD:echo ] → [ WORD:"Hello $USER" ] → [ REDIR_OUT:> ] → [ WORD:output.txt ]
-			
-			// ft_lexer(line, int **x)
-			// parser()
+			ft_putstr("exit");
+			exit (bash->exit_status);
 		}
-
-		/* => Lexer => tokenizer => parser */
-		
-		// call the lexter on line = minishell$ echo "Hello $USER" > output.txt 
-		// if (lexer(line, ) == BAD)
-		// {
-		// 	// Print Syntax Error 
-		// 	// return 258 in the Last exit status 
-		// 	// free
-		// }
-		// // the token list looks like this:  ["echo" (WORD), "Hello $USER" (WORD), ">" (REDIR_OUT), "output.txt" (WORD)]
-		
-		
-		free(line);
+		if (lexer(line, &tokens))
+		{
+			ft_putendl_fd("minishell: syntax error", 2);
+			//bash->exit_status = 258;
+			//free_lexer(&tokens);
+		}
+		else
+			print_tokens(tokens); // debug
+		tokens = NULL;
+		free (line);
 	}
+
+}
+
+
+
+int main(void)
+{
+	t_minibash	*bash = NULL;
+	t_token		*tokens = NULL;
+	t_cmd		*cmd = NULL;
+	t_env		*env = NULL;
+
+	signals();
+	ft_readline( bash, tokens, cmd, env);
 
 	return (0);
 }
-

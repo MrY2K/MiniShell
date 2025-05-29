@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 10:03:12 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/17 19:51:49 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/05/29 17:49:47 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
+#include <sys/wait.h>
+/*	readline	*/
+#include <readline/readline.h>
+/*	opendir	*/
+#include <dirent.h>
 
 /*  	HEADERS			*/
 

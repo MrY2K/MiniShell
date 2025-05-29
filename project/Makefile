@@ -99,7 +99,7 @@ $(BUILD_DIR):
 	@mkdir -p $(BUILD_DIR)/redirection
 	@mkdir -p $(BUILD_DIR)/signals
 	@mkdir -p $(BUILD_DIR)/tokenizer
-	@mkdir -p $(BUILD_DIR)/Error
+	@mkdir -p $(BUILD_DIR)/error
 	@printf "$(CYAN)$(BOLD)%s$(RESET)\n" "Build directory structure created"
 
 
@@ -156,7 +156,7 @@ norm:
 	@printf "$(GREEN)%s$(RESET)\n" "✓ Norminette check completed"
 
 
-practice : all clean 
+practice : all clean
 	@clear
 
 cl:

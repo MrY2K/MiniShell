@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/05/25 20:48:05 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/05/26 16:20:25 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int main(int ac, char **av, char **env)
 			printf("|line: %s\n|", line);		//  echo "Hello $USER" > output.txt
 												// [ WORD:echo ] → [ WORD:"Hello $USER" ] → [ REDIR_OUT:> ] → [ WORD:output.txt ]
 			
-			ft_lexer(line, int **x)
+			// ft_lexer(line, int **x)
 			// parser()
 		}
 

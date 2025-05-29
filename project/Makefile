@@ -25,8 +25,11 @@ NAME         = minishell
 # COMPILER SETTINGS
 
 CC           = cc
-CFLAGS       = -Wall -Wextra -Werror -I$(INCLUDE_DIR) -g
-LDFLAGS      = -lreadline
+READLINE_DIR = /goinfre/ajelloul/homebrew/opt/readline
+
+CFLAGS       = -Wall -Wextra -Werror -I$(INCLUDE_DIR) -I$(READLINE_DIR)/include -g
+LDFLAGS      = -L$(READLINE_DIR)/lib -lreadline -lncurses
+
 
 # Uncomment for extra optimization or debug flags
 #CFLAGS      += -Ofast

@@ -1,5 +1,5 @@
-.build/builtins/exit.o: src/builtins/exit.c \
-  includes/../includes/minishell.h \
+.build/tokenizer/syntax_middle.o: src/tokenizer/syntax_middle.c \
+  src/tokenizer/../../includes/minishell.h \
   /goinfre/ajelloul/homebrew/opt/readline/include/readline/readline.h \
   /goinfre/ajelloul/homebrew/opt/readline/include/readline/rlstdc.h \
   /goinfre/ajelloul/homebrew/opt/readline/include/readline/rltypedefs.h \

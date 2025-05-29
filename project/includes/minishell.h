@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 10:03:12 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/24 10:30:34 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/05/28 07:42:07 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 #include <sys/wait.h>
+/*	readline	*/
+#include <readline/readline.h>
 /*	opendir	*/
 #include <dirent.h>
 

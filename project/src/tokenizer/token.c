@@ -43,7 +43,7 @@ void handle_word(char *input, t_lexer_state *ls, t_token **tokens)
 void	env_variables(char *input, t_lexer_state *ls)
 {
 	// Case 1: Numeric variables $1, $2
-	if (ft_isdigit(input[ls->i + 1]))
+	if (input[ls->i] && ft_isdigit(input[ls->i + 1]))
 	{
 		ls->state = get_state(input[ls->i++], ls);
 		ls->len++;
@@ -52,7 +52,7 @@ void	env_variables(char *input, t_lexer_state *ls)
 	{
 		while (input[ls->i] && input[ls->i + 1] && !is_metachar(input[ls->i + 1]) && ft_isalnum(input[ls->i + 1]))
 		{
-			ls->state = get_state(input[ls->i], ls);
+			ls->state = get_state(input[ls->i++], ls);
 			ls->len++;
 		}
 	}
@@ -61,7 +61,7 @@ void	env_variables(char *input, t_lexer_state *ls)
 void	shell_variable(char *input, t_lexer_state *ls)
 {
 	// $1 $HOME   $PATH 
-	if (input[ls->i] && input[ls->i] == '$' && input[ls->i + 1] &&  ft_isalnum(input[ls->i + 1]) && !is_metachar(input[ls->i + 1]))
+	if (input[ls->i] && input[ls->i] == '$' && input[ls->i + 1] && ft_isalnum(input[ls->i + 1]) && !is_metachar(input[ls->i + 1]))
 	{
 		env_variables(input, ls);
 	}
@@ -80,36 +80,41 @@ void	shell_variable(char *input, t_lexer_state *ls)
 		}
 	}
 	else
+	{
 		ls->state = get_state(input[ls->i], ls); // $$ $> $" $ (space)  $| 
+	}
 }
+
 
 void	handle_env_variables(char *input, t_lexer_state *ls, t_token **tokens)
 {
 	char	*value;
 
-	 // Handles cases like $"" or $''
 	if ((input[ls->i] && input[ls->i + 1] && input[ls->i + 2] && input[ls->i] == '$')
-		&& ((input[ls->i + 1] == '\"' && input[ls->i + 2] == '\"') || (input[ls->i + 1] == '\'' && input[ls->i + 2] == '\'')))
+		&& ((input[ls->i + 1] == '\"' && input[ls->i + 2] == '\"') || (input[ls->i
+					+ 1] == '\'' && input[ls->i + 2] == '\'')))
 	{
 		ls->state = Normal;
 		ls->i += 3;
 		ls->len += 3;
 	}
-	// Handles cases like $" or $' but not closed
-	else if ((input[ls->i] && input[ls->i + 1] && input[ls->i + 2] && input[ls->i] == '$')
+	else  if ((input[ls->i] && input[ls->i + 1] && input[ls->i + 2] && input[ls->i] == '$')
 		&& ((input[ls->i + 1] == '\"') || (input[ls->i + 1] == '\'')) && (input[ls->i
 				+ 2] != '\'' || input[ls->i + 2] != '\"'))
 	{
-		ls->i++; // Move past the '$' to the quote character
-		ls->state= get_state(input[ls->i], ls); // Update lexer state based on quote type
-		ls->len++;// Increment the length counter
+		ls->i++;
+		ls->state= get_state(input[ls->i], ls);
+		ls->len++;
 	}
 	else // handell $? $PATH
+	{
+
 		shell_variable(input, ls);
+	}
 	value = ft_substr(input, ls->start, ls->len);
 	ft_lstadd_back_token(tokens, ft_lstnew_token(value, ls->len, TOKEN_ENV, ls->state));
-	free(value);
 }
+
 
 void	handell_append_herdoc(t_token **tokens, char *input, t_lexer_state *ls)
 {
@@ -121,13 +126,12 @@ void	handell_append_herdoc(t_token **tokens, char *input, t_lexer_state *ls)
 	{
 		value = ft_substr(input, ls->start, ls->len);
 		ft_lstadd_back_token(tokens, ft_lstnew_token(value, ls->len, TOKEN_REDIR_APPEND, ls->state));
-		free(value);
 	}
 	else if (input[ls->i] == '<')
 	{
 		value = ft_substr(input, ls->start, ls->len);
 		ft_lstadd_back_token(tokens, ft_lstnew_token(value, ls->len, TOKEN_HEREDOC, ls->state));
-		free(value);
+		//free(value);
 	}
 }
 
@@ -160,7 +164,9 @@ void	handle_metachar(char *input, t_lexer_state *ls, t_token **tokens)
 
 	ls->len++;
 	if (input[ls->i] && input[ls->i] == '$') // handell env variables $
+	{
 		handle_env_variables(input, ls, tokens);
+	}
 		// >> append  and   << here doc
 	else
 	{

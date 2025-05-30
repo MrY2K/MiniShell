@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/27 14:05:12 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/05/30 10:50:37 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,31 @@
 # include "minishell.h"
 
 /* Built-in */
-t_status		echo(t_cmd *cmd);
-t_status		cd(t_cmd *cmd, t_minibash *bash);
-void			pwd(t_minibash *bash);
-void			env(t_minibash *bash);
-void			builtin_exit(t_minibash *bash, t_cmd *cmd);
-void			unset(t_minibash *bash, char **args);
-void			export(t_minibash *bash, t_cmd *cmd);
+// t_status		echo(t_cmd *cmd);
+// t_status		cd(t_cmd *cmd, t_minibash *bash);
+// void			pwd(t_minibash *bash);
+// void			env(t_minibash *bash);
+// void			builtin_exit(t_minibash *bash, t_cmd *cmd);
+// void			unset(t_minibash *bash, char **args);
+// void			export(t_minibash *bash, t_cmd *cmd);
 
-bool			is_builtins(t_cmd *cmd);
+// bool			is_builtins(t_cmd *cmd);
 
 
 
 /* Environment */
-void			initialize_environment(t_minibash *info, char **env);
-void			add_node_to_env(t_env **head, t_env *node);
-char			*get_environment(const char *name, t_minibash *bash);
-char			*extract_env_name(const char *str);
-char			*extract_env_value(const char *str);
-t_env			*create_env_node(char *data);
-t_env			*create_empty_env_node(char *name);
-void			remove_env_variable(t_env **env, char *var);
+// void			initialize_environment(t_minibash *info, char **env);
+// void			add_node_to_env(t_env **head, t_env *node);
+// char			*get_environment(const char *name, t_minibash *bash);
+// char			*extract_env_name(const char *str);
+// char			*extract_env_value(const char *str);
+// t_env			*create_env_node(char *data);
+// t_env			*create_empty_env_node(char *name);
+// void			remove_env_variable(t_env **env, char *var);
 
-void			free_env(char **env);
+//void			free_env(char **env);
+
+/**/
 
 /* Error && Exit*/
 void			exit_with_error(const char *msg, int exit, t_minibash *bash);
@@ -48,14 +50,14 @@ void			execute_builtin(t_minibash *bash, t_cmd *cmd);
 void			display_errno_exit(char *msg, int status);
 
 /*		EXPORT UTILS	*/
-void			display_exported_variable(t_minibash *bash);
+//void			display_exported_variable(t_minibash *bash);
 
 
-/*		PATH 		*/
-char			*command_path(t_minibash *bash, t_cmd *cmd);
-bool			contains_path_separator(char *command);
-bool			is_directory(char *path);
-bool			is_file_executable(char *file_path);
+// /*		PATH 		*/
+// char			*command_path(t_minibash *bash, t_cmd *cmd);
+// bool			contains_path_separator(char *command);
+// bool			is_directory(char *path);
+// bool			is_file_executable(char *file_path);
 
 /*		EXECUTION  		*/
 int 			is_fork_succes(t_minibash *bash, int pid);
@@ -79,5 +81,20 @@ int				lexer(char *input, t_token **tokens);
 int				has_syntax_error_at_start(t_token **start);
 void			skip_spaces(t_token	**cur_node);
 int				check_middle_syntax(t_token **middle);
+
+
+/*    ✅  ✅  ✅   builtins second edition ✅   ✅   ✅ */
+
+	/*   ENV 		*/
+	
+char 	**convert_env_list_to_array(t_env **env);
+char	*get_environment_variable(char	**env, char *path);
+void	update_env_var(t_env **env, char **arr_env, char *path, char *old);
+void	free_env_arr(char **arr_env);
+char 	*create_env_entry(t_env_converter *conv, t_env *node);
+ int	get_environment_len(t_env	*env);
+
+
+
 
 #endif

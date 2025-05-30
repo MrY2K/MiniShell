@@ -6,106 +6,102 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:28:31 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/20 16:05:58 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/05/30 11:20:37 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/*
-** Ensures that PWD and OLDPWD environment variables exist
-** @param info: Pointer to the minibash structure
-*/
 
-void	ensure_path_variables_exist(t_minibash *bash)
+//  ✅   ✅   ✅    second edition ✅  ✅ ✅   ✅ 
+
+
+// void	handell_telda(t_minibash *bash, char **env, char *path, char *arg) // cd ~ cd ~/Desktop
+// {
+// 	path = get_environment_variable(env, "HOME");
+// 	if (arg[1] == '/')
+// 		path = ft_strjoin(path, ft_strchr(arg, '/'));
+// 	if (!path)
+// 		print_cmd_err(bash, "cd", "HOME not set", 1);
+// 	else if (chdir(path) == -1)
+// 		exit_with_error("cd", 1, bash);
+// }
+
+void handle_tilde_expansion(t_minibash *bash, char **env, char *path, char *arg)
 {
-	t_env	*env;
-	bool	found_pwd;
-	bool	found_oldpwd;
-
-	if (!bash)
-		return ;
-	found_pwd = false;
-	found_oldpwd = false;
-	env = bash->env;
-	while (env)
-	{
-		if (!ft_strcmp(env->name, "PWD"))
-			found_pwd = true;
-		if (!ft_strcmp(env->name, "OLDPWD"))
-			found_oldpwd = true;
-		env = env->next;
-	}
-	if (!found_pwd)
-		add_node_to_env(&bash->env, create_empty_env_node("PWD"));
-	if (!found_oldpwd)
-		add_node_to_env(&bash->env, create_empty_env_node("OLDPWD"));
+    char *home_path;
+    char *final_path;
+    
+    home_path = get_environment_variable(env, "HOME");
+    if (arg[1] == '/')
+    {
+        final_path = ft_strjoin(home_path, ft_strchr(arg, '/'));
+        path = final_path;
+    }
+    else
+        path = home_path;
+        
+    if (!path)
+        print_cmd_err(bash, "cd", "HOME not set", 1);
+    else if (chdir(path) == -1)
+        exit_with_error("cd", 1, bash);
+    
+    if (arg[1] == '/' && final_path)
+        free(final_path);
 }
 
-/*
-** Updates the environment working directory variables
-** @param type: Type of update (PWD or OLDPWD)
-** @param info: Pointer to the minibash structure
-*/
-void	update_env_working_dir(t_env_type type, t_minibash *bash)
+void handle_special_paths(t_minibash *bash, char **env, char *dir_path)
 {
-	t_env	*env;
-	char	buffer[PATH_MAX];
-	char	*var_name;
-
-	if (!bash)
-		return ;
-	env = bash->env;
-	if (type == ENV_OLDPWD)
-		var_name = "OLDPWD";
-	else
-		var_name = "PWD";
-	ensure_path_variables_exist(bash);
-	if (!getcwd(buffer, PATH_MAX))
-		return (exit_with_error("getcwd", 1, bash));
-	while (env)
-	{
-		if (!ft_strcmp(env->name, var_name))
-		{
-			free(env->value);
-			env->value = ft_strdup(buffer);
-			break ;
-		}
-		env = env->next;
-	}
+    bash->exit_status = 0;
+    if (dir_path[0] == '-' && !dir_path[1])  // cd -
+    {
+        dir_path = get_environment_variable(env, "OLDPWD");
+        if (!dir_path)
+            print_cmd_err(bash, "cd", "OLDPWD not set", 1);
+        if (chdir(dir_path) == -1)
+            print_cmd_err(bash, "cd", strerror(errno), 1);
+        else 
+            printf("%s\n", dir_path);
+    }
+    else if (!ft_strcmp(dir_path, "--"))  // cd --
+    {
+        dir_path = get_environment_variable(env, "HOME");
+        if (!dir_path)
+            print_cmd_err(bash, "cd", "HOME not set", 1);
+        if (chdir(dir_path) == -1)
+            print_cmd_err(bash, "cd", strerror(errno), 1);
+    }
+    else if (chdir(dir_path) == -1)  // Regular path
+    {
+        print_cmd_err(bash, "cd", strerror(errno), 1);
+    }
 }
 
-/*
-** Built-in cd command implementation
-** @param cmd: Command structure containing arguments
-** @param bash: Pointer to the minibash structure
-** @return: Status of the command execution
-*/
-t_status	cd(t_cmd *cmd, t_minibash *bash)
-{
-	char	*directory;
 
-	if (!bash)
-		return (EXIT_FAILURE);
-	update_env_working_dir(ENV_OLDPWD, bash);
-	if (!cmd->argument || (cmd->argument[0] && cmd->argument[0][0] == '~'))
+void	builtin_cd(t_minibash	*bash, t_env **env, t_cmd	*cmd)
+{
+	t_cd	cd;
+
+	cmd = NULL;
+	cd.arr_env = convert_env_list_to_array(env);
+	if (!cmd->argument[1] || cmd->argument[1][0] == 0)
 	{
-		directory = get_environment("HOME", bash);
-		if (!directory)
-		{
-			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
-			bash->exit_status = 1;
-			return (EXIT_FAILURE);
-		}
+		cd.path = get_environment_variable(cd.arr_env, "HOME");
+		if (!cd.path)
+			print_cmd_err(bash, "cd", "HOME not set", 1);
+		else if (chdir(cd.path) == -1)
+			exit_with_error("cd", 1, bash);
 	}
 	else
-		directory = ft_strdup(cmd->argument[0]);
-	if (chdir(directory) != 0)
 	{
-		exit_with_error("minishell: cd", 1, bash);
-		return (free(directory), EXIT_FAILURE);
+		cd.path = cmd->argument[1];
+		if (cd.path[0] == '~')
+			handle_tilde_expansion(bash, cd.arr_env, cd.path, cmd->argument[1]);
+		else
+			handle_special_paths(bash, cd.arr_env, cd.path);
 	}
-	update_env_working_dir(ENV_PWD, bash);
-	bash->exit_status = 0;
-	return (free(directory), EXIT_SUCCESS);
+	update_env_var(env, cd.arr_env,cd.user_arg, "OLDPWD"); // user_arg
+	free_env_arr(cd.arr_env);
 }
+// echo "$USER" | grep "home" >> file | << 42 | cat '$USER'
+

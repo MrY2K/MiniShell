@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 09:25:15 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/27 11:19:24 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/05/30 10:45:35 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,25 @@ typedef struct s_lexer_state
 	
 } t_lexer_state;
 
+/*		builtins		*/
+
+typedef struct	s_cd
+{
+	char	**arr_env;
+	char	*user_arg;
+	char	*path;
+}			t_cd;
+
+
+typedef struct s_env_converter 
+{
+    char    **env_array;  // Final environment array
+    int     len;          // Length of environment list
+    char    *tmp_name;    // Temporary storage for name
+    char    *tmp_value;   // Temporary storage for value
+    char    *tmp_block;    // Temporary storage for "name="
+} 		t_env_converter;
+
 /* Execution */
 typedef struct s_env
 {
@@ -45,6 +64,7 @@ typedef struct s_env
 	char			*value;
 	struct s_env	*next;
 }	t_env;
+
 
 
 typedef struct s_cmd

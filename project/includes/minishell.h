@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 10:03:12 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/28 07:42:07 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/05/30 10:10:42 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 #include <readline/readline.h>
 /*	opendir	*/
 #include <dirent.h>
+
+/* errno : cd  */
+#include <errno.h>
 
 /*  	HEADERS			*/
 

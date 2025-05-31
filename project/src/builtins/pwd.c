@@ -10,16 +10,24 @@
 // /*                                                                            */
 // /* ************************************************************************** */
 
-// #include "../../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-// void	pwd(t_minibash *bash)
-// {
-// 	char	*current_dir;
-// 	char	buffer[PATH_MAX];
+void	builtin_pwd(t_minibash *bash, t_cmd *cmd)
+{
+	char	*current_dir;
+	char	buffer[PATH_MAX];
 
-// 	current_dir = getcwd(buffer, PATH_MAX);
-// 	if (!current_dir)
-// 		return (exit_with_error("getcwd", 1, bash));
-// 	ft_putendl_fd(current_dir, 1);
-// 	bash->exit_status = 0;
-// }
+	current_dir = getcwd(buffer, PATH_MAX);
+	if (!current_dir)
+		return (exit_with_error("getcwd", 1, bash));
+	if (cmd->argument[1] && cmd->argument[1][0] == '-'
+		&& cmd->argument[1][1] != '\0')
+	{
+		print_cmd_err(bash, "pwd", "invalid option", 1);
+		free (current_dir);
+		return ;
+	}
+	ft_putendl_fd(current_dir, 1);
+	free (current_dir);
+	bash->exit_status = 0;
+}

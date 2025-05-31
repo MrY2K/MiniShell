@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/05/28 15:05:01 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/05/31 14:00:41 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,25 +83,21 @@ void	print_tokens(t_token *tokens)
 
 
 
-// ******  Readline
+// ****** ✅     ✅   ✅     ✅   ✅   Readline    ✅     ✅   ✅     ✅   ✅     ✅
 
-void	free_lexer(t_token **token)
+
+void	execute_command_pipeline(t_minibash *bash, t_token *token, t_cmd *cmd)
 {
-	t_token	*cur;
-
-	while (*token)
+	(void) cmd;
+	if (token && bash->env)
 	{
-		cur = *token;
-		*token = (*token)->next;
-		if (cur->value)
-		{
-			free(cur->value);
-			cur->value = NULL;
-		}
-		free(cur);
-		cur = NULL;
+		//parse_command(&token, cmd, bash->env);
+		//execution(t_minibash *bash, cmd);
 	}
+	//free_command_resources(cmd);
+	free_lexer(&token);
 }
+
 
 void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env *env)
 {
@@ -125,22 +121,46 @@ void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env *env)
 		}
 		else
 			print_tokens(tokens); // debug
+		execute_command_pipeline(bash, tokens, cmd);
 		tokens = NULL;
+		cmd = NULL;
 		free (line);
 	}
-
 }
 
-
-
-int main(void)
+static void	init_minibash(t_minibash **bash)
 {
-	t_minibash	*bash = NULL;
-	t_token		*tokens = NULL;
-	t_cmd		*cmd = NULL;
-	t_env		*env = NULL;
+	*bash = (t_minibash *)malloc(sizeof(t_minibash));
+	if (!*bash)
+	{
+		ft_putstr_fd("minishell: fatal error: cannot allocate memory\n", 2);
+		exit(1);
+	}
+	ft_memset(*bash, 0, sizeof(t_minibash));
+	(*bash)->exit_status = 0;
+	(*bash)->env = NULL;
+}
 
-	ft_readline( bash, tokens, cmd, env);
+int	main(int ac, char **av, char **env)
+{
+	t_minibash	*bash;
+	t_token		*tokens;
+	t_cmd		*cmd;
 
-	return (0);
+	(void)ac;
+	(void)av;
+	tokens = NULL;
+	cmd = NULL;
+	init_minibash(&bash);
+	initialize_environment(bash, env);
+	if (!bash->env)
+	{
+		ft_putstr_fd("minishell: fatal error: environment initialization failed\n", 2);
+		free(bash);
+		exit(1);
+	}
+	using_history();
+	ft_readline(bash, tokens, cmd, bash->env);
+	free_minibash(&bash); // this is not finishe yet , only free env 
+	return (bash->exit_status);
 }

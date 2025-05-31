@@ -10,20 +10,23 @@
 // /*                                                                            */
 // /* ************************************************************************** */
 
-// #include "../includes/minishell.h"
+#include "../includes/minishell.h"
 
-// void	env(t_minibash *bash)
-// {
-// 	t_env	*_env;
 
-// 	if (!bash || !bash->env)
-// 		return ;
-// 	_env = bash->env;
-// 	while (_env)
-// 	{
-// 		if (_env->name && _env->value)
-// 			printf("%s=%s\n", _env->name, _env->value);
-// 		_env = _env->next;
-// 	}
-// 	bash->exit_status = 0;
-// }
+void	builtin_env(t_minibash *bash, t_env	**env)
+{
+	t_env	*_env;
+
+	if (!bash || !env)
+		return ;
+	_env = *env;
+	while (_env)
+	{
+		if (_env->value && !_env->value[0])
+			printf ("%s=\n", _env->name);
+		else if (_env->value)
+			printf ("%s=%s\n", _env->name, _env->value);
+		_env = _env->next;
+	}
+	bash->exit_status = 0;
+}

@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/30 10:50:37 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/01 11:33:55 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 // char			*extract_env_value(const char *str);
 // t_env			*create_env_node(char *data);
 // t_env			*create_empty_env_node(char *name);
-// void			remove_env_variable(t_env **env, char *var);
+void			remove_env_variable(t_env **env, char *var);
 
 //void			free_env(char **env);
 
@@ -92,9 +92,18 @@ char	*get_environment_variable(char	**env, char *path);
 void	update_env_var(t_env **env, char **arr_env, char *path, char *old);
 void	free_env_arr(char **arr_env);
 char 	*create_env_entry(t_env_converter *conv, t_env *node);
- int	get_environment_len(t_env	*env);
+int		get_environment_len(t_env	*env);
+void	initialize_environment(t_minibash *info, char **env);
 
 
+// free 
 
+void	free_lexer(t_token **token);
+void	free_minibash(t_minibash **bash);
+
+// ** execution 
+
+bool	has_herdoc(t_cmd *cmd);
+char	*ft_strjoin_with_null(char *s1, char *s2);
 
 #endif

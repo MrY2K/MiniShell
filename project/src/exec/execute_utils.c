@@ -10,18 +10,19 @@
 // /*                                                                            */
 // /* ************************************************************************** */
 
-// #include "../../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-// int	is_fork_succes(t_minibash *bash, int pid)
-// {
-// 	if (pid == -1)
-// 	{
-// 		perror("minishell");
-// 		bash->exit_status = 1;
-// 		return (0);
-// 	}
-// 	return (1);
-// }
+
+int	is_fork_succes(t_minibash *bash, int pid)
+{
+	if (pid == -1)
+	{
+		perror("minishell");
+		bash->exit_status = 1;
+		return (0);
+	}
+	return (1);
+}
 
 // void	free_env(char **env)
 // {

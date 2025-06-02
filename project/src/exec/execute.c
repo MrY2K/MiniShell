@@ -10,7 +10,7 @@
 // /*                                                                            */
 // /* ************************************************************************** */
 
-// #include "../../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 
 // static void	execute_external_cmd(t_minibash *bash, t_cmd *cmd, char **args)
@@ -108,3 +108,332 @@
 // 	else
 // 		wait_for_child(bash, pid);
 // }
+
+void	create_tmp_herdoc_files(t_cmd *tmp_cmd, char *idx_to_char)
+{
+	t_cmd 		*cmd;
+	t_heredoc	*heredoc;
+	char		*path;
+	char		*line;
+
+	if (!tmp_cmd)
+		return ;
+	cmd = tmp_cmd;
+	while (cmd)
+	{
+		heredoc = cmd->heredoc;
+		while (cmd && heredoc)
+		{
+			idx_to_char = ft_itoa(heredoc->index);
+			line = ft_strjoin_with_null(heredoc->delimiter, idx_to_char);
+			free (idx_to_char);
+			path = ft_strjoin_with_null("/tmp/minishell/heredoc", line);
+			free (line);
+			heredoc->fd = open(path, O_CREAT | O_WRONLY | O_APPEND, 0600);
+			free (path);
+			close(heredoc->fd);
+			heredoc = heredoc->next;
+		}
+		cmd = cmd->next;
+	}
+}
+
+char	*get_path(t_heredoc *heredoc)
+{
+	char	*path;
+	char	*line;
+	char	*index_toa;
+
+	index_toa = ft_itoa(heredoc->index);
+	line = ft_strjoin_with_null(heredoc->delimiter, index_toa);
+	path = ft_strjoin("/tmp/minshell/heredoc", line);
+	free (line);
+	free (index_toa);
+	return (path);
+}
+
+void	append_regular_characters(t_expand_heredoc *ex, char *line)
+{
+	ex->j = ex->index;
+	while (line[ex->index] && line[ex->index] != '$')
+	{
+		ex->index++;
+		ex->len++;
+	}
+	ex->str = ft_substr(line, ex->j, ex->len);
+	ex->expanded_line = ft_strjoin(ex->expanded_line, ex->str);
+	free (ex->str);
+	ex->index--;
+}
+
+int	search(char *str, char *to_find)
+{
+    int str_idx;
+    int find_idx;
+    int find_len;
+
+    if (!str || !to_find)
+        return (0);
+    str_idx = 0;
+    find_idx = 0;
+    find_len = ft_strlen(to_find);
+    while (str[str_idx] && to_find[find_idx])
+    {
+        if (str[str_idx] == to_find[find_idx])
+            find_idx++;
+        if (find_len == find_idx && str[str_idx + 1] == to_find[find_idx])
+            return (1);
+        str_idx++;
+    }
+    return (0);
+}
+
+void	lookup_env_var(t_env **env, char *arg, char **str, int *i)
+{
+	t_env *_env;
+
+	_env = *env;
+	while (_env)
+	{
+		if (search(_env->name, arg + (*i)))
+		{
+			*str = ft_strdup(_env->value);
+			break ;
+		}
+		else
+			*str = NULL;
+		_env = _env->next;
+	}
+}
+
+char	*expand(t_minibash *bash, t_env **env, char *str)
+{
+	t_expand_heredoc	ex;
+
+	ex.index = 0;
+	while (env && str[ex.index])
+	{
+		if (search("$\"\"", str)) // $""
+			return (ex.str = ft_strdup(""), ex.str);
+		else if (str[ex.index] == '$')
+		{
+			if (str[ex.index + 1] && str[ex.index + 1] == '?')
+				return (ex.expanded_line = ft_itoa(bash->exit_status), 
+					ex.str = ft_strdup(ex.expanded_line), free(ex.expanded_line), ex.str);
+			ex.index++;
+			if (!str[ex.index]) // echo $
+				return (ex.str = ft_strdup("$"), ex.str);
+			if (str[ex.index] == '\"' || str[ex.index] == '\'')
+				return (ex.str = ft_strdup(""), ex.str); // bra
+			// /* Handle $"..." and $'...' cases */
+            // if (arg[id.i] == '\"' || arg[id.i] == '\'') // echo $'hello\nworld'
+            // {
+            //     char quote_type = arg[id.i];
+            //     id.i++; // Skip opening quote
+                
+            //     // Find closing quote
+            //     while (arg[id.i] && arg[id.i] != quote_type)
+            //         id.i++;
+                
+            //     if (arg[id.i] == quote_type)
+            //         id.i++; // Skip closing quote
+                
+            //     // For $"" return empty, for $'' process escapes
+            //     if (quote_type == '\'')
+            //         return (process_ansi_c_string(arg, &id.i));
+            //     else
+            //         return (id.s = ft_strdup(""), id.s);
+            // }
+
+			if (!ft_isalnum(str[ex.index]) || ft_isdigit(str[ex.index])) // "$9var" "$_HOME" 
+				return (ex.str);
+			lookup_env_var(env, str, &ex.str, &ex.index);
+		}
+		ex.index++;
+	}
+	return (ex.str);
+}
+
+char	*expand_env_var_her(t_minibash *bash, t_env *env, char	**expanded_line, int *index, char *line)
+{
+	t_env_var	var;
+
+	var.len = 0;
+	(*index)++;
+	var.j = *index;
+	if (line[*index] == '?')
+	{
+		var.len++;
+		(*index)++;
+	}
+	else
+	{
+		while (line[*index] && (ft_isalnum(line[*index])))
+		{
+			(*index)++;
+			var.len++;
+		}
+	}
+	(*index)--;
+	var.j--;
+	var.sub = ft_substr(line, var.j, ++var.len);
+	var.str = expand(bash, &env, var.sub);
+	*expanded_line = ft_strjoin(*expanded_line, var.str);
+	free(var.sub);
+	return (free (var.str), *expanded_line);
+} // ✅     ✅  stop her  ✅     ✅;
+
+char	*expand_env_var_in_heredoc(t_minibash *bash, char *line, t_env *env)
+{
+	t_expand_heredoc	ex;
+
+	ex.index = 0;
+	while (line[ex.index])
+	{
+		ex.len = 0;
+		if (line[ex.index] == '$')
+			ex.expanded_line = expand_env_var_her(bash, env, &ex.expanded_line, &ex.index, line);
+		else
+			append_regular_characters(&ex, line);
+		ex.index++;
+	}
+	return (ex.expanded_line);
+}
+
+void	write_in_heredoc_files(t_minibash *bash, t_env **env, t_heredoc *heredoc, char *line)
+{
+	t_env 	*tmp_env;
+	char	*path;
+	char	*expanded_line;
+	int		fd;
+
+	expanded_line = NULL;
+	tmp_env = *env;
+	path = get_path(heredoc);
+	fd = open(path, O_CREAT | O_WRONLY | O_APPEND, 0600);
+	if (fd < 0)
+		return (perror("open"));
+	if (heredoc->expand == 1)
+	{
+		expanded_line = expand_env_var_in_heredoc(bash, line, tmp_env);
+	}
+	else
+		ft_putendl_fd(line, fd);
+	free (path);
+	close(fd);
+}
+
+void	child_process(t_minibash *bash, t_env **env, t_heredoc *herdoc)
+{
+	char	*line;
+
+	// signal
+	while (1)
+	{
+		line = readline("> ");
+		if (!line)
+		{
+			bash->exit_status = 0;
+			exit(0);
+		}
+		if (!ft_strcmp(herdoc->delimiter, line))
+		{
+			bash->exit_status = 0;
+			free (line);
+			exit (0);
+		}
+		else
+			write_in_heredoc_files(bash, env, herdoc, line);
+		free (line);
+	}
+}
+
+int	handell_fork(t_minibash *bash, t_env **env, t_heredoc *herdoc)
+{
+	int	pid;
+	int	st;
+
+	st = -1;
+	// sig
+	pid = fork();
+	if (!is_fork_succes(bash, pid))
+		return (0);
+	if (!pid)
+		child_process(bash, env, herdoc);
+
+}
+
+int	tmp_name(t_minibash *bash, t_env **env, t_cmd *cmd)
+{
+	t_heredoc	*heredoc;
+	int			st;
+
+	st = -1;
+	heredoc = cmd->heredoc;
+	while (cmd && heredoc)
+	{
+		st = handell_fork(bash, env, heredoc);
+	}
+
+}
+
+
+bool	handle_heredocs(t_minibash *bash, t_env **env, t_cmd *tmp_cmd)
+{
+	t_cmd	*cmd;
+	char	*idx_to_char;
+	int		st;
+	
+	if (!tmp_cmd)
+		return (false);
+	idx_to_char = NULL;
+	cmd = tmp_cmd;
+	create_tmp_herdoc_files(cmd, idx_to_char);
+	while (cmd)
+	{
+		st = tmp_name(bash, env, cmd);
+
+	}
+
+}
+
+int	process_herdoc_builtins(t_minibash *bash, t_env **env, t_cmd *cmd)
+{
+	t_cmd *tmp_cmd;
+
+	tmp_cmd = cmd;
+	if (has_herdoc(tmp_cmd))
+	{
+		if (handle_heredocs(bash, env, tmp_cmd))
+		{
+
+		}
+	}
+
+
+}
+
+bool	execute_builtins_or_herdoc(t_minibash *bash, t_cmd *cmd)
+{
+	int	her_status;
+	t_env	**env;
+
+	env = &bash->env;
+	her_status = process_herdoc_builtins(bash, env, cmd);
+
+}
+
+
+
+void	execution(t_minibash *bash, t_cmd *cmd)
+{
+	t_cmd	*tmp_cmd;
+	//int		pid;
+
+	tmp_cmd = cmd;
+	if (execute_builtins_or_herdoc(bash, tmp_cmd))
+	{
+		return ;
+	}
+
+}

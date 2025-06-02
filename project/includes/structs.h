@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 09:25:15 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/01 13:18:04 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/02 10:03:32 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,23 @@
 
 
 /*		Parsing	*/
+
+typedef struct s_expand_heredoc
+{
+    char	*str;       // s
+    int		index;   // Current index in the input string.   i
+	int		j;
+    char	*expanded_line;  // Final expanded string.
+    int		len;   // Length of the current variable or substring.
+}	t_expand_heredoc;
+
+typedef struct s_env_var
+{
+	char	*str; // s
+	char	*sub;
+	int		j;
+	int		len;
+}	t_env_var;
 
 typedef struct	s_heredoc
 {

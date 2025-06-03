@@ -10,46 +10,39 @@
 // /*                                                                            */
 // /* ************************************************************************** */
 
-// #include "../../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-// bool	is_builtins(t_cmd *cmd)
-// {
-// 	if (!cmd || !cmd->main_cmd)
-// 		return (false);
-// 	return (!ft_strcmp(cmd->main_cmd, "cd")
-// 		|| !ft_strcmp(cmd->main_cmd, "pwd")
-// 		|| !ft_strcmp(cmd->main_cmd, "export")
-// 		|| !ft_strcmp(cmd->main_cmd, "env")
-// 		|| !ft_strcmp(cmd->main_cmd, "echo")
-// 		|| !ft_strcmp(cmd->main_cmd, "exit")
-// 		|| !ft_strcmp(cmd->main_cmd, "unset"));
-// }
+bool	is_builtins(t_cmd *cmd)
+{
+	if (!cmd || !cmd->main_cmd)
+		return (false);
+	return (!ft_strcmp(cmd->main_cmd, "cd")
+		|| !ft_strcmp(cmd->main_cmd, "pwd")
+		|| !ft_strcmp(cmd->main_cmd, "export")
+		|| !ft_strcmp(cmd->main_cmd, "env")
+		|| !ft_strcmp(cmd->main_cmd, "echo")
+		|| !ft_strcmp(cmd->main_cmd, "exit")
+		|| !ft_strcmp(cmd->main_cmd, "unset"));
+}
 
 
-// static void	execute_builtins(t_minibash *bash, t_cmd *cmd)
-// {
-// 	if (!cmd || !cmd->main_cmd)
-// 		return ;
-// 	if (!ft_strcmp(cmd->main_cmd, "cd"))
-// 		cd(cmd, bash);
-// 	else if (!ft_strcmp(cmd->main_cmd, "unset"))
-// 		unset(bash, cmd->argument);
-// 	else if (!ft_strcmp(cmd->main_cmd, "export"))
-// 		export(bash, cmd);
-// 	else if (!ft_strcmp(cmd->main_cmd, "pwd"))
-// 		pwd(bash);
-// 	else if (!ft_strcmp(cmd->main_cmd, "env"))
-// 		env(bash);
-// 	else if (!ft_strcmp(cmd->main_cmd, "echo"))
-// 		echo(cmd);
-// 	else if (!ft_strcmp(cmd->main_cmd, "exit"))
-// 		builtin_exit(bash, cmd);
-// }
+void	execute_builtins(t_minibash *bash, t_env **env, t_cmd *cmd)
+{
+	if (!cmd || !cmd->main_cmd)
+		return ;
+	if (!ft_strcmp(cmd->main_cmd, "cd"))
+		builtin_cd(bash, env, cmd);
+	else if (!ft_strcmp(cmd->main_cmd, "unset"))
+		builtin_unset(bash, cmd->argument);
+	// else if (!ft_strcmp(cmd->main_cmd, "export"))
+	// 	export(bash, cmd);
+	else if (!ft_strcmp(cmd->main_cmd, "pwd"))
+		builtin_pwd(bash, cmd);
+	else if (!ft_strcmp(cmd->main_cmd, "env"))
+		builtin_env(bash, env);
+	else if (!ft_strcmp(cmd->main_cmd, "echo"))
+		builtin_echo(bash, cmd);
+	else if (!ft_strcmp(cmd->main_cmd, "exit"))
+		builtin_exit(bash, cmd);
+}
 
-// void	execute_builtin(t_minibash *bash, t_cmd *cmd)
-// {
-// 	if (!cmd || !bash)
-// 		return ;
-// 	if (is_builtins(cmd))
-// 		execute_builtins(bash, cmd);
-// }

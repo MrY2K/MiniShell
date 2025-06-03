@@ -316,6 +316,8 @@ void	write_in_heredoc_files(t_minibash *bash, t_env **env, t_heredoc *heredoc, c
 	if (heredoc->expand == 1)
 	{
 		expanded_line = expand_env_var_in_heredoc(bash, line, tmp_env);
+		ft_putendl_fd(expanded_line, fd);
+		free (expanded_line);
 	}
 	else
 		ft_putendl_fd(line, fd);
@@ -323,11 +325,21 @@ void	write_in_heredoc_files(t_minibash *bash, t_env **env, t_heredoc *heredoc, c
 	close(fd);
 }
 
+/*
+	signal(SIGINT, SIG_DFL) :
+		Makes the child process terminate when Ctrl+C (SIGINT) is pressed
+	
+	signal(SIGQUIT, SIG_IGN) :
+		Makes the child *ignore Ctrl+* (SIGQUIT)
+
+*/
+
 void	child_process(t_minibash *bash, t_env **env, t_heredoc *herdoc)
 {
 	char	*line;
 
-	// signal
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		line = readline("> ");
@@ -348,35 +360,85 @@ void	child_process(t_minibash *bash, t_env **env, t_heredoc *herdoc)
 	}
 }
 
+/*
+	Signals : 
+		WIFEXITED(status): Checks if the child exited normally (not killed by a signal)
+
+		WEXITSTATUS(status): Extracts the exit status (only valid if WIFEXITED is true)
+
+		WIFSIGNALED(status): Checks if the child was terminated by a signal
+
+		WTERMSIG(status): Gets the signal number that caused termination
+
+*/
+
+/*
+	SIGINT 	= This is the signal sent when you press Ctrl+C in your terminal
+	SIG_IGN = This is a special flag that means "ignore this signal"
+
+	my code : If the user presses Ctrl+C, ignore it completely and continue whatever you were doing
+*/
+
 int	handell_fork(t_minibash *bash, t_env **env, t_heredoc *herdoc)
 {
 	int	pid;
-	int	st;
+	int	status;
 
-	st = -1;
-	// sig
+	signal(SIGINT, SIG_IGN);
+	status = -1;
 	pid = fork();
 	if (!is_fork_succes(bash, pid))
 		return (0);
 	if (!pid)
 		child_process(bash, env, herdoc);
-
+	else
+	{
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
+			bash->exit_status = status;
+		else if (WIFSIGNALED(status))
+			bash->exit_status = 128 + WTERMSIG(status);
+	}
+	// signal 		function
+	return (status);
 }
 
-int	tmp_name(t_minibash *bash, t_env **env, t_cmd *cmd)
+/*
+	WTERMSIG(status) :
+		A macro that extracts the signal number from the process exit status
+
+	SIGINT :
+		checks if it was Ctrl+C  (signal 2)
+*/
+
+int	process_her_with_signals(t_minibash *bash, t_env **env, t_cmd *cmd)
 {
 	t_heredoc	*heredoc;
-	int			st;
+	int			status;
 
-	st = -1;
+	status = -1;
 	heredoc = cmd->heredoc;
 	while (cmd && heredoc)
 	{
-		st = handell_fork(bash, env, heredoc);
+		status = handell_fork(bash, env, heredoc);
+		if (WTERMSIG(status) == SIGINT)
+		{
+			return (status); // 130 (128 + 2)
+		}
+		heredoc = heredoc->next;
 	}
-
+	return (status);
 }
 
+/*
+	WTERMSIG : Extracts the signal number if a child was killed by a signal
+
+	SIGINT : Represents Ctrl+C (signal number 2)
+
+	my code checkk: if (WTERMSIG(st) == SIGINT) 
+		detects if heredoc processing was interrupted by Ctrl+C
+
+*/
 
 bool	handle_heredocs(t_minibash *bash, t_env **env, t_cmd *tmp_cmd)
 {
@@ -391,10 +453,14 @@ bool	handle_heredocs(t_minibash *bash, t_env **env, t_cmd *tmp_cmd)
 	create_tmp_herdoc_files(cmd, idx_to_char);
 	while (cmd)
 	{
-		st = tmp_name(bash, env, cmd);
-
+		st = process_her_with_signals(bash, env, cmd);
+		if (WTERMSIG(st) == SIGINT)
+		{
+			return (true);
+		}
+		cmd = cmd->next;
 	}
-
+	return (false);
 }
 
 int	process_herdoc_builtins(t_minibash *bash, t_env **env, t_cmd *cmd)
@@ -405,12 +471,19 @@ int	process_herdoc_builtins(t_minibash *bash, t_env **env, t_cmd *cmd)
 	if (has_herdoc(tmp_cmd))
 	{
 		if (handle_heredocs(bash, env, tmp_cmd))
+			return (-1);
+		if (is_builtins(cmd) && !has_redirections(cmd) && !has_pipes(cmd)) // complet redirection 
 		{
-
+			execute_builtins(bash, env, cmd);
+			return (1);
 		}
 	}
-
-
+	if (is_builtins(cmd) && !has_redirections(cmd) && !has_pipes(cmd) && !has_herdoc(cmd))
+	{
+		execute_builtins(bash, env, cmd);
+		return (1);
+	}
+	return (0);
 }
 
 bool	execute_builtins_or_herdoc(t_minibash *bash, t_cmd *cmd)
@@ -420,7 +493,15 @@ bool	execute_builtins_or_herdoc(t_minibash *bash, t_cmd *cmd)
 
 	env = &bash->env;
 	her_status = process_herdoc_builtins(bash, env, cmd);
+	if (her_status == -1)
+	{
 
+	}
+	if (her_status == 1)
+	{
+
+	}
+	return (false);
 }
 
 
@@ -435,5 +516,4 @@ void	execution(t_minibash *bash, t_cmd *cmd)
 	{
 		return ;
 	}
-
 }

@@ -40,21 +40,38 @@ int	is_fork_succes(t_minibash *bash, int pid)
 // 	free(env);
 // }
 
-// bool	has_pipes(t_cmd *cmd)
-// {
-// 	t_cmd	*cur;
+bool	has_redirections(t_cmd *cmd)
+{
+	t_redirect	*red;
 
-// 	if (!cmd)
-// 		return (false);
-// 	cur = cmd;
-// 	while (cur)
-// 	{
-// 		if (cur->pipe == 1)
-// 			return (true);
-// 		cur = cur->next;
-// 	}
-// 	return (false);
-// }
+	if (!cmd)
+		return (false);
+	red = cmd->redirections;
+	while (red)
+	{
+		if (red->type == TOKEN_REDIR_APPEND || red->type == TOKEN_REDIR_IN || red->type == TOKEN_REDIR_OUT)
+			return (true);
+		red = red->next;
+	}
+	return (false);
+}
+
+
+bool	has_pipes(t_cmd *cmd)
+{
+	t_cmd	*cur;
+
+	if (!cmd)
+		return (false);
+	cur = cmd;
+	while (cur)
+	{
+		if (cur->pipe == 1)
+			return (true);
+		cur = cur->next;
+	}
+	return (false);
+}
 
 // int	count_pipes(t_cmd *cmd)
 // {

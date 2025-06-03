@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 09:25:15 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/02 10:03:32 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/03 09:36:25 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,16 @@
 # define STRUCTS_H
 
 # include "minishell.h"
+
+// redirection struct 
+
+typedef struct s_redirect
+{
+	t_token_type		type;
+	char				*file_path; // store file name
+	int					is_ambig;
+	struct s_redirect	*next;
+}	t_redirect;
 
 
 /*		Parsing	*/
@@ -101,6 +111,7 @@ typedef struct s_cmd
 	char			**argument;
 	bool			pipe;
 	t_heredoc		*heredoc;
+	t_redirect		*redirections; // doc
 	struct s_cmd	*next;
 }	t_cmd;
 

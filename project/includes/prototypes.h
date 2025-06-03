@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/01 11:33:55 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/03 09:47:35 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@
 # include "minishell.h"
 
 /* Built-in */
-// t_status		echo(t_cmd *cmd);
-// t_status		cd(t_cmd *cmd, t_minibash *bash);
-// void			pwd(t_minibash *bash);
-// void			env(t_minibash *bash);
-// void			builtin_exit(t_minibash *bash, t_cmd *cmd);
-// void			unset(t_minibash *bash, char **args);
-// void			export(t_minibash *bash, t_cmd *cmd);
+void	builtin_cd(t_minibash	*bash, t_env **env, t_cmd	*cmd);
+void	builtin_echo(t_minibash *bash, t_cmd *cmd);
+void	builtin_env(t_minibash *bash, t_env	**env);
+void	builtin_exit(t_minibash *bash, t_cmd *cmd);
+void	builtin_pwd(t_minibash *bash, t_cmd *cmd);
+void	builtin_unset(t_minibash *bash, char **args);
 
-// bool			is_builtins(t_cmd *cmd);
+bool			is_builtins(t_cmd *cmd);
+void	execute_builtins(t_minibash *bash, t_env **env, t_cmd *cmd);
 
 
 
@@ -46,7 +46,7 @@ void			remove_env_variable(t_env **env, char *var);
 void			exit_with_error(const char *msg, int exit, t_minibash *bash);
 void			export_error(t_minibash *bash, char *content);
 void			print_cmd_err(t_minibash *bash, char *cmd, char *msg, int exit);
-void			execute_builtin(t_minibash *bash, t_cmd *cmd);
+// void			execute_builtin(t_minibash *bash, t_cmd *cmd);
 void			display_errno_exit(char *msg, int status);
 
 /*		EXPORT UTILS	*/
@@ -102,8 +102,10 @@ void	free_lexer(t_token **token);
 void	free_minibash(t_minibash **bash);
 
 // ** execution 
-
+void	execution(t_minibash *bash, t_cmd *cmd);
 bool	has_herdoc(t_cmd *cmd);
+bool	is_builtins(t_cmd *cmd);
+bool	has_redirections(t_cmd *cmd);
 char	*ft_strjoin_with_null(char *s1, char *s2);
 
 #endif

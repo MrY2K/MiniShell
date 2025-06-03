@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/05/31 14:00:41 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/03 09:47:52 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	execute_command_pipeline(t_minibash *bash, t_token *token, t_cmd *cmd)
 	if (token && bash->env)
 	{
 		//parse_command(&token, cmd, bash->env);
-		//execution(t_minibash *bash, cmd);
+		execution(bash, cmd);
 	}
 	//free_command_resources(cmd);
 	free_lexer(&token);

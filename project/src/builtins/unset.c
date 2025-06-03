@@ -72,7 +72,7 @@ static bool	is_valid_unset_variable(t_minibash *bash, char *variable)
 
 /* Special handling for exactly '_' variable */
 
-void	unset(t_minibash *bash, char **args)
+void	builtin_unset(t_minibash *bash, char **args)
 {
 	int	i;
 

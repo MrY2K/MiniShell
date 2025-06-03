@@ -6,13 +6,13 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 10:59:30 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/01 11:33:29 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/03 09:45:21 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	num_of_herdoc(t_cmd cmd)
+int	num_of_herdoc(t_cmd *cmd)
 {
 	t_cmd		*tmp;
 	t_heredoc	*herdoc;
@@ -55,7 +55,6 @@ bool	has_herdoc(t_cmd *cmd)
 	else
 		return (false);
 }
-#include "libft.h"
 
 char	*ft_strjoin_with_null(char *s1, char *s2)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 10:03:12 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/01 11:48:34 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/04 16:15:17 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 
 /* errno : cd  */
 # include <errno.h>
+# include <string.h>
 
 /*  	HEADERS			*/
 

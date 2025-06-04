@@ -463,47 +463,138 @@ bool	handle_heredocs(t_minibash *bash, t_env **env, t_cmd *tmp_cmd)
 	return (false);
 }
 
+bool	is_parent_builtins(t_cmd *cmd)
+{
+	t_cmd	*tmp;
+
+	tmp = cmd;
+    if (ft_strcmp(tmp->main_cmd, "export") == 0 && tmp->argument[1])
+        return (true);
+    if (ft_strcmp(tmp->main_cmd, "unset") == 0 && tmp->argument[1])
+        return (true);
+    if (ft_strcmp(tmp->main_cmd, "cd") == 0)
+        return (true);
+    if (ft_strcmp(tmp->main_cmd, "exit") == 0)
+        return (true);
+    return (false);
+}
+
+int validate_redirection_file(t_cmd *list)
+{
+    t_cmd *cmd;
+    int   fd;
+
+    if (list == NULL)
+        return (0);  // No error - success
+    
+    cmd = list;
+    while (cmd->redirections)
+    {
+        fd = -1;
+        
+        if (cmd->redirections->type == TOKEN_REDIR_APPEND)
+            fd = open(cmd->redirections->file_path, O_CREAT | O_WRONLY | O_APPEND, 0644);
+        else if (cmd->redirections->type == TOKEN_REDIR_OUT)
+            fd = open(cmd->redirections->file_path, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+        else if (cmd->redirections->type == TOKEN_REDIR_IN)
+            fd = open(cmd->redirections->file_path, O_RDONLY, 0644);
+        if (fd < 0)
+            return (1);
+        close(fd);
+        cmd->redirections = cmd->redirections->next;
+    }
+    return (0);
+}
+
+void	execute_parent_builtin(t_minibash *bash, t_env **env, t_cmd *cmd)
+{
+	if (has_redirections(cmd))
+		if (validate_redirection_file(cmd))
+			return ;
+	if (cmd->argument[1]) // with argument is normally unset export
+		execute_builtins(bash, env, cmd);
+	if (!ft_strcmp(cmd->main_cmd, "exit") && !cmd->argument[1])
+		execute_builtins(bash, env, cmd);
+	if (!ft_strcmp(cmd->main_cmd, "cd") && !cmd->argument[1])
+		execute_builtins(bash, env, cmd);
+}
+
 int	process_herdoc_builtins(t_minibash *bash, t_env **env, t_cmd *cmd)
 {
 	t_cmd *tmp_cmd;
 
 	tmp_cmd = cmd;
+	if (!cmd)
+		return (0);
 	if (has_herdoc(tmp_cmd))
 	{
 		if (handle_heredocs(bash, env, tmp_cmd))
 			return (-1);
-		if (is_builtins(cmd) && !has_redirections(cmd) && !has_pipes(cmd)) // complet redirection 
+		if (is_builtins(tmp_cmd) && !has_redirections(tmp_cmd) && !has_pipes(tmp_cmd)) // complet redirection 
 		{
-			execute_builtins(bash, env, cmd);
+			execute_builtins(bash, env, tmp_cmd);
 			return (1);
 		}
 	}
-	if (is_builtins(cmd) && !has_redirections(cmd) && !has_pipes(cmd) && !has_herdoc(cmd))
+	if (is_builtins(tmp_cmd) && !has_redirections(tmp_cmd) && !has_pipes(tmp_cmd) && !has_herdoc(tmp_cmd))
 	{
-		execute_builtins(bash, env, cmd);
+		execute_builtins(bash, env, tmp_cmd);
 		return (1);
+	}
+	else if(is_parent_builtins(tmp_cmd) && !has_pipes(tmp_cmd))
+	{
+		execute_parent_builtin(bash, env, tmp_cmd);
 	}
 	return (0);
 }
 
-bool	execute_builtins_or_herdoc(t_minibash *bash, t_cmd *cmd)
+void delete_heredoc_files(t_minibash *bash, t_cmd *cmd) 
+{
+    t_heredoc_cleanup cleanup;
+
+    cleanup.current_cmd = cmd;
+    while (cleanup.current_cmd) 
+	{
+        cleanup.current_heredoc = cleanup.current_cmd->heredoc;
+        while (cleanup.current_heredoc) 
+		{
+            cleanup.index_str = ft_itoa(cleanup.current_heredoc->index);
+            cleanup.temp_path = ft_strjoin_with_null(cleanup.current_heredoc->delimiter, cleanup.index_str);
+            cleanup.full_filepath = ft_strjoin("/tmp/minishell/heredoc", cleanup.temp_path);
+            if (unlink(cleanup.full_filepath) != 0) 
+			{
+                bash->exit_status = 1;
+                perror("Failed to delete heredoc file");
+            }
+            free(cleanup.index_str);
+            free(cleanup.temp_path);
+            free(cleanup.full_filepath);
+            cleanup.current_heredoc = cleanup.current_heredoc->next;
+        }
+        cleanup.current_cmd = cleanup.current_cmd->next;
+    }
+}
+
+int	execute_builtins_or_herdoc(t_minibash *bash, t_cmd *cmd)
 {
 	int	her_status;
 	t_env	**env;
 
 	env = &bash->env;
 	her_status = process_herdoc_builtins(bash, env, cmd);
-	if (her_status == -1)
+	if (her_status == -1) // SIGINT (Ctrl+C)
 	{
-
+		delete_heredoc_files(bash, cmd);
+		bash->exit_status = 1;
+		return (0);
 	}
 	if (her_status == 1)
 	{
-
+		delete_heredoc_files(bash, cmd);
+		return (0);
 	}
-	return (false);
+	return (1);
 }
-
 
 
 void	execution(t_minibash *bash, t_cmd *cmd)
@@ -512,7 +603,7 @@ void	execution(t_minibash *bash, t_cmd *cmd)
 	//int		pid;
 
 	tmp_cmd = cmd;
-	if (execute_builtins_or_herdoc(bash, tmp_cmd))
+	if (!execute_builtins_or_herdoc(bash, tmp_cmd))
 	{
 		return ;
 	}

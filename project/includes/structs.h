@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 09:25:15 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/03 09:36:25 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/04 14:03:59 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include "minishell.h"
 
 // redirection struct 
+
+typedef struct s_cmd t_cmd;
 
 typedef struct s_redirect
 {
@@ -56,9 +58,18 @@ typedef struct	s_heredoc
 }	t_heredoc;
 
 
-typedef struct s_token 
+typedef struct s_heredoc_cleanup  // delet_file
 {
-    char            *value;
+    t_cmd		*current_cmd; // tmp
+    t_heredoc	*current_heredoc; // her
+    char         *index_str; // ptr
+    char         *temp_path; // file
+    char         *full_filepath; // itoa
+} t_heredoc_cleanup;
+
+typedef struct s_token  // t_splitor
+{
+    char            *value; // in 
 	int				len;
     t_token_type    type;
 	enum e_state	state;
@@ -107,22 +118,22 @@ typedef struct s_env
 
 typedef struct s_cmd
 {
-	char			*main_cmd;
-	char			**argument;
-	bool			pipe;
-	t_heredoc		*heredoc;
+	char			*main_cmd; // content
+	char			**argument; // arg
+	bool			pipe; // is_pipe
+	t_heredoc		*heredoc; // her
 	t_redirect		*redirections; // doc
 	struct s_cmd	*next;
 }	t_cmd;
 
 typedef struct s_pipe
 {
-	int     			cmd_count;
-	int					**pipe_fds;
-	t_cmd				*current_cmd;
-	int					*child_pids;
-	char				*path;
-
+	int     			cmd_count; // num_cmd
+	int					**pipe_fds; // pipefd
+	t_cmd				*current_cmd; // tmp_cmd
+	int					*child_pids; // pids
+	char				*path; // ptr
+ 
 }	t_pipe;
 
 

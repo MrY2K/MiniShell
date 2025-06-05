@@ -36,7 +36,8 @@ FLDLIBFT= ./includes/libft
 #include readLine in MacOS
 READLINE_DIR := $(shell brew --prefix readline)
 INRL = -I$(READLINE_DIR)/include
-LNRL= -L$(READLINE_DIR)/lib -lreadline -lhistory -lncurses
+LNRL = -L$(READLINE_DIR)/lib -lreadline -lhistory -lncurses
+
 
 all : ${LIBFT} ${NAME}
 

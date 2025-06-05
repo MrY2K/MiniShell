@@ -86,28 +86,6 @@
 // 		bash->exit_status = 128 + WTERMSIG(status);
 // }
 
-// void	execution(t_minibash *bash, t_cmd *cmd)
-// {
-// 	int	pid;
-
-// 	if (!bash || !cmd)
-// 		return ;
-// 	if (is_builtins(cmd))
-// 	{
-// 		execute_builtin(bash, cmd);
-// 		return ;
-// 	}
-// 	pid = fork();
-// 	if (!is_fork_succes(bash, pid))
-// 		return ;
-// 	if (pid == 0)
-// 	{
-// 		run_command(bash, cmd);
-// 		exit(bash->exit_status);
-// 	}
-// 	else
-// 		wait_for_child(bash, pid);
-// }
 
 void	create_tmp_herdoc_files(t_cmd *tmp_cmd, char *idx_to_char)
 {
@@ -586,25 +564,34 @@ int	execute_builtins_or_herdoc(t_minibash *bash, t_cmd *cmd)
 	{
 		delete_heredoc_files(bash, cmd);
 		bash->exit_status = 1;
-		return (0);
+		return (1);
 	}
 	if (her_status == 1)
 	{
 		delete_heredoc_files(bash, cmd);
-		return (0);
+		return (1);
 	}
-	return (1);
+	return (0);
 }
 
 
-void	execution(t_minibash *bash, t_cmd *cmd)
+void	execution(t_minibash *bash, t_env **env, t_cmd *cmd)
 {
 	t_cmd	*tmp_cmd;
-	//int		pid;
+	int		pid;
 
 	tmp_cmd = cmd;
-	if (!execute_builtins_or_herdoc(bash, tmp_cmd))
+	if (execute_builtins_or_herdoc(bash, tmp_cmd))
 	{
 		return ;
+	}
+	pid = fork();
+	if (!is_fork_succes(bash, pid))
+		return ;
+	if (!pid)
+	{
+		// signals
+		execute_command(bash, env, cmd);
+
 	}
 }

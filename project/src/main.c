@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/04 14:12:31 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/05 09:49:47 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,23 +86,21 @@ void	print_tokens(t_token *tokens)
 // ****** ✅     ✅   ✅     ✅   ✅   Readline    ✅     ✅   ✅     ✅   ✅     ✅
 
 
-void	execute_command_pipeline(t_minibash *bash, t_token *token, t_cmd *cmd)
+void	execute_command_pipeline(t_minibash *bash, t_env **env, t_token *token, t_cmd **cmd)
 {
-	(void) cmd;
-	if (token && bash->env)
+	if (token && env)
 	{
 		//parse_command(&token, cmd, bash->env);
-		execution(bash, cmd);
+		execution(bash, env, *cmd);
 	}
 	//free_command_resources(cmd);
 	free_lexer(&token);
 }
 
 
-void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env *env)
+void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env **env)
 {
-	(void)env;
-	(void)cmd;
+
 	char	*line;
 
 	while (true)
@@ -121,7 +119,7 @@ void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env *env)
 		}
 		else
 			print_tokens(tokens); // debug
-		execute_command_pipeline(bash, tokens, cmd);
+		execute_command_pipeline(bash, env, tokens, &cmd);
 		tokens = NULL;
 		cmd = NULL;
 		free (line);
@@ -160,7 +158,7 @@ int	main(int ac, char **av, char **env)
 		exit(1);
 	}
 	using_history();
-	ft_readline(bash, tokens, cmd, bash->env);
+	ft_readline(bash, tokens, cmd, &bash->env);
 	free_minibash(&bash); // this is not finishe yet , only free env 
 	return (bash->exit_status);
 }

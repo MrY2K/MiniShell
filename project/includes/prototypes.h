@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/03 09:47:35 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/05 09:39:01 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,13 @@ void	free_lexer(t_token **token);
 void	free_minibash(t_minibash **bash);
 
 // ** execution 
-void	execution(t_minibash *bash, t_cmd *cmd);
+void	execution(t_minibash *bash, t_env **env, t_cmd *cmd);
 bool	has_herdoc(t_cmd *cmd);
 bool	is_builtins(t_cmd *cmd);
 bool	has_redirections(t_cmd *cmd);
 char	*ft_strjoin_with_null(char *s1, char *s2);
+
+// execute 
+void	execute_command(t_minibash *bash, t_env **env, t_cmd *cmd);
 
 #endif

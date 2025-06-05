@@ -1,5 +1,5 @@
-.build/builtins/cd.o: src/builtins/cd.c \
-  src/builtins/../../includes/minishell.h \
+.build/exec/execute_fork.o: src/exec/execute_fork.c \
+  src/exec/../../includes/minishell.h \
   /goinfre/ajelloul/homebrew/opt/readline/include/readline/readline.h \
   /goinfre/ajelloul/homebrew/opt/readline/include/readline/rlstdc.h \
   /goinfre/ajelloul/homebrew/opt/readline/include/readline/rltypedefs.h \

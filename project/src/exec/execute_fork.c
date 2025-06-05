@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 08:49:22 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/05 11:02:11 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/05 11:10:32 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	execute_command(t_minibash *bash, t_env **env, t_cmd *cmd)
 			bash->exit_status = 1;
 			return ;
 		}
-		// handle_redirections(cmd);
+		handle_redirections(bash, cmd);
 		// execute_simple_command(bash, env, cmd);
 	}
 	// else if (has_pipes(cmd))

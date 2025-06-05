@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/05 09:39:01 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/05 11:51:36 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,10 @@ int		get_environment_len(t_env	*env);
 void	initialize_environment(t_minibash *info, char **env);
 
 
+// error package 
+
+void	display_ambiguous_errno(t_minibash *bash, int exit_st);
+
 // free 
 
 void	free_lexer(t_token **token);
@@ -110,5 +114,6 @@ char	*ft_strjoin_with_null(char *s1, char *s2);
 
 // execute 
 void	execute_command(t_minibash *bash, t_env **env, t_cmd *cmd);
+void	handle_redirections(t_minibash *bash, t_cmd *cmd);
 
 #endif

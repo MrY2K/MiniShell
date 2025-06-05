@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/05 09:49:47 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/05 13:23:15 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	execute_command_pipeline(t_minibash *bash, t_env **env, t_token *token, t_c
 
 void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env **env)
 {
-
+	(void) env;
 	char	*line;
 
 	while (true)
@@ -119,7 +119,7 @@ void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env **env)
 		}
 		else
 			print_tokens(tokens); // debug
-		execute_command_pipeline(bash, env, tokens, &cmd);
+		// execute_command_pipeline(bash, env, tokens, &cmd);
 		tokens = NULL;
 		cmd = NULL;
 		free (line);

@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/05 11:51:36 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/05 13:15:33 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,17 @@ void			display_errno_exit(char *msg, int status);
 
 
 // /*		PATH 		*/
-// char			*command_path(t_minibash *bash, t_cmd *cmd);
-// bool			contains_path_separator(char *command);
-// bool			is_directory(char *path);
-// bool			is_file_executable(char *file_path);
+char			*command_path(t_minibash *bash, t_cmd *cmd);
+bool			contains_path_separator(char *command);
+bool			is_directory(char *path);
+bool			is_file_executable(char *file_path);
 
 /*		EXECUTION  		*/
 int 			is_fork_succes(t_minibash *bash, int pid);
 void 			execute_pipe_chain(t_minibash *bash, t_cmd *cmd);
 bool			has_pipes(t_cmd *cmd);
 int				count_pipes(t_cmd *cmd);
-char			**env_to_array(t_env *env);
+char 			**convert_env_list_to_array(t_env **env);
 void			free_2d(char **array);
 
 
@@ -115,5 +115,10 @@ char	*ft_strjoin_with_null(char *s1, char *s2);
 // execute 
 void	execute_command(t_minibash *bash, t_env **env, t_cmd *cmd);
 void	handle_redirections(t_minibash *bash, t_cmd *cmd);
+
+// path 
+
+
+char	*command_path(t_minibash *bash, t_cmd *cmd);
 
 #endif

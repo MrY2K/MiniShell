@@ -121,7 +121,7 @@ bool	has_pipes(t_cmd *cmd)
 // 	return (res);
 // }
 
-// char	**env_to_array(t_env *env)
+// char	**env_to_array(t_env **env)
 // {
 // 	char	**arr;
 // 	int		i;
@@ -147,17 +147,17 @@ bool	has_pipes(t_cmd *cmd)
 // 	return (arr);
 // }
 
-// void	free_2d(char **array)
-// {
-// 	int	i;
+void	free_2d(char **array)
+{
+	int	i;
 
-// 	if (!array)
-// 		return ;
-// 	i = 0;
-// 	while (array[i])
-// 	{
-// 		free(array[i]);
-// 		i++;
-// 	}
-// 	free(array);
-// }
+	if (!array)
+		return ;
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}

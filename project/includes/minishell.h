@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/11 10:03:12 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/04 11:33:14 by ajelloul         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -28,6 +17,7 @@
 
 /* errno : cd  */
 # include <errno.h>
+# include <string.h>
 
 # include <string.h> // bsbah chi errno f cd builtins 
 

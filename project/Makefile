@@ -13,7 +13,9 @@ ifeq ($(UNAME_S),Darwin)
 	os_msg = "$(GREEN)OS DETECTED Mac!$(RESET)"
 
 else ifeq ($(UNAME_S),Linux)
-	CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code #!Edit
+# CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code #!Edit
+
+	CFLAGS       = -Wall -Wextra -Werror 
 	LDFLAGS      = -L$(READLINE_DIR)/lib -lreadline -lhistory -lncurses #!edit
 	os_msg = "$(GREEN)OS DETECTED Linux!$(RESET)"
 endif

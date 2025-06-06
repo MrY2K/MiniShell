@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/06 17:41:25 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/06 18:48:50 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ void	execute_command_pipeline(t_minibash *bash, t_env **env, t_token *token, t_c
 void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env **env)
 {
 	(void) env;
+	(void) cmd;
 	char	*line;
 
 	while (true)

@@ -10,18 +10,19 @@
 // /*                                                                            */
 // /* ************************************************************************** */
 
-// #include "../../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-// int	is_fork_succes(t_minibash *bash, int pid)
-// {
-// 	if (pid == -1)
-// 	{
-// 		perror("minishell");
-// 		bash->exit_status = 1;
-// 		return (0);
-// 	}
-// 	return (1);
-// }
+
+int	is_fork_succes(t_minibash *bash, int pid)
+{
+	if (pid == -1)
+	{
+		perror("minishell");
+		bash->exit_status = 1;
+		return (0);
+	}
+	return (1);
+}
 
 // void	free_env(char **env)
 // {
@@ -39,39 +40,56 @@
 // 	free(env);
 // }
 
-// bool	has_pipes(t_cmd *cmd)
-// {
-// 	t_cmd	*cur;
+bool	has_redirections(t_cmd *cmd)
+{
+	t_redirect	*red;
 
-// 	if (!cmd)
-// 		return (false);
-// 	cur = cmd;
-// 	while (cur)
-// 	{
-// 		if (cur->pipe == 1)
-// 			return (true);
-// 		cur = cur->next;
-// 	}
-// 	return (false);
-// }
+	if (!cmd)
+		return (false);
+	red = cmd->redirections;
+	while (red)
+	{
+		if (red->type == TOKEN_REDIR_APPEND || red->type == TOKEN_REDIR_IN || red->type == TOKEN_REDIR_OUT)
+			return (true);
+		red = red->next;
+	}
+	return (false);
+}
 
-// int	count_pipes(t_cmd *cmd)
-// {
-// 	t_cmd *cur;
-// 	int	count;
 
-// 	if (!cmd)
-// 		return (0);
-// 	cur = cmd;
-// 	count = 0;
-// 	while (cur)
-// 	{
-// 		if (cur->pipe == 1)
-// 			count++;
-// 		cur = cur->next;
-// 	}
-// 	return (count);
-// }
+bool	has_pipes(t_cmd *cmd)
+{
+	t_cmd	*cur;
+
+	if (!cmd)
+		return (false);
+	cur = cmd;
+	while (cur)
+	{
+		if (cur->pipe == 1)
+			return (true);
+		cur = cur->next;
+	}
+	return (false);
+}
+
+int	count_pipes(t_cmd *cmd)
+{
+	t_cmd *cur;
+	int	count;
+
+	if (!cmd)
+		return (0);
+	cur = cmd;
+	count = 0;
+	while (cur)
+	{
+		if (cur->pipe == 1)
+			count++;
+		cur = cur->next;
+	}
+	return (count);
+}
 
 // /* TODO :       Implement again   */
 
@@ -103,7 +121,7 @@
 // 	return (res);
 // }
 
-// char	**env_to_array(t_env *env)
+// char	**env_to_array(t_env **env)
 // {
 // 	char	**arr;
 // 	int		i;
@@ -129,17 +147,17 @@
 // 	return (arr);
 // }
 
-// void	free_2d(char **array)
-// {
-// 	int	i;
+void	free_2d(char **array)
+{
+	int	i;
 
-// 	if (!array)
-// 		return ;
-// 	i = 0;
-// 	while (array[i])
-// 	{
-// 		free(array[i]);
-// 		i++;
-// 	}
-// 	free(array);
-// }
+	if (!array)
+		return ;
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}

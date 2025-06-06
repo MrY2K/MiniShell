@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/11 10:03:12 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/29 17:49:47 by achoukri         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -17,11 +6,20 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
-#include <sys/wait.h>
+# include <fcntl.h>
+# include <sys/wait.h>
 /*	readline	*/
-#include <readline/readline.h>
+# include <readline/readline.h>
+/* HISTORY*/
+# include <readline/history.h>
 /*	opendir	*/
-#include <dirent.h>
+# include <dirent.h>
+
+/* errno : cd  */
+# include <errno.h>
+# include <string.h>
+
+# include <string.h> // bsbah chi errno f cd builtins 
 
 /*  	HEADERS			*/
 

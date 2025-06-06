@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 09:34:18 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/24 12:17:10 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/05 12:11:07 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,10 @@ void	display_errno_exit(char *msg, int status)
 {
 	ft_putendl_fd(msg, 2);
 	exit(status);
+}
+void	display_ambiguous_errno(t_minibash *bash, int exit_st)
+{
+	ft_putendl_fd("minishell: ambiguous redirect", 2);
+	bash->exit_status = exit_st;
+	exit(exit_st);
 }

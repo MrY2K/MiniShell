@@ -6,23 +6,13 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 09:56:20 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/29 17:49:08 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/06 17:38:38 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ENUMS_H
 # define ENUMS_H
 
-typedef enum e_status
-{
-	STATUS_OK,
-	STATUS_ERROR,
-	STATUS_INVALID_ARGUMENT,
-	STATUS_MEMORY_FAILURE,
-	STATUS_COMMAND_NOT_FOUND,
-	STATUS_PERMISSION_DENIED,
-	STATUS_EXECUTION_FAILURE
-}	t_status;
 
 typedef enum e_env_type
 {
@@ -45,11 +35,12 @@ typedef enum e_env_type
 }	t_env_type;
 
 /*		Parsing	*/
+
 typedef enum e_state
 {
 	Normal, // G
-	Single,
-	Double,
+	Single, // S
+	Double, // D
 	NUL,
 }	t_state;
 
@@ -73,6 +64,8 @@ typedef enum e_state
 // 	DREDIR_OUT,
 // }						t_token;
 
+
+
 typedef enum e_token_type 
 {
     TOKEN_WORD = -1,         // command olla argument olla chi filename
@@ -81,7 +74,7 @@ typedef enum e_token_type
 	TOKEN_ENV = '$',
     TOKEN_REDIR_IN,     // <
     TOKEN_REDIR_OUT,    // >
-    TOKEN_REDIR_APPEND, // >> 
+    TOKEN_REDIR_APPEND, // >>  //       DREDIR_OUT 🆘
     TOKEN_HEREDOC,      // << 
     TOKEN_NEWLINE,      // Potentially for internal use or if line ends unexpectedly
     TOKEN_EOF,           // End of input 

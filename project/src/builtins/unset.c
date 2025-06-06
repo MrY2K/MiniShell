@@ -1,14 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/17 10:22:36 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/19 07:39:15 by ajelloul         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// /* ************************************************************************** */
+// /*                                                                            */
+// /*                                                        :::      ::::::::   */
+// /*   unset.c                                            :+:      :+:    :+:   */
+// /*                                                    +:+ +:+         +:+     */
+// /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
+// /*                                                +#+#+#+#+#+   +#+           */
+// /*   Created: 2025/05/17 10:22:36 by ajelloul          #+#    #+#             */
+// /*   Updated: 2025/05/19 07:39:15 by ajelloul         ###   ########.fr       */
+// /*                                                                            */
+// /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -72,7 +72,7 @@ static bool	is_valid_unset_variable(t_minibash *bash, char *variable)
 
 /* Special handling for exactly '_' variable */
 
-void	unset(t_minibash *bash, char **args)
+void	builtin_unset(t_minibash *bash, char **args)
 {
 	int	i;
 

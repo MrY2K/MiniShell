@@ -1,22 +1,22 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/11 09:22:35 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/05/13 11:09:46 by ajelloul         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// /* ************************************************************************** */
+// /*                                                                            */
+// /*                                                        :::      ::::::::   */
+// /*   echo.c                                             :+:      :+:    :+:   */
+// /*                                                    +:+ +:+         +:+     */
+// /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
+// /*                                                +#+#+#+#+#+   +#+           */
+// /*   Created: 2025/05/11 09:22:35 by ajelloul          #+#    #+#             */
+// /*   Updated: 2025/05/13 11:09:46 by ajelloul         ###   ########.fr       */
+// /*                                                                            */
+// /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/**
- * Checks if a string is a valid -n option for echo
- * Valid options are: -n, -nn, -nnn, etc.
- * Returns true if valid, false otherwise
- */
+// /**
+//  * Checks if a string is a valid -n option for echo
+//  * Valid options are: -n, -nn, -nnn, etc.
+//  * Returns true if valid, false otherwise
+//  */
 
 static bool	is_n_option(char *str)
 {
@@ -59,13 +59,16 @@ static void	print_arguments(char **args, int start_idx)
  * Handles the -n option to suppress the trailing newline
  */
 
-t_status	echo(t_cmd *cmd)
+void	builtin_echo(t_minibash *bash, t_cmd *cmd)
 {
 	bool	no_newline;
 	int		i;
 
 	if (!cmd || !cmd->argument)
-		return (STATUS_INVALID_ARGUMENT);
+	{
+		bash->exit_status = 0;
+		return ;
+	}
 	no_newline = false;
 	i = 0;
 	while (cmd->argument[i] && is_n_option(cmd->argument[i]))
@@ -76,5 +79,5 @@ t_status	echo(t_cmd *cmd)
 	print_arguments(cmd->argument, i);
 	if (!no_newline)
 		write(1, "\n", 1);
-	return (STATUS_OK);
+	bash->exit_status = 0;
 }

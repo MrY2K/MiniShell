@@ -125,12 +125,12 @@ void	handell_append_herdoc(t_token **tokens, char *input, t_lexer_state *ls)
 	if (input[ls->i] == '>')
 	{
 		value = ft_substr(input, ls->start, ls->len);
-		ft_lstadd_back_token(tokens, ft_lstnew_token(value, ls->len, TOKEN_REDIR_APPEND, ls->state));
+		ft_lstadd_back_token(tokens, ft_lstnew_token(value, ls->len, TOKEN_REDIR_APPEND, get_state(input[ls->i], ls)));
 	}
 	else if (input[ls->i] == '<')
 	{
 		value = ft_substr(input, ls->start, ls->len);
-		ft_lstadd_back_token(tokens, ft_lstnew_token(value, ls->len, TOKEN_HEREDOC, ls->state));
+		ft_lstadd_back_token(tokens, ft_lstnew_token(value, ls->len, TOKEN_HEREDOC, get_state(input[ls->i], ls)));
 		//free(value);
 	}
 }

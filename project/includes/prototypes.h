@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/05 13:15:33 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/06 14:53:34 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,11 +114,24 @@ char	*ft_strjoin_with_null(char *s1, char *s2);
 
 // execute 
 void	execute_command(t_minibash *bash, t_env **env, t_cmd *cmd);
-void	handle_redirections(t_minibash *bash, t_cmd *cmd);
 
 // path 
 
 
 char	*command_path(t_minibash *bash, t_cmd *cmd);
+
+// handelle pipes 
+
+void	handle_pipes(t_minibash *bash, t_env **env, t_cmd *cmd);
+int		count_pipes(t_cmd *cmd);
+
+// REDIRECTIONS 
+
+void	handle_redirections(t_minibash *bash, t_cmd *cmd);
+
+// herdoc 
+
+int		handle_heredoc_input(t_cmd *cmd);
+
 
 #endif

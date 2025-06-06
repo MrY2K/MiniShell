@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 08:49:22 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/05 13:22:11 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/06 14:52:53 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static int	setup_heredoc_input(int fd, char *file)
 	return (1);
 }
 
-int	handle_heredoc_input(t_cmd *cmd)
+int	handle_heredoc_input(t_cmd *cmd) // hundle_file_herdoc
 {
 	t_cmd	*tmp;
 	char	*file;
@@ -127,10 +127,11 @@ void	execute_command(t_minibash *bash, t_env **env, t_cmd *cmd)
 		execute_external_cmd(bash, env, cmd, cmd->argument);
 		exit (bash->exit_status);
 	}
-	// else if (has_pipes(cmd))
-	// {
-	// 	handle_pipes(bash, env, cmd);
-	// }
+	else if (has_pipes(cmd))
+	{
+		handle_pipes(bash, env, cmd);
+		exit(bash->exit_status);
+	}
 	// else
 	// {
 	// 	execute_simple_command(bash, env, cmd);

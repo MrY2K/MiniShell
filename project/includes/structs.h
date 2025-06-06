@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 09:25:15 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/04 14:03:59 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/06 14:51:48 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,9 +130,11 @@ typedef struct s_pipe
 {
 	int     			cmd_count; // num_cmd
 	int					**pipe_fds; // pipefd
+	int					fd_heredoc;
 	t_cmd				*current_cmd; // tmp_cmd
 	int					*child_pids; // pids
 	char				*path; // ptr
+	char				**arr_env;
  
 }	t_pipe;
 

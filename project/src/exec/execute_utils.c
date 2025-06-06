@@ -73,23 +73,23 @@ bool	has_pipes(t_cmd *cmd)
 	return (false);
 }
 
-// int	count_pipes(t_cmd *cmd)
-// {
-// 	t_cmd *cur;
-// 	int	count;
+int	count_pipes(t_cmd *cmd)
+{
+	t_cmd *cur;
+	int	count;
 
-// 	if (!cmd)
-// 		return (0);
-// 	cur = cmd;
-// 	count = 0;
-// 	while (cur)
-// 	{
-// 		if (cur->pipe == 1)
-// 			count++;
-// 		cur = cur->next;
-// 	}
-// 	return (count);
-// }
+	if (!cmd)
+		return (0);
+	cur = cmd;
+	count = 0;
+	while (cur)
+	{
+		if (cur->pipe == 1)
+			count++;
+		cur = cur->next;
+	}
+	return (count);
+}
 
 // /* TODO :       Implement again   */
 

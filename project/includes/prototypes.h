@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/06 14:53:34 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/06 16:58:46 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,10 @@ void	handle_redirections(t_minibash *bash, t_cmd *cmd);
 // herdoc 
 
 int		handle_heredoc_input(t_cmd *cmd);
+
+// parsing 
+
+void	parse_command(t_token **token, t_cmd **cmd, t_env *env);
 
 
 #endif

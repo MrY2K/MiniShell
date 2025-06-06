@@ -13,79 +13,6 @@
 #include "../../includes/minishell.h"
 
 
-// static void	execute_external_cmd(t_minibash *bash, t_cmd *cmd, char **args)
-// {
-// 	char	*path;
-// 	char	**envp;
-
-// 	if (!cmd || !args || !args[0])
-// 	{
-// 		bash->exit_status = 127;
-// 		exit(127);
-// 	}
-// 	path = command_path(bash, cmd);
-// 	if (!path)
-// 		exit(bash->exit_status);
-// 	envp = env_to_array(bash->env);
-// 	if (!envp)
-// 	{
-// 		free(path);
-// 		perror("minishell");
-// 		exit(1);
-// 	}
-
-// 	if (execve(path, args, envp) == -1)
-// 	{
-// 		perror("minishell");
-// 		free(path);
-// 		free_2d(envp);
-// 		bash->exit_status = 126;
-// 		exit(126);
-// 	}
-// }
-
-
-// static void	execute_single_cmd(t_minibash *bash, t_cmd *cmd)
-// {
-// 	if (!cmd)
-// 	{
-// 		bash->exit_status = 127;
-// 		exit(127);
-// 	}
-// 	if (is_builtins(cmd))
-// 		execute_builtin(bash, cmd);
-// 	else
-// 		execute_external_cmd(bash, cmd, cmd->argument);
-// }
-
-// static void	run_command(t_minibash *bash, t_cmd *cmd)
-// {
-// 	// handel pipe and pipe
-	
-// 	if (has_pipes(cmd))
-// 	{
-// 		execute_pipe_chain (bash, cmd);
-// 	}
-
-// 	execute_single_cmd(bash, cmd);
-// }
-
-// static void	wait_for_child(t_minibash *bash, int pid)
-// {
-// 	int	status;
-
-// 	if (waitpid(pid, &status, 0) == -1)
-// 	{
-// 		perror("minishell");
-// 		bash->exit_status = 1;
-// 		return ;
-// 	}
-// 	if (WIFEXITED(status))
-// 		bash->exit_status = WEXITSTATUS(status);
-// 	else if (WIFSIGNALED(status))
-// 		bash->exit_status = 128 + WTERMSIG(status);
-// }
-
 
 void	create_tmp_herdoc_files(t_cmd *tmp_cmd, char *idx_to_char)
 {
@@ -575,6 +502,22 @@ int	execute_builtins_or_herdoc(t_minibash *bash, t_cmd *cmd)
 }
 
 
+static void	wait_for_child(t_minibash *bash, int pid)
+{
+	int	status;
+
+	if (waitpid(pid, &status, 0) == -1)
+	{
+		perror("minishell waitpid");
+		bash->exit_status = 1;
+		return ;
+	}
+	if (WIFEXITED(status))
+		bash->exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		bash->exit_status = 128 + WTERMSIG(status);
+}
+
 void	execution(t_minibash *bash, t_env **env, t_cmd *cmd)
 {
 	t_cmd	*tmp_cmd;
@@ -592,6 +535,11 @@ void	execution(t_minibash *bash, t_env **env, t_cmd *cmd)
 	{
 		// signals
 		execute_command(bash, env, cmd);
-
 	}
+	else
+	{
+		wait_for_child(bash, pid);
+		// signals
+	}
+	delete_heredoc_files(bash, cmd);
 }

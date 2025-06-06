@@ -6,8 +6,6 @@ SRC= minishell.c \
 	ft_nodes_env.c \
 	ft_free.c \
 	ft_parsser.c\
-	ft_parsser_utils_2.c \
-	ft_parsser_utils.c \
 	ft_direction.c \
 	ft_direction_utils.c \
 	skip_redirection.c \
@@ -27,17 +25,25 @@ CFLAGS = -Wall -Wextra -Werror
 
 CC = cc
 
-
 NAME = minishell
 
 LIBFT = ./includes/libft/libft.a
 FLDLIBFT= ./includes/libft
 
-#include readLine in MacOS
-READLINE_DIR := $(shell brew --prefix readline)
-INRL = -I$(READLINE_DIR)/include
-LNRL = -L$(READLINE_DIR)/lib -lreadline -lhistory -lncurses
+#Ssystem detection
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+	READLINE_DIR := $(shell brew --prefix readline)
+	INRL = -I$(READLINE_DIR)/include
+	LNRL = -L$(READLINE_DIR)/lib -lreadline -lhistory -lncurses
+	os_msg = "$(GREEN)OS DETECTED Mac!$(RESET)"
 
+else ifeq ($(UNAME_S),Linux)
+	READLINE_DIR := $(shell brew --prefix readline) #!edit
+	INRL = -I$(READLINE_DIR)/include #!edit
+	LNRL = -L$(READLINE_DIR)/lib -lreadline -lhistory -lncurses #!edit
+	os_msg = "$(GREEN)OS DETECTED Linux!$(RESET)"
+endif
 
 all : ${LIBFT} ${NAME}
 

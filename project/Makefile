@@ -4,16 +4,28 @@
 #             COMPILER SETTINGS                #
 ################################################
 
+#Ssystem detection
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+	READLINE_DIR := $(shell brew --prefix readline)
+	CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code -I$(INCLUDE_DIR) -I$(READLINE_DIR)/include
+	LDFLAGS      = -L$(READLINE_DIR)/lib -lreadline -lhistory -lncurses
+	os_msg = "$(GREEN)OS DETECTED Mac!$(RESET)"
+
+else ifeq ($(UNAME_S),Linux)
+	CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code #!Edit
+	LDFLAGS      = -L$(READLINE_DIR)/lib -lreadline -lhistory -lncurses #!edit
+	os_msg = "$(GREEN)OS DETECTED Linux!$(RESET)"
+endif
+
 CC           = cc
-CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code -I$(INCLUDE_DIR) -I$(READLINE_DIR)/include
+# CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code -I$(INCLUDE_DIR) -I$(READLINE_DIR)/include
 
-CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code
-LDFLAGS      = -lreadline -lhistory -lncurses
-
+# CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code
+# LDFLAGS      = -lreadline -lhistory -lncurses
 #CFLAGS      += -Wall -Wextra -Werror -fsanitize=address -g3
-# READLINE_DIR := $(shell brew --prefix readline)
-# LDFLAGS      = -L$(READLINE_DIR)/lib -lreadline -lhistory -lncurses
-# LDFLAGS      = -L/Users/achoukri/.brew/readline/lib -I/Users/achoukri/.brew/readline/include -lreadline
+
+LDFLAGS      = -L$(READLINE_DIR)/lib -lreadline -lhistory -lncurses
 
 ################################################
 #                 DIRECTORIES                  #

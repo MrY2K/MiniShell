@@ -1,6 +1,4 @@
 src/.build/env/env_parser.o: src/env/env_parser.c \
- src/env/../../includes/minishell.h src/env/../../includes/enums.h \
- src/env/../../includes/structs.h src/env/../../includes/minishell.h \
- src/env/../../includes/prototypes.h \
- src/env/../../includes/../src/lib/libft.h \
- src/env/../../includes/macros.h
+  src/env/../../includes/minishell.h includes/enums.h includes/structs.h \
+  includes/minishell.h includes/prototypes.h includes/../src/lib/libft.h \
+  includes/macros.h

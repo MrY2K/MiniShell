@@ -25,7 +25,7 @@ CC           = cc
 # LDFLAGS      = -lreadline -lhistory -lncurses
 #CFLAGS      += -Wall -Wextra -Werror -fsanitize=address -g3
 
-LDFLAGS      = -L$(READLINE_DIR)/lib -lreadline -lhistory -lncurses
+# LDFLAGS      = -L$(READLINE_DIR)/lib -lreadline -lhistory -lncurses
 
 ################################################
 #                 DIRECTORIES                  #

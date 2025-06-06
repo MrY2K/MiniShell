@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 18:00:47 by rel-mora          #+#    #+#             */
-/*   Updated: 2025/06/06 17:46:34 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/06 18:38:50 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,17 +146,6 @@ int	ft_check_gene_quote(t_command **new_node, t_splitor **tmp_x,
 	return (0);
 }
 
-void	ft_neuter_cmd(t_command **new_node, t_splitor **tmp_x,
-		t_environment *my_env, char ***arr_join)
-{
-	if (ft_ckeck_repeate_quote(arr_join, new_node, tmp_x))
-		return ;
-	if (ft_check_gene_quote(new_node, tmp_x, my_env, arr_join))
-		return ;
-	else if ((*tmp_x) != NULL && (*tmp_x)->type != '|')
-		(*tmp_x) = (*tmp_x)->next;
-}
-
 void	ft_not_pipe(t_command **new_node, t_splitor **tmp_x,
 		t_environment *my_env)
 {
@@ -173,4 +162,15 @@ void	ft_not_pipe(t_command **new_node, t_splitor **tmp_x,
 		if ((*tmp_x) != NULL && ((*tmp_x)->type == ' ' && (*tmp_x)->state == G))
 			ft_skip_spaces(tmp_x);
 	}
+}
+
+void	ft_neuter_cmd(t_command **new_node, t_splitor **tmp_x,
+		t_environment *my_env, char ***arr_join)
+{
+	if (ft_ckeck_repeate_quote(arr_join, new_node, tmp_x))
+		return ;
+	if (ft_check_gene_quote(new_node, tmp_x, my_env, arr_join))
+		return ;
+	else if ((*tmp_x) != NULL && (*tmp_x)->type != '|')
+		(*tmp_x) = (*tmp_x)->next;
 }

@@ -117,7 +117,7 @@ $(BUILD_DIR):
 	@mkdir -p $(BUILD_DIR)/redirection
 	@mkdir -p $(BUILD_DIR)/signals
 	@mkdir -p $(BUILD_DIR)/tokenizer
-	@mkdir -p $(BUILD_DIR)/error
+	@mkdir -p $(BUILD_DIR)/Error
 	@printf "$(CYAN)$(BOLD)%s$(RESET)\n" "Build directory structure created"
 
 

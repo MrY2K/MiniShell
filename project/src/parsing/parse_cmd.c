@@ -1,8 +1,5 @@
 #include "../../includes/minishell.h"
 
-
-
-
 void	push_command(t_cmd **list, t_cmd *new_cmd)
 {
 	t_cmd	*last;
@@ -59,7 +56,7 @@ void	parse_command(t_token **token, t_cmd **cmd, t_env *env)
 	tmp_token = *token;
 	while (tmp_token)
 	{
-		push_command(cmd, parse_new_command(&tmp_token, env));
+		push_command(tmp_cmd, parse_new_command(&tmp_token, env));
 	}
 
 }

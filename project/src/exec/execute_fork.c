@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 08:49:22 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/06 14:52:53 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/06 15:35:28 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ int	handle_heredoc_input(t_cmd *cmd) // hundle_file_herdoc
 	return (1);
 }
 
+// execution cmd
 void	execute_external_cmd(t_minibash *bash, t_env **env, t_cmd *cmd, char **args)
 {
 	char	*path;
@@ -113,6 +114,19 @@ void	execute_external_cmd(t_minibash *bash, t_env **env, t_cmd *cmd, char **args
 	}
 }
 
+
+
+void	execute_single_cmd(t_minibash *bash, t_env **env, t_cmd *cmd)
+{
+	if (has_redirections(cmd))
+	{
+		handle_redirections(bash, cmd);
+		execute_builtins(bash, env, cmd);
+	}
+	if (!is_builtins(cmd))
+		execute_external_cmd(bash, env, cmd, cmd->argument);
+}
+
 void	execute_command(t_minibash *bash, t_env **env, t_cmd *cmd)
 {
 	(void) env;
@@ -132,8 +146,9 @@ void	execute_command(t_minibash *bash, t_env **env, t_cmd *cmd)
 		handle_pipes(bash, env, cmd);
 		exit(bash->exit_status);
 	}
-	// else
-	// {
-	// 	execute_simple_command(bash, env, cmd);
-	// }
+	else
+	{
+		execute_single_cmd(bash, env, cmd);
+		exit (bash->exit_status);
+	}
 }

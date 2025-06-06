@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/06 17:39:03 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/06 18:54:14 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,10 @@ void	handle_redirections(t_minibash *bash, t_cmd *cmd);
 // herdoc 
 
 int		handle_heredoc_input(t_cmd *cmd);
+
+// parsing 
+
+void	parse_command(t_token **token, t_cmd **cmd, t_env *env);
 
 
 #endif

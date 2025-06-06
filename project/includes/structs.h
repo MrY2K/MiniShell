@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 09:25:15 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/06 17:40:35 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/06 18:54:21 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,11 @@ typedef struct s_cmd
 {
 	char			*main_cmd; // content
 	char			**argument; // arg
-	bool			pipe; // is_pipe
+	char			**env_arr;
+	int				has_ambiguous; // is_amb
+	int				pipe; // is_pipe
+	int				needs_expansion; // is_exp
+	int				arg_len; // len 
 	t_heredoc		*heredoc; // her
 	t_redirect		*redirections; // doc
 	struct s_cmd	*next;

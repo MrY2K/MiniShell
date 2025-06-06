@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/06 18:48:50 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/06 18:54:36 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,9 @@ void	print_tokens(t_token *tokens)
 
 void	execute_command_pipeline(t_minibash *bash, t_env **env, t_token *token, t_cmd **cmd)
 {
-	if (token && env)
+	if (!token && !env)
 	{
-		//parse_command(&token, cmd, bash->env);
+		parse_command(&token, cmd, *env);
 		execution(bash, env, *cmd);
 	}
 	//free_command_resources(cmd);
@@ -120,7 +120,7 @@ void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env **env)
 		}
 		else
 			print_tokens(tokens); // debug
-		// execute_command_pipeline(bash, env, tokens, &cmd);
+		execute_command_pipeline(bash, env, tokens, &cmd);
 		tokens = NULL;
 		cmd = NULL;
 		free (line);

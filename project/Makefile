@@ -6,9 +6,13 @@
 
 CC           = cc
 CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code -I$(INCLUDE_DIR) -I$(READLINE_DIR)/include
+
+CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code
+LDFLAGS      = -lreadline -lhistory -lncurses
+
 #CFLAGS      += -Wall -Wextra -Werror -fsanitize=address -g3
-READLINE_DIR := $(shell brew --prefix readline)
-LDFLAGS      = -L$(READLINE_DIR)/lib -lreadline -lhistory -lncurses
+# READLINE_DIR := $(shell brew --prefix readline)
+# LDFLAGS      = -L$(READLINE_DIR)/lib -lreadline -lhistory -lncurses
 # LDFLAGS      = -L/Users/achoukri/.brew/readline/lib -I/Users/achoukri/.brew/readline/include -lreadline
 
 ################################################

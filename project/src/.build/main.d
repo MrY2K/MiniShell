@@ -1,11 +1,4 @@
 src/.build/main.o: src/main.c src/../includes/minishell.h \
-  /goinfre/achoukri/homebrew/opt/readline/include/readline/readline.h \
-  /goinfre/achoukri/homebrew/opt/readline/include/readline/rlstdc.h \
-  /goinfre/achoukri/homebrew/opt/readline/include/readline/rltypedefs.h \
-  /goinfre/achoukri/homebrew/opt/readline/include/readline/keymaps.h \
-  /goinfre/achoukri/homebrew/opt/readline/include/readline/chardefs.h \
-  /goinfre/achoukri/homebrew/opt/readline/include/readline/tilde.h \
-  includes/enums.h includes/structs.h includes/minishell.h \
-  includes/prototypes.h includes/../src/lib/libft.h \
-  /goinfre/achoukri/homebrew/opt/readline/include/readline/history.h \
-  includes/macros.h
+ src/../includes/enums.h src/../includes/structs.h \
+ src/../includes/minishell.h src/../includes/prototypes.h \
+ src/../includes/../src/lib/libft.h src/../includes/macros.h

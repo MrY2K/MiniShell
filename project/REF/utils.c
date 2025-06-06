@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-mora <rel-mora@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 16:47:08 by rel-mora          #+#    #+#             */
-/*   Updated: 2024/09/29 10:54:01 by rel-mora         ###   ########.fr       */
+/*   Updated: 2025/06/06 18:42:58 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,30 +81,6 @@ char	**ft_join_arg(char **arg, char **join)
 	ps.new_arg[ps.j] = NULL;
 	ft_free_argment(arg);
 	return (ps.new_arg);
-}
-
-void	ft_join_arr(char ***arr_join, char *in)
-{
-	int		len_of_arr;
-	char	*str;
-
-	len_of_arr = ft_len_arg(*arr_join);
-	if (in == NULL)
-		return ;
-	if (len_of_arr == 0)
-	{
-		*arr_join = NULL;
-		*arr_join = malloc((1 + 1) * sizeof(char *));
-		(*arr_join)[0] = ft_strdup(in);
-		(*arr_join)[1] = NULL;
-	}
-	else
-	{
-		str = ft_strdup(in);
-		len_of_arr--;
-		(*arr_join)[len_of_arr] = ft_strjoin((*arr_join)[len_of_arr], str);
-		free(str);
-	}
 }
 
 void	ft_free_argment(char **arg)

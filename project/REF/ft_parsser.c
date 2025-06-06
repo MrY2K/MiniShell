@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 18:00:47 by rel-mora          #+#    #+#             */
-/*   Updated: 2025/06/06 18:38:50 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/06 18:43:33 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,50 @@ t_command	*ft_new_command(t_splitor **tmp_x, t_environment *my_env)
 	new_node->next = NULL;
 	return (new_node);
 }
+
+void	ft_join_arr(char ***arr_join, char *in)
+{
+	int		len_of_arr;
+	char	*str;
+
+	len_of_arr = ft_len_arg(*arr_join);
+	if (in == NULL)
+		return ;
+	if (len_of_arr == 0)
+	{
+		*arr_join = NULL;
+		*arr_join = malloc((1 + 1) * sizeof(char *));
+		(*arr_join)[0] = ft_strdup(in);
+		(*arr_join)[1] = NULL;
+	}
+	else
+	{
+		str = ft_strdup(in);
+		len_of_arr--;
+		(*arr_join)[len_of_arr] = ft_strjoin((*arr_join)[len_of_arr], str);
+		free(str);
+	}
+}
+
+void	ft_not_pipe(t_command **new_node, t_splitor **tmp_x,
+		t_environment *my_env)
+{
+	char	**join;
+
+	join = NULL;
+	while ((*tmp_x) != NULL && !((*tmp_x)->type == '|' && (*tmp_x)->state == G))
+	{
+		if ((*tmp_x) != NULL && (*tmp_x)->state == G && ((*tmp_x)->type != -1
+				&& (*tmp_x)->type != '$'))
+			ft_skip_not_word(tmp_x, my_env);
+		if ((*tmp_x) != NULL && !((*tmp_x)->type == 32 && (*tmp_x)->state == G))
+			ft_neuter_cmd(new_node, tmp_x, my_env, &join);
+		if ((*tmp_x) != NULL && ((*tmp_x)->type == ' ' && (*tmp_x)->state == G))
+			ft_skip_spaces(tmp_x);
+	}
+}
+
+
 int	ft_check_null(char ***arr_join, t_command **new_node, t_splitor **tmp_x)
 {
 	if (((*tmp_x) != NULL && (*tmp_x)->next != NULL && ((*tmp_x)->state == G
@@ -146,23 +190,6 @@ int	ft_check_gene_quote(t_command **new_node, t_splitor **tmp_x,
 	return (0);
 }
 
-void	ft_not_pipe(t_command **new_node, t_splitor **tmp_x,
-		t_environment *my_env)
-{
-	char	**join;
-
-	join = NULL;
-	while ((*tmp_x) != NULL && !((*tmp_x)->type == '|' && (*tmp_x)->state == G))
-	{
-		if ((*tmp_x) != NULL && (*tmp_x)->state == G && ((*tmp_x)->type != -1
-				&& (*tmp_x)->type != '$'))
-			ft_skip_not_word(tmp_x, my_env);
-		if ((*tmp_x) != NULL && !((*tmp_x)->type == 32 && (*tmp_x)->state == G))
-			ft_neuter_cmd(new_node, tmp_x, my_env, &join);
-		if ((*tmp_x) != NULL && ((*tmp_x)->type == ' ' && (*tmp_x)->state == G))
-			ft_skip_spaces(tmp_x);
-	}
-}
 
 void	ft_neuter_cmd(t_command **new_node, t_splitor **tmp_x,
 		t_environment *my_env, char ***arr_join)

@@ -7,3 +7,4 @@ void	parse_command(t_token *token, t_cmd *cmd, t_env **env)
 	(void) env;
 
 }
+

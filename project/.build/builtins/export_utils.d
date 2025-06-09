@@ -1,4 +1,4 @@
-.build/builtins/cd.o: src/builtins/cd.c \
+.build/builtins/export_utils.o: src/builtins/export_utils.c \
   src/builtins/../../includes/minishell.h \
   /goinfre/ajelloul/homebrew/opt/readline/include/readline/readline.h \
   /goinfre/ajelloul/homebrew/opt/readline/include/readline/rlstdc.h \

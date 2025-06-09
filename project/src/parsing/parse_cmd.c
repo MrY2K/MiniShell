@@ -45,6 +45,9 @@ t_cmd	*parse_new_command(t_token **token, t_env *env)
 	// hand pipes
 
 
+	// kmal had parsing 
+
+
 	return (NULL);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/06 16:58:46 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/09 11:48:28 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ void	builtin_unset(t_minibash *bash, char **args);
 
 bool			is_builtins(t_cmd *cmd);
 void	execute_builtins(t_minibash *bash, t_env **env, t_cmd *cmd);
+
+// export 
+bool	is_allowed_variable_character(char c);
+bool	is_contains_char(char	*str, char target_char);
+t_env	*create_new_node(void *var, void *data);
 
 
 
@@ -94,6 +99,7 @@ void	free_env_arr(char **arr_env);
 char 	*create_env_entry(t_env_converter *conv, t_env *node);
 int		get_environment_len(t_env	*env);
 void	initialize_environment(t_minibash *info, char **env);
+void	add_node_to_env(t_env **head, t_env *node);
 
 
 // error package 

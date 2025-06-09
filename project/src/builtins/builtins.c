@@ -45,4 +45,3 @@ void	execute_builtins(t_minibash *bash, t_env **env, t_cmd *cmd)
 	else if (!ft_strcmp(cmd->main_cmd, "exit"))
 		builtin_exit(bash, cmd);
 }
-

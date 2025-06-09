@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/06 18:54:36 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/09 01:36:32 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,71 @@
 #define RESET   "\033[0m"
 
 void	ll(void) { system("leaks -q minishell"); }
+
+
+/*
+ * Debug function to print out the contents of a t_cmd structure
+ */
+void debug_print_command(t_cmd *cmd)
+{
+    int i;
+    
+    if (!cmd)
+    {
+        printf("[DEBUG] Command is NULL\n");
+        return;
+    }
+    
+    printf("----- Command Debug -----\n");
+    printf("Main command: %s\n", cmd->main_cmd ? cmd->main_cmd : "NULL");
+    
+    printf("Arguments:\n");
+    if (cmd->argument)
+    {
+        i = 0;
+        while (cmd->argument[i])
+        {
+            printf("  [%d]: %s\n", i, cmd->argument[i]);
+            i++;
+        }
+    }
+    else
+    {
+        printf("  NULL\n");
+    }
+    
+    printf("Pipe flag: %d\n", cmd->pipe);
+    printf("Redirections pointer: %p\n", cmd->redirections);
+    printf("Heredoc pointer: %p\n", cmd->heredoc);
+    
+    printf("Environment array:\n");
+    if (cmd->env_arr)
+    {
+        i = 0;
+        while (cmd->env_arr[i])
+        {
+            printf("  [%d]: %s\n", i, cmd->env_arr[i]);
+            i++;
+        }
+    }
+    else
+    {
+        printf("  NULL\n");
+    }
+    
+    if (cmd->next)
+    {
+        printf("Next command:\n");
+        debug_print_command(cmd->next);
+    }
+    else
+    {
+        printf("No next command\n");
+    }
+    
+    printf("----- End of Command Debug -----\n");
+}
+
 
 const char *token_type_to_str(t_token_type type)
 {
@@ -90,7 +155,7 @@ void	execute_command_pipeline(t_minibash *bash, t_env **env, t_token *token, t_c
 {
 	if (!token && !env)
 	{
-		parse_command(&token, cmd, *env);
+		parse_input_commands(&token, cmd, *env);
 		execution(bash, env, *cmd);
 	}
 	//free_command_resources(cmd);
@@ -119,7 +184,10 @@ void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env **env)
 			//free_lexer(&tokens);
 		}
 		else
-			print_tokens(tokens); // debug
+		{
+			
+			// print_tokens(tokens); // debug
+		}
 		execute_command_pipeline(bash, env, tokens, &cmd);
 		tokens = NULL;
 		cmd = NULL;
@@ -160,6 +228,7 @@ int	main(int ac, char **av, char **env)
 	}
 	using_history();
 	ft_readline(bash, tokens, cmd, &bash->env);
+	debug_print_command(cmd);
 	free_minibash(&bash); // this is not finishe yet , only free env 
 	return (bash->exit_status);
 }

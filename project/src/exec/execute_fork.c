@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 08:49:22 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/06 15:35:28 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:39:35 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	execute_external_cmd(t_minibash *bash, t_env **env, t_cmd *cmd, char **args
 
 	if (!cmd || !args || !args[0])
     	return (bash->exit_status = 127, (void)0);
-		
+	
 	path = command_path(bash, cmd);
 	if (!path)
 		exit(127);
@@ -120,6 +120,7 @@ void	execute_single_cmd(t_minibash *bash, t_env **env, t_cmd *cmd)
 {
 	if (has_redirections(cmd))
 	{
+		
 		handle_redirections(bash, cmd);
 		execute_builtins(bash, env, cmd);
 	}

@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/09 11:48:28 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/09 12:57:35 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,5 +143,31 @@ int		handle_heredoc_input(t_cmd *cmd);
 
 void	parse_command(t_token **token, t_cmd **cmd, t_env *env);
 
+
+
+
+
+
+// NEW 
+
+void	parse_input_commands(t_token **token_list, t_cmd **cmd_list, t_env *env);
+void	append_command(t_cmd **cmd_list, t_cmd *new_cmd);
+t_cmd	*last_command(t_cmd *cmd_list);
+t_cmd	*create_new_command(t_token **tok_ptr, t_env *env);
+void	join_to_arg_array(char ***arg_arr, char *tok_str);
+void	process_non_pipe_segment(t_cmd **cmd_node, t_token **tok_ptr, t_env *env);
+void	handle_token_part(t_cmd **cmd_node, t_token **tok_ptr,
+        t_env *env, char ***arg_arr);
+void	join_to_arg_array(char ***arg_arr, char *tok_str);
+void	process_redirections(t_cmd **cmd_list, t_token **tokens, t_env *env);
+int	get_arg_count(char **args);
+void	skip_nonword_tokens(t_token **tok_ptr, t_env *env);
+void	skip_whitespace(t_token **tok_ptr);
+char	**combine_arguments(char **args, char **addition);
+void	free_argument_array(char **arr);
+void	process_word(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr);
+int	is_redirection(t_token *node);
+void	process_quoted(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr);
+void	free_args(char **args);
 
 #endif

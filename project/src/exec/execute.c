@@ -526,6 +526,7 @@ void	execution(t_minibash *bash, t_env **env, t_cmd *cmd)
 	tmp_cmd = cmd;
 	if (execute_builtins_or_herdoc(bash, tmp_cmd))
 	{
+		ft_putendl_fd("\nhere 1\n", 1);
 		return ;
 	}
 	pid = fork();

@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 08:14:27 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/05 13:07:14 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:40:58 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ static char	*search_in_path_directories(t_minibash *bash, char *command)
 
 	if (!bash->path || !bash->path[0])
 	{
+		ft_putendl_fd("problem on path   ✅ \n", 1);
 		print_cmd_err(bash, command, "command not found", 127);
 		return (NULL);
 	}
@@ -145,6 +146,7 @@ char	*command_path(t_minibash *bash, t_cmd *cmd)
 		bash->exit_status = 127;
 		return (NULL);
 	}
+	
 	if (contains_path_separator(cmd->main_cmd))
 	{
 		if (cmd->main_cmd[0] == '/')

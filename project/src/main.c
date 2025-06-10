@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/09 13:15:31 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/10 11:40:06 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	execute_command_pipeline(t_minibash *bash, t_env **env, t_token *token, t_c
 	{
 		//parse_command(&token, cmd, *env);
 		parse_input_commands(&token, cmd, *env);
-		ft_putendl_fd("\nsucces", 1);
+		ft_putendl_fd("\n parse succes \n", 1);
 		execution(bash, env, *cmd);
 	}
 	//free_command_resources(cmd);
@@ -119,8 +119,8 @@ void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env **env)
 			//bash->exit_status = 258;
 			//free_lexer(&tokens);
 		}
-		else
-			print_tokens(tokens); // debug
+		// else
+		// 	print_tokens(tokens); // debug
 		execute_command_pipeline(bash, env, tokens, &cmd);
 		tokens = NULL;
 		cmd = NULL;

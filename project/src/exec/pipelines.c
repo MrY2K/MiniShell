@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 09:34:01 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/06 15:17:51 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/10 09:48:33 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	execute_child_process(t_pipe *pi_pe, int i, t_minibash *bash, t_env **env)
 		dup2(pi_pe->fd_heredoc, 0);
 		close (pi_pe->fd_heredoc);
 	}
-	pi_pe->path = command_path(bash, pi_pe->current_cmd);
+	pi_pe->path = command_path(pi_pe->current_cmd->main_cmd, pi_pe->arr_env);
 	if (execve(pi_pe->path, pi_pe->current_cmd->argument, pi_pe->arr_env) == -1)
 	{
 		free_2d(pi_pe->arr_env);

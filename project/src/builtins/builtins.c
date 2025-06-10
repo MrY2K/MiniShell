@@ -34,8 +34,8 @@ void	execute_builtins(t_minibash *bash, t_env **env, t_cmd *cmd)
 		builtin_cd(bash, env, cmd);
 	else if (!ft_strcmp(cmd->main_cmd, "unset"))
 		builtin_unset(bash, cmd->argument);
-	// else if (!ft_strcmp(cmd->main_cmd, "export"))
-	// 	export(bash, cmd);
+	else if (!ft_strcmp(cmd->main_cmd, "export"))
+		builtin_export(bash, env, cmd);
 	else if (!ft_strcmp(cmd->main_cmd, "pwd"))
 		builtin_pwd(bash, cmd);
 	else if (!ft_strcmp(cmd->main_cmd, "env"))

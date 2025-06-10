@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/09 12:57:35 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/10 11:39:10 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,13 @@ bool			is_builtins(t_cmd *cmd);
 void	execute_builtins(t_minibash *bash, t_env **env, t_cmd *cmd);
 
 // export 
+void	builtin_export(t_minibash *bash, t_env **env, t_cmd *cmd);
 bool	is_allowed_variable_character(char c);
 bool	is_contains_char(char	*str, char target_char);
 t_env	*create_new_node(void *var, void *data);
+char	**split_var_value_pair(char	*str);
+void	process_export_args(t_env **env, t_cmd *cmd, int *index);
+void	export(char **args, t_env *env);
 
 
 
@@ -59,11 +63,14 @@ void			display_errno_exit(char *msg, int status);
 
 
 // /*		PATH 		*/
-char			*command_path(t_minibash *bash, t_cmd *cmd);
-bool			contains_path_separator(char *command);
-bool			is_directory(char *path);
-bool			is_file_executable(char *file_path);
 
+
+char			*command_path(char *command, char **env);
+char			*get_env_variable(char *name, char **env);
+bool			is_valid_executable(char *path);
+bool			is_directory_path(char *path);
+char			*handle_absolute_path(char *command);
+char			*handle_relative_path(char *command);
 /*		EXECUTION  		*/
 int 			is_fork_succes(t_minibash *bash, int pid);
 void 			execute_pipe_chain(t_minibash *bash, t_cmd *cmd);
@@ -121,10 +128,7 @@ char	*ft_strjoin_with_null(char *s1, char *s2);
 // execute 
 void	execute_command(t_minibash *bash, t_env **env, t_cmd *cmd);
 
-// path 
 
-
-char	*command_path(t_minibash *bash, t_cmd *cmd);
 
 // handelle pipes 
 

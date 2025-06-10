@@ -6,38 +6,53 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 11:13:02 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/05 13:16:09 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/10 10:13:47 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/**
- * Checks if a file exists and has execute permissions
- */
-bool	is_file_executable(char *file_path)
+
+char	*get_env_variable(char *name, char **env)
 {
-	if (!file_path || !*file_path)
-		return (false);
-	if (access(file_path, F_OK) != 0)
-		return (false);
-	return (access(file_path, X_OK) == 0);
+	int		i;
+	int		name_len;
+	char	*equal_pos;
+
+	if (!name || !env)
+		return (NULL);
+	name_len = ft_strlen(name);
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], name, name_len) == 0)
+		{
+			equal_pos = ft_strchr(env[i], '=');
+			if (equal_pos && env[i][name_len] == '=')
+				return (equal_pos + 1);
+		}
+		i++;
+	}
+	return (NULL);
 }
 
-/**
- * Checks if path is a directory using opendir
- * Returns true if successfully opens as directory, false otherwise
- *
- * DIR - A directory stream type used for directory operations
- * return: 
- *   - On success: Returns a pointer to a DIR structure (DIR*)
- *     representing the opened directory stream.
- *   - On failure: Returns NULL, and errno is set to indicate
- */
-bool	is_directory(char *path)
+bool	is_valid_executable(char *path)
+{
+	if (!path)
+		return (false);
+	if (access(path, F_OK) == -1)
+		return (false);
+	if (access(path, X_OK) == -1)
+		return (false);
+	return (true);
+}
+
+bool	is_directory_path(char *path)
 {
 	DIR	*dir;
 
+	if (!path)
+		return (false);
 	dir = opendir(path);
 	if (dir)
 	{
@@ -47,20 +62,26 @@ bool	is_directory(char *path)
 	return (false);
 }
 
-/**
- * Checks if command contains path separators (should not use PATH)
- * Returns true if command has '/' character anywhere in string
- */
-bool	contains_path_separator(char *command)
+char	*handle_absolute_path(char *command)
 {
-	int	i;
+	if (access(command, F_OK) == -1)
+		return (NULL);
+	if (is_directory_path(command))
+		return (NULL);
+	if (!is_valid_executable(command))
+		return (NULL);
+	return (ft_strdup(command));
+}
 
-	i = 0;
-	while (command[i])
-	{
-		if (command[i] == '/')
-			return (true);
-		i++;
-	}
-	return (false);
+char	*handle_relative_path(char *command)
+{
+	if (ft_strcmp(command, ".") == 0 || ft_strcmp(command, "..") == 0)
+		return (NULL);
+	if (access(command, F_OK) == -1)
+		return (NULL);
+	if (is_directory_path(command))
+		return (NULL);
+	if (!is_valid_executable(command))
+		return (NULL);
+	return (ft_strdup(command));
 }

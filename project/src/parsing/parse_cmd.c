@@ -335,45 +335,13 @@ void	skip_nonword_tokens(t_token **tok_ptr, t_env *env)
     free_args(tempArr);
 }
 
-/*
- * --- Placeholder helper functions ---
- *
- * Replace these with your actual implementations.
- */
-int	get_arg_count(char **args)
-{
-    int	count = 0;
-
-    if (!args)
-        return (0);
-    while (args[count] != NULL)
-        count++;
-    return (count);
-}
-
-char	*my_strdup(const char *s)
-{
-    return (strdup(s));
-}
-
-char	*my_strjoin(const char *s1, const char *s2)
-{
-    size_t	arg_len = strlen(s1) + strlen(s2) + 1;
-    char	*str = malloc(arg_len);
-
-    if (!str)
-        return (NULL);
-    strcpy(str, s1);
-    strcat(str, s2);
-    return (str);
-}
 
 void	process_word(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr)
 {
 	(void)env; //for now
 	(void)flag; //for now
     /* Dummy implementation: simply add the token's string */
-    char *temp = my_strdup((*tok_ptr)->value);
+    char *temp = ft_strdup((*tok_ptr)->value);
     if (!*arg_arr)
     {
         *arg_arr = malloc(2 * sizeof(char *));
@@ -383,7 +351,7 @@ void	process_word(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr)
     else
     {
         int arg_len = get_arg_count(*arg_arr);
-        (*arg_arr)[arg_len - 1] = my_strjoin((*arg_arr)[arg_len - 1], temp);
+        (*arg_arr)[arg_len - 1] = ft_strjoin((*arg_arr)[arg_len - 1], temp);
         free(temp);
     }
     *tok_ptr = (*tok_ptr)->next;

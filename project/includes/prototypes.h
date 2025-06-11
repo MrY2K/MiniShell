@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/10 11:39:10 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/11 13:40:21 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,19 @@ int				is_metachar(char c);
 void			ft_lstadd_back_token(t_token **lst, t_token *new_node);
 t_token 		*ft_lstnew_token(char *value, int len, t_token_type type, t_state state);
 int				lexer(char *input, t_token **tokens);
+t_state			get_state(char c, t_lexer_state *ls);
+void			handle_metachar(char *input, t_lexer_state *ls, t_token **tokens);
+void			handell_append_herdoc(t_token **tokens, char *input, t_lexer_state *ls);
+void			env_variables(char *input, t_lexer_state *ls);
+void			shell_variable(char *input, t_lexer_state *ls);
+void			handle_env_variables(char *input, t_lexer_state *ls, t_token **tokens);
+t_token_type	get_token_type(char c);
+void			skip_spaces(t_token	**cur_node);
 
 // lexer handell syntx error 
 
 int				has_syntax_error_at_start(t_token **start);
-void			skip_spaces(t_token	**cur_node);
-int				check_middle_syntax(t_token **middle);
+int				check_middle_syntax(t_token **middle, enum e_state NOR);
 
 
 /*    ✅  ✅  ✅   builtins second edition ✅   ✅   ✅ */

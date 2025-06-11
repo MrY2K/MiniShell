@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 09:25:15 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/09 11:09:52 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/11 09:50:08 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ typedef struct s_pipe
 
 
 typedef struct s_minibash
-{	char	**path;
+{
 	t_env	*env;
 	int		exit_status;
 }	t_minibash;

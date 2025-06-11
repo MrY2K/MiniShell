@@ -43,6 +43,7 @@ void	create_tmp_herdoc_files(t_cmd *tmp_cmd, char *idx_to_char)
 	}
 }
 
+
 char	*get_path(t_heredoc *heredoc)
 {
 	char	*path;

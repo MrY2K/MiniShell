@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 09:56:20 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/04 14:06:35 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/11 13:40:53 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef enum e_env_type
 
 typedef enum e_state
 {
-	Normal, // G
+	Normal , // G
 	Single, // S
 	Double, // D
 	NUL,

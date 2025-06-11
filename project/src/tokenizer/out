@@ -1,5 +1,0 @@
-out
-syntax_checker.c
-syntax_middle.c
-token.c
-token_utils.c

@@ -1,6 +1,7 @@
 
 #include "minishell.h"
 
+
 void	ft_neuter_cmd(t_command **new_node, t_splitor **tmp_x,
 		t_environment *my_env, char ***arr_join);
 

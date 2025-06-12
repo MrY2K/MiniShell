@@ -60,7 +60,7 @@ NAME         = minishell
 HEADERS      = $(wildcard $(INCLUDE_DIR)/*.h)
 
 # Define source files
-MAIN_SRC     = $(SRC_DIR)/main.c $(SRC_DIR)/utils.c
+MAIN_SRC     = $(SRC_DIR)/main.c $(SRC_DIR)/utils.c $(SRC_DIR)/debug.c
 
 # Builtin sources
 BUILTINS_SRC = $(wildcard $(BUILTINS_DIR)/*.c)

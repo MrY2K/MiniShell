@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 13:08:06 by rel-mora          #+#    #+#             */
-/*   Updated: 2025/06/08 20:05:03 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/12 22:34:31 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,86 @@ void	handle_sig(int sig)
 	}
 }
 
+
+/* Debug print for the t_splitor linked list */
+void debug_print_splitor_list(t_splitor *list)
+{
+    int idx = 0;
+    while (list)
+    {
+        printf("Splitor[%d]:\n", idx);
+        printf("  in: %s\n", list->in ? list->in : "(null)");
+        printf("  len: %d\n", list->len);
+        printf("  type: %d\n", list->type);
+        printf("  is_amb: %d\n", list->is_amb);
+        printf("  is_exp: %d\n", list->is_exp);
+        printf("  state: %d\n", list->state);
+        list = list->next;
+        idx++;
+    }
+    if (idx == 0)
+        printf("(no splitor nodes)\n");
+}
+
+/* Debug print for the t_command linked list */
+void debug_print_command_list(t_command *list)
+{
+    int idx = 0;
+    while (list)
+    {
+        printf("Command[%d]:\n", idx);
+        printf("  content: %s\n", list->content ? list->content : "(null)");
+
+        if (list->arg)
+        {
+            printf("  arguments:");
+            for (int i = 0; list->arg[i] != NULL; i++)
+                printf(" [%s]", list->arg[i]);
+            printf("\n");
+        }
+        else
+            printf("  arguments: (none)\n");
+
+        printf("  is_amb: %d\n", list->is_amb);
+        printf("  is_exp: %d\n", list->is_exp);
+        printf("  is_pipe: %d\n", list->is_pipe);
+        printf("  len: %d\n", list->len);
+
+        // If you wish to display redirections, heredocs, or env arr, add that here.
+        if (list->doc)
+            printf("  redirections are present\n");
+        else
+            printf("  redirections: (none)\n");
+
+        if (list->her)
+            printf("  heredocs are present\n");
+        else
+            printf("  heredocs: (none)\n");
+
+        if (list->ar_env)
+        {
+            printf("  env array:");
+            for (int i = 0; list->ar_env[i] != NULL; i++)
+                printf(" [%s]", list->ar_env[i]);
+            printf("\n");
+        }
+        else
+            printf("  env array: (none)\n");
+
+        list = list->next;
+        idx++;
+    }
+    if (idx == 0)
+        printf("(no command nodes)\n");
+}
+
 void	ft_initialize(t_splitor *x, t_command **cmd, t_environment **my_env)
 {
-	(void)cmd;
-	(void)x;
 	if (x != NULL && my_env != NULL)
 	{
 		ft_command(&x, cmd, *my_env);
+		debug_print_splitor_list(x);
+		debug_print_command_list(*cmd);
 		ft_exute(my_env, *cmd);
 	}
 	ft_free_command(cmd);

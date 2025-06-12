@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 09:56:20 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/06 17:38:38 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/12 23:31:37 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,15 @@ typedef enum e_token_type
 	TOKEN_SPACE = ' ',
     TOKEN_PIPE = '|',         // |
 	TOKEN_ENV = '$',
-    TOKEN_REDIR_IN,     // <
-    TOKEN_REDIR_OUT,    // >
+    TOKEN_REDIR_IN = '<',     // <
+    TOKEN_REDIR_OUT = '>',    // >
     TOKEN_REDIR_APPEND, // >>  //       DREDIR_OUT 🆘
     TOKEN_HEREDOC,      // << 
-    TOKEN_NEWLINE,      // Potentially for internal use or if line ends unexpectedly
+    TOKEN_NEWLINE = '\n',      // Potentially for internal use or if line ends unexpectedly
     TOKEN_EOF,           // End of input 
-	TOKEN_WHITE_SPACE,
-	TOKEN_SINGLE_QUOTE,
-	TOKEN_DOUBLE_QUOTE
+	TOKEN_WHITE_SPACE = 32,
+	TOKEN_SINGLE_QUOTE = '\'',
+	TOKEN_DOUBLE_QUOTE = '\"'
 } t_token_type;
 
 #endif

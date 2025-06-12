@@ -1,164 +1,31 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/09 01:36:32 by achoukri         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// /* ************************************************************************** */
+// /*                                                                            */
+// /*                                                        :::      ::::::::   */
+// /*   main.c                                             :+:      :+:    :+:   */
+// /*                                                    +:+ +:+         +:+     */
+// /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
+// /*                                                +#+#+#+#+#+   +#+           */
+// /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
+// /*   Updated: 2025/06/12 21:12:50 by achoukri         ###   ########.fr       */
+// /*                                                                            */
+// /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-#include <string.h>
-#define CYAN    "\033[0;36m"
-#define RESET   "\033[0m"
 
 void	ll(void) { system("leaks -q minishell"); }
 
-
-/*
- * Debug function to print out the contents of a t_cmd structure
- */
-void debug_print_command(t_cmd *cmd)
-{
-    int i;
-    
-    if (!cmd)
-    {
-        printf("[DEBUG] Command is NULL\n");
-        return;
-    }
-    
-    printf("----- Command Debug -----\n");
-    printf("Main command: %s\n", cmd->main_cmd ? cmd->main_cmd : "NULL");
-    
-    printf("Arguments:\n");
-    if (cmd->argument)
-    {
-        i = 0;
-        while (cmd->argument[i])
-        {
-            printf("  [%d]: %s\n", i, cmd->argument[i]);
-            i++;
-        }
-    }
-    else
-    {
-        printf("  NULL\n");
-    }
-    
-    printf("Pipe flag: %d\n", cmd->pipe);
-    printf("Redirections pointer: %p\n", cmd->redirections);
-    printf("Heredoc pointer: %p\n", cmd->heredoc);
-    
-    printf("Environment array:\n");
-    if (cmd->env_arr)
-    {
-        i = 0;
-        while (cmd->env_arr[i])
-        {
-            printf("  [%d]: %s\n", i, cmd->env_arr[i]);
-            i++;
-        }
-    }
-    else
-    {
-        printf("  NULL\n");
-    }
-    
-    if (cmd->next)
-    {
-        printf("Next command:\n");
-        debug_print_command(cmd->next);
-    }
-    else
-    {
-        printf("No next command\n");
-    }
-    
-    printf("----- End of Command Debug -----\n");
-}
-
-
-const char *token_type_to_str(t_token_type type)
-{
-	switch (type)
-	{
-		case TOKEN_WORD: return "WORD";
-		case TOKEN_SPACE: return "SPACE";
-		case TOKEN_PIPE: return "PIPE";
-		case TOKEN_ENV: return "ENV";
-		case TOKEN_REDIR_IN: return "REDIR_IN";
-		case TOKEN_REDIR_OUT: return "REDIR_OUT";
-		case TOKEN_REDIR_APPEND: return "APPEND";
-		case TOKEN_HEREDOC: return "HEREDOC";
-		case TOKEN_NEWLINE: return "NEWLINE";
-		case TOKEN_EOF: return "EOF";
-		case TOKEN_WHITE_SPACE: return "WHITESPACE";
-		case TOKEN_SINGLE_QUOTE: return "SINGLE_QUOTE";
-		case TOKEN_DOUBLE_QUOTE: return "DOUBLE_QUOTE";
-		default: return "UNKNOWN";
-	}
-}
-
-const char *state_to_str(t_state state)
-{
-	switch (state)
-	{
-		case Normal: return "NORMAL";
-		case Single: return "SINGLE";
-		case Double: return "DOUBLE";
-		case NUL: return "NULL";
-		default: return "UNKNOWN";
-	}
-}
-
-void	print_tokens(t_token *tokens)
-{
-	int i = 0;
-	printf(CYAN "\n--- Token Debug ---\n" RESET);
-	while (tokens)
-	{
-		if (tokens->value)
-		{
-			printf(CYAN "[%02d] Token: %-20s | Len: %-2d | Type: %-14s | State: %-10s\n" RESET,
-				i++,
-				tokens->value,
-				tokens->len,
-				token_type_to_str(tokens->type),
-				state_to_str(tokens->state));
-		}
-		else
-		{
-			printf(CYAN "[%02d] Token: %-20s | Len: %-2d | Type: %-14s | State: %-10s\n" RESET,
-				i++,
-				"(null)",
-				tokens->len,
-				token_type_to_str(tokens->type),
-				state_to_str(tokens->state));
-		}
-		tokens = tokens->next;
-	}
-	printf(CYAN "--- End Debug ---\n\n" RESET);
-}
-
-
-
-
-// ****** ✅     ✅   ✅     ✅   ✅   Readline    ✅     ✅   ✅     ✅   ✅     ✅
-
-
 void	execute_command_pipeline(t_minibash *bash, t_env **env, t_token *token, t_cmd **cmd)
 {
-	if (!token && !env)
+	(void)bash;
+	if (token)
 	{
+		debug_print_token_list(token); //? DEBUG
 		parse_input_commands(&token, cmd, *env);
-		execution(bash, env, *cmd);
+		debug_print_cmd_list(*cmd);    //? DEBUG
+		// execution(bash, env, *cmd);
+		//free_command_resources(cmd); 
 	}
-	//free_command_resources(cmd);
 	free_lexer(&token);
 }
 
@@ -166,7 +33,6 @@ void	execute_command_pipeline(t_minibash *bash, t_env **env, t_token *token, t_c
 void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env **env)
 {
 	(void) env;
-	(void) cmd;
 	char	*line;
 
 	while (true)
@@ -182,11 +48,6 @@ void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env **env)
 			ft_putendl_fd("minishell: syntax error", 2);
 			//bash->exit_status = 258;
 			//free_lexer(&tokens);
-		}
-		else
-		{
-			
-			// print_tokens(tokens); // debug
 		}
 		execute_command_pipeline(bash, env, tokens, &cmd);
 		tokens = NULL;
@@ -228,7 +89,6 @@ int	main(int ac, char **av, char **env)
 	}
 	using_history();
 	ft_readline(bash, tokens, cmd, &bash->env);
-	debug_print_command(cmd);
 	free_minibash(&bash); // this is not finishe yet , only free env 
 	return (bash->exit_status);
 }

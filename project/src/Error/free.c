@@ -6,11 +6,19 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 12:30:39 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/06 19:05:30 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/12 23:52:25 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
+
+void	display_syntax_error(t_minibash *bash)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putendl_fd("syntax error near unexpected token `newline'", 2);
+	bash->exit_status = 1;
+	exit(1);
+}
 
 void	free_lexer(t_token **token)
 {
@@ -30,22 +38,17 @@ void	free_lexer(t_token **token)
 	}
 }
 
-void	free_minibash(t_minibash **bash) // not finish yet
+void	free_2d(char **array)
 {
-	t_env	*current;
-	t_env	*next;
+	int	i;
 
-	if (!bash || !*bash)
+	if (!array)
 		return ;
-	current = (*bash)->env;
-	while (current)
+	i = 0;
+	while (array[i])
 	{
-		next = current->next;
-		free(current->name);
-		free(current->value);
-		free(current);
-		current = next;
+		free(array[i]);
+		i++;
 	}
-	free(*bash);
-	*bash = NULL;
+	free(array);
 }

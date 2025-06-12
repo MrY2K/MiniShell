@@ -39,7 +39,7 @@ void	parse_input_commands(t_token **token_list, t_cmd **cmd_list, t_env *env)
 */
 void	append_command(t_cmd **cmd_list, t_cmd *new_cmd)
 {
-	t_cmd	*last;
+    t_cmd	*last;
 
 	if (!cmd_list || !new_cmd)
 		return ;

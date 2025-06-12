@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 09:25:15 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/09 01:12:56 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/12 23:50:25 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 // redirection struct 
 
 typedef struct s_cmd t_cmd;
+typedef struct s_env t_env;
+
 
 typedef struct s_redirect
 {
@@ -27,6 +29,16 @@ typedef struct s_redirect
 	struct s_redirect	*next;
 }	t_redirect;
 
+
+/*  export  */
+
+typedef struct s_export_parser // check_var
+{
+	char	*name; // ptr_1
+	char	*value; // ptr_2
+	t_env	*env_node; // elem
+	char	**list;
+}	t_export_parser;
 
 /*		Parsing	*/
 
@@ -144,7 +156,7 @@ typedef struct s_pipe
 
 
 typedef struct s_minibash
-{	char	**path;
+{
 	t_env	*env;
 	int		exit_status;
 }	t_minibash;

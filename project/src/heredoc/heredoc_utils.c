@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 10:59:30 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/03 09:45:21 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/12 12:24:13 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,47 @@ char	*ft_strjoin_with_null(char *s1, char *s2)
 	ft_memcpy(joined + len1, s2, len2);
 	joined[len1 + len2] = '\0';
 	return (joined);
+}
+
+void	create_tmp_herdoc_files(t_cmd *tmp_cmd, char *idx_to_char)
+{
+	t_cmd		*cmd;
+	t_heredoc	*heredoc;
+	char		*path;
+	char		*line;
+
+	if (!tmp_cmd)
+		return ;
+	cmd = tmp_cmd;
+	while (cmd)
+	{
+		heredoc = cmd->heredoc;
+		while (cmd && heredoc)
+		{
+			idx_to_char = ft_itoa(heredoc->index);
+			line = ft_strjoin_with_null(heredoc->delimiter, idx_to_char);
+			free (idx_to_char);
+			path = ft_strjoin_with_null("/tmp/minishell/heredoc", line);
+			free (line);
+			heredoc->fd = open(path, O_CREAT | O_WRONLY | O_APPEND, 0600);
+			free (path);
+			close(heredoc->fd);
+			heredoc = heredoc->next;
+		}
+		cmd = cmd->next;
+	}
+}
+
+char	*get_path(t_heredoc *heredoc)
+{
+	char	*path;
+	char	*line;
+	char	*index_toa;
+
+	index_toa = ft_itoa(heredoc->index);
+	line = ft_strjoin_with_null(heredoc->delimiter, index_toa);
+	path = ft_strjoin("/tmp/minshell/heredoc", line);
+	free (line);
+	free (index_toa);
+	return (path);
 }

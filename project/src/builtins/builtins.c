@@ -34,8 +34,8 @@ void	execute_builtins(t_minibash *bash, t_env **env, t_cmd *cmd)
 		builtin_cd(bash, env, cmd);
 	else if (!ft_strcmp(cmd->main_cmd, "unset"))
 		builtin_unset(bash, cmd->argument);
-	// else if (!ft_strcmp(cmd->main_cmd, "export"))
-	// 	export(bash, cmd);
+	else if (!ft_strcmp(cmd->main_cmd, "export"))
+		builtin_export(bash, env, cmd);
 	else if (!ft_strcmp(cmd->main_cmd, "pwd"))
 		builtin_pwd(bash, cmd);
 	else if (!ft_strcmp(cmd->main_cmd, "env"))
@@ -46,3 +46,31 @@ void	execute_builtins(t_minibash *bash, t_env **env, t_cmd *cmd)
 		builtin_exit(bash, cmd);
 }
 
+void	execute_parent_builtin(t_minibash *bash, t_env **env, t_cmd *cmd)
+{
+	if (has_redirections(cmd))
+		if (validate_redirection_file(cmd))
+			return ;
+	if (cmd->argument[1]) // with argument is normally unset export
+		execute_builtins(bash, env, cmd);
+	if (!ft_strcmp(cmd->main_cmd, "exit") && !cmd->argument[1])
+		execute_builtins(bash, env, cmd);
+	if (!ft_strcmp(cmd->main_cmd, "cd") && !cmd->argument[1])
+		execute_builtins(bash, env, cmd);
+}
+
+bool	is_parent_builtins(t_cmd *cmd)
+{
+	t_cmd	*tmp;
+
+	tmp = cmd;
+    if (ft_strcmp(tmp->main_cmd, "export") == 0 && tmp->argument[1])
+        return (true);
+    if (ft_strcmp(tmp->main_cmd, "unset") == 0 && tmp->argument[1])
+        return (true);
+    if (ft_strcmp(tmp->main_cmd, "cd") == 0)
+        return (true);
+    if (ft_strcmp(tmp->main_cmd, "exit") == 0)
+        return (true);
+    return (false);
+}

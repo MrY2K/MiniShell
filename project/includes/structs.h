@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 09:25:15 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/12 23:50:25 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/12 23:58:13 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,22 @@
 
 # include "minishell.h"
 
-// redirection struct 
 
+// structure for combining arguments.
+typedef struct s_ps
+{
+	int		idx;
+	int		j;
+	int		arg_len;
+	int		join_len;
+	char	**new_args;
+}				t_ps;
+
+// redirection struct 
 typedef struct s_cmd t_cmd;
 typedef struct s_env t_env;
+
+
 
 
 typedef struct s_redirect

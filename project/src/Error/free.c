@@ -6,11 +6,11 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 12:30:39 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/12 23:52:25 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/12 23:57:22 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void	display_syntax_error(t_minibash *bash)
 {

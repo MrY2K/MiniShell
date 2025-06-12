@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/11 13:40:21 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:03:10 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	builtin_unset(t_minibash *bash, char **args);
 
 bool			is_builtins(t_cmd *cmd);
 void	execute_builtins(t_minibash *bash, t_env **env, t_cmd *cmd);
+bool	is_parent_builtins(t_cmd *cmd);
+void	execute_parent_builtin(t_minibash *bash, t_env **env, t_cmd *cmd);
 
 // export 
 void	builtin_export(t_minibash *bash, t_env **env, t_cmd *cmd);
@@ -57,6 +59,7 @@ void			export_error(t_minibash *bash, char *content);
 void			print_cmd_err(t_minibash *bash, char *cmd, char *msg, int exit);
 // void			execute_builtin(t_minibash *bash, t_cmd *cmd);
 void			display_errno_exit(char *msg, int status);
+void			display_syntax_error(t_minibash *bash);
 
 /*		EXPORT UTILS	*/
 //void			display_exported_variable(t_minibash *bash);
@@ -145,17 +148,34 @@ int		count_pipes(t_cmd *cmd);
 // REDIRECTIONS 
 
 void	handle_redirections(t_minibash *bash, t_cmd *cmd);
+int 	validate_redirection_file(t_cmd *list);
 
 // herdoc 
 
 int		handle_heredoc_input(t_cmd *cmd);
+int		setup_heredoc_input(int fd, char *file);
+char	*generate_heredoc_file_name(t_heredoc *her);
+t_cmd	*get_last_heredoc(t_cmd *cmd);
+int	open_heredoc_file(char *file);
+
 
 // parsing 
 
 void	parse_command(t_token **token, t_cmd **cmd, t_env *env);
+bool	handle_heredocs(t_minibash *bash, t_env **env, t_cmd *tmp_cmd);
+void	create_tmp_herdoc_files(t_cmd *tmp_cmd, char *idx_to_char);
+int		process_her_with_signals(t_minibash *bash, t_env **env, t_cmd *cmd);
+char	*get_path(t_heredoc *heredoc);
+void	write_in_heredoc_files(t_minibash *bash, t_env **env, t_heredoc *heredoc, char *line);
 
+char	*expand(t_minibash *bash, t_env **env, char *str);
+void	lookup_env_var(t_env **env, char *arg, char **str, int *i);
+int 	search(const char *str, const char *to_find);
 
+// pipes
 
+int	**allocate_pipe_fds(t_minibash *bash, int command_count);
+void	cleanup_pipe_resources(t_pipe *pi_pe);
 
 
 

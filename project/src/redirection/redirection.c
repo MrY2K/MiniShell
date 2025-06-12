@@ -6,16 +6,16 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 11:08:12 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/05 12:10:31 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/12 12:29:42 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-
 /*
 	An ambiguous redirect occurs when the shell cannot determine exactly 
-	which file the redirection should target, typically due to variable expansion issues
+	which file the redirection should target, 
+		typically due to variable expansion issues
 
 		echo hello > $VAR
 
@@ -44,9 +44,7 @@ void	handle_append_redirect(t_minibash *bash, char *file, int is_ambig)
 		display_ambiguous_errno(bash, 1);
 	if (!file || !file[0])
 	{
-		ft_putendl_fd("minishell: syntax error near unexpected token `newline'", 2);
-		bash->exit_status = 1;
-		exit(1);
+		display_syntax_error(bash);
 	}
 	fd = open(file, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	if (fd < 0)
@@ -72,9 +70,7 @@ void	handle_output_redirect(t_minibash *bash, char *file, int is_ambig)
 		display_ambiguous_errno(bash, 1);
 	if (!file || !file[0])
 	{
-		ft_putendl_fd("minishell: syntax error near unexpected token `newline'", 2);
-		bash->exit_status = 1;
-		exit(1);
+		display_syntax_error(bash);
 	}
 	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
@@ -100,9 +96,7 @@ void	handle_input_redirect(t_minibash *bash, char *file, int is_ambig)
 		display_ambiguous_errno(bash, 1);
 	if (!file || !file[0])
 	{
-		ft_putendl_fd("minishell: syntax error near unexpected token `newline'", 2);
-		bash->exit_status = 1;
-		exit(1);
+		display_syntax_error(bash);
 	}
 	fd = open(file, O_RDONLY, 0644);
 	if (fd < 0)
@@ -122,7 +116,7 @@ void	handle_input_redirect(t_minibash *bash, char *file, int is_ambig)
 
 void	handle_redirections(t_minibash *bash, t_cmd *cmd)
 {
-	t_redirect *red;
+	t_redirect	*red;
 
 	red = cmd->redirections;
 	while (red)
@@ -141,4 +135,31 @@ void	handle_redirections(t_minibash *bash, t_cmd *cmd)
 		}
 		red = red->next;
 	}
+}
+
+int validate_redirection_file(t_cmd *list)
+{
+    t_cmd *cmd;
+    int   fd;
+
+    if (list == NULL)
+        return (0);  // No error - success
+    
+    cmd = list;
+    while (cmd->redirections)
+    {
+        fd = -1;
+        
+        if (cmd->redirections->type == TOKEN_REDIR_APPEND)
+            fd = open(cmd->redirections->file_path, O_CREAT | O_WRONLY | O_APPEND, 0644);
+        else if (cmd->redirections->type == TOKEN_REDIR_OUT)
+            fd = open(cmd->redirections->file_path, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+        else if (cmd->redirections->type == TOKEN_REDIR_IN)
+            fd = open(cmd->redirections->file_path, O_RDONLY, 0644);
+        if (fd < 0)
+            return (1);
+        close(fd);
+        cmd->redirections = cmd->redirections->next;
+    }
+    return (0);
 }

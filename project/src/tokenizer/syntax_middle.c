@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 12:17:12 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/11 13:41:22 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/12 09:30:49 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	is_redirection(t_token *cur_node)
 		|| (cur_node)->type == TOKEN_REDIR_APPEND
 		|| (cur_node)->type == TOKEN_HEREDOC);
 }
+
+/* special_char  : > < |  && || >> */
 
 int	special_char(t_token *token)
 {
@@ -56,16 +58,15 @@ void	normal_cases(t_token **middle)
 }
 
 /*
-	Case 1: Redirection operator found
-		Move past the redirection operator
-		Skip spaces after redirection
-		
-		echo hello >  echo hello > > file  echo hello > | 
-			grep  cat <<   cat <  echo hello >> < file   echo hello >>
+	case 1 :
+		echo hello >
+		echo hello > > file   echo hello >> < file
+		echo hello > | grep
 	
 	case 2 :
-		ls | |
-	
+			ls |
+			ls | | grep
+		
 		
 */
 int	check_middle_syntax(t_token **middle, enum e_state NOR)

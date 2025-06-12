@@ -6,12 +6,11 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 11:13:02 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/10 10:13:47 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/12 12:55:43 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
 
 char	*get_env_variable(char *name, char **env)
 {
@@ -75,7 +74,9 @@ char	*handle_absolute_path(char *command)
 
 char	*handle_relative_path(char *command)
 {
-	if (ft_strcmp(command, ".") == 0 || ft_strcmp(command, "..") == 0)
+	if (ft_strcmp(command, ".") == 0)
+		return (NULL);
+	if (ft_strcmp(command, "..") == 0)
 		return (NULL);
 	if (access(command, F_OK) == -1)
 		return (NULL);

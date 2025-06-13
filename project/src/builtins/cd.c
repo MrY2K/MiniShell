@@ -6,79 +6,60 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:28:31 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/06 19:03:19 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/13 20:04:52 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-
-//  ✅   ✅   ✅    second edition ✅  ✅ ✅   ✅ 
-
-
-// void	handell_telda(t_minibash *bash, char **env, char *path, char *arg) // cd ~ cd ~/Desktop
-// {
-// 	path = get_environment_variable(env, "HOME");
-// 	if (arg[1] == '/')
-// 		path = ft_strjoin(path, ft_strchr(arg, '/'));
-// 	if (!path)
-// 		print_cmd_err(bash, "cd", "HOME not set", 1);
-// 	else if (chdir(path) == -1)
-// 		exit_with_error("cd", 1, bash);
-// }
-
-void handle_tilde_expansion(t_minibash *bash, char **env, char *path, char *arg)
+void	handle_tilde_expansion(t_minibash *bash, char **env,
+		char *path, char *arg)
 {
-    char *home_path;
-    char *final_path;
-    
-    home_path = get_environment_variable(env, "HOME");
-    if (arg[1] == '/')
-    {
-        final_path = ft_strjoin(home_path, ft_strchr(arg, '/'));
-        path = final_path;
-    }
-    else
-        path = home_path;
-        
-    if (!path)
-        print_cmd_err(bash, "cd", "HOME not set", 1);
-    else if (chdir(path) == -1)
-        exit_with_error("cd", 1, bash);
-    
-    if (arg[1] == '/' && final_path)
-        free(final_path);
+	char	*home_path;
+	char	*final_path;
+
+	home_path = get_environment_variable(env, "HOME");
+	if (arg[1] == '/')
+	{
+		final_path = ft_strjoin(home_path, ft_strchr(arg, '/'));
+		path = final_path;
+	}
+	else
+		path = home_path;
+	if (!path)
+		print_cmd_err(bash, "cd", "HOME not set", 1);
+	else if (chdir(path) == -1)
+		exit_with_error("cd", 1, bash);
+	if (arg[1] == '/' && final_path)
+		free(final_path);
 }
 
-void handle_special_paths(t_minibash *bash, char **env, char *dir_path)
+void	handle_special_paths(t_minibash *bash, char **env, char *dir_path)
 {
-    bash->exit_status = 0;
-    if (dir_path[0] == '-' && !dir_path[1])  // cd -
-    {
-        dir_path = get_environment_variable(env, "OLDPWD");
-        if (!dir_path)
-            print_cmd_err(bash, "cd", "OLDPWD not set", 1);
-        if (chdir(dir_path) == -1)
-            print_cmd_err(bash, "cd", strerror(errno), 1);
-        else 
-            printf("%s\n", dir_path);
-    }
-    else if (!ft_strcmp(dir_path, "--"))  // cd --
-    {
-        dir_path = get_environment_variable(env, "HOME");
-        if (!dir_path)
-            print_cmd_err(bash, "cd", "HOME not set", 1);
-        if (chdir(dir_path) == -1)
-            print_cmd_err(bash, "cd", strerror(errno), 1);
-    }
-    else if (chdir(dir_path) == -1)  // Regular path
-    {
-        print_cmd_err(bash, "cd", strerror(errno), 1);
-    }
+	bash->exit_status = 0;
+	if (dir_path[0] == '-' && !dir_path[1])
+	{
+		dir_path = get_environment_variable(env, "OLDPWD");
+		if (!dir_path)
+			print_cmd_err(bash, "cd", "OLDPWD not set", 1);
+		if (chdir(dir_path) == -1)
+			print_cmd_err(bash, "cd", strerror(errno), 1);
+		else
+			printf("%s\n", dir_path);
+	}
+	else if (!ft_strcmp(dir_path, "--"))
+	{
+		dir_path = get_environment_variable(env, "HOME");
+		if (!dir_path)
+			print_cmd_err(bash, "cd", "HOME not set", 1);
+		if (chdir(dir_path) == -1)
+			print_cmd_err(bash, "cd", strerror(errno), 1);
+	}
+	else if (chdir(dir_path) == -1)
+		print_cmd_err(bash, "cd", strerror(errno), 1);
 }
 
-
-void	builtin_cd(t_minibash	*bash, t_env **env, t_cmd	*cmd)
+void	builtin_cd(t_minibash *bash, t_env **env, t_cmd *cmd)
 {
 	t_cd	cd;
 
@@ -101,8 +82,6 @@ void	builtin_cd(t_minibash	*bash, t_env **env, t_cmd	*cmd)
 		else
 			handle_special_paths(bash, cd.arr_env, cd.path);
 	}
-	update_env_var(env, cd.arr_env,cd.user_arg, "OLDPWD"); // user_arg
+	update_env_var(env, cd.arr_env, cd.user_arg, "OLDPWD");
 	free_env_arr(cd.arr_env);
 }
-// echo "$USER" | grep "home" >> file | << 42 | cat '$USER'
-

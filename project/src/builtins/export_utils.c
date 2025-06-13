@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 10:35:02 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/09 11:45:50 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/13 12:18:20 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,15 @@
 
 bool	is_allowed_variable_character(char c)
 {
-    if (c >= 'a' && c <= 'z')
-        return (true); 
-    if (c >= 'A' && c <= 'Z')
-        return (true);
-    if (c >= '0' && c <= '9')
-        return (true);
-    if (c == '_')
-        return (true);
-    return (false);
+	if ((c >= 'a' && c <= 'z')
+		|| (c >= 'A' && c <= 'Z')
+		|| (c >= '0' && c <= '9')
+		|| c == '_')
+		return (true);
+	return (false);
 }
 
-bool	is_contains_char(char	*str, char target_char)
+bool	is_contains_char(char *str, char target_char)
 {
 	int	i;
 
@@ -40,6 +37,7 @@ bool	is_contains_char(char	*str, char target_char)
 	}
 	return (false);
 }
+
 t_env	*create_new_node(void *var, void *data)
 {
 	t_env	*new;
@@ -48,7 +46,7 @@ t_env	*create_new_node(void *var, void *data)
 	if (!new)
 		return (NULL);
 	new->name = var;
-	new->name = data;
+	new->value = data;
 	new->next = NULL;
 	return (new);
 }

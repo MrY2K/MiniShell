@@ -6,11 +6,18 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 08:49:22 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/12 12:53:47 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/13 09:50:35 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+/*
+	1 - Get the last heredoc in the command (only the last one is used as input)
+	2 - Generate a unique temporary filename for the heredoc
+	3 - Open the temporary heredoc file for reading
+	4 - Redirect the file to STDIN using dup2 so the command reads from it
+*/
 
 int	handle_heredoc_input(t_cmd *cmd)
 {
@@ -30,8 +37,11 @@ int	handle_heredoc_input(t_cmd *cmd)
 		free(file);
 		return (0);
 	}
-	if (!setup_heredoc_input(fd, file))
+	if (!setup_heredoc_input(fd))
+	{
+		free(file);
 		return (0);
+	}
 	free(file);
 	return (1);
 }
@@ -76,6 +86,12 @@ void	execute_single_cmd(t_minibash *bash, t_env **env, t_cmd *cmd)
 	if (!is_builtins(cmd))
 		execute_external_cmd(bash, env, cmd, cmd->argument);
 }
+
+/*
+	Case 1 :
+		cat << ONE << TWO > out.txt
+
+*/
 
 void	execute_command(t_minibash *bash, t_env **env, t_cmd *cmd)
 {

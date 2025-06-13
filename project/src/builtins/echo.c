@@ -1,22 +1,16 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   echo.c                                             :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2025/05/11 09:22:35 by ajelloul          #+#    #+#             */
-// /*   Updated: 2025/05/13 11:09:46 by ajelloul         ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/11 09:22:35 by ajelloul          #+#    #+#             */
+/*   Updated: 2025/06/13 12:14:13 by ajelloul         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-// /**
-//  * Checks if a string is a valid -n option for echo
-//  * Valid options are: -n, -nn, -nnn, etc.
-//  * Returns true if valid, false otherwise
-//  */
 
 static bool	is_n_option(char *str)
 {
@@ -36,10 +30,6 @@ static bool	is_n_option(char *str)
 	return (true);
 }
 
-/**
- * Prints the arguments with spaces between them
- */
-
 static void	print_arguments(char **args, int start_idx)
 {
 	int	i;
@@ -53,11 +43,6 @@ static void	print_arguments(char **args, int start_idx)
 		i++;
 	}
 }
-
-/**
- * Implementation of the echo builtin command
- * Handles the -n option to suppress the trailing newline
- */
 
 void	builtin_echo(t_minibash *bash, t_cmd *cmd)
 {

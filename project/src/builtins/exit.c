@@ -1,56 +1,16 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   exit.c                                             :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2025/05/16 08:33:49 by ajelloul          #+#    #+#             */
-// /*   Updated: 2025/05/20 16:12:40 by ajelloul         ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/16 08:33:49 by ajelloul          #+#    #+#             */
+/*   Updated: 2025/06/13 12:15:45 by ajelloul         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-// /*
-// 	1) - If no arguments, Exit with the last known exit code stored in 
-// 	2) - exit ++5
-	
-// */
-
-// /*
-// 	if (status < 0)
-// 		status += 256;
-
-// 	exit -1000
-// 	ft_atoi("-1000") → status = -1000
-
-// 	-1000 + 256 = -744
-
-// 	exit(-744) → undefined behavior 😵
-// 	❌ You can't pass negative numbers to exit().
-
-// */
-
-// /*
-
-//  * The shell exit code is determined using only the least significant 8 bits 
-//  * of the integer passed to exit().
-//  * This is equivalent to performing a modulo 256 operation:
-//  *     exit_code = status % 256;
-//  * 
-//  * In C, casting an int to an unsigned char automatically applies 
-//  * this modulo behavior,
-//  * wrapping any integer (positive or negative) into the range [0, 255].
-//  *
-//  * This prevents overflow and ensures consistent behavior:
-//  *   - Positive values larger than 255 are wrapped:   300 % 256 = 44
-//  *   - Negative values are wrapped to valid exit codes: -1 % 256 = 255
-//  *
-//  * By casting the value with (unsigned char), we ensure that:
-//  *   exit((unsigned char)status);
-//  * always provides a valid exit code in the standard shell range.
-//  */
 
 static int	count_argument(char **str)
 {

@@ -2,8 +2,8 @@
 #include "../../includes/structs.h"
 
 /*
-	todo:
-	todo: move each function to its place 
+	* move each function to its place 
+	todo: understand how parser work step by step
 	todo: handle red
 */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_fork.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 08:49:22 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/13 09:50:35 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/13 20:06:53 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	handle_heredoc_input(t_cmd *cmd)
 		free(file);
 		return (0);
 	}
-	if (!setup_heredoc_input(fd))
+	if (!setup_heredoc_input(fd, file))
 	{
 		free(file);
 		return (0);

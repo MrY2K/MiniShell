@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 06:55:52 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/10 11:38:27 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/13 12:21:15 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*extract_variable_name(char *str)
 	len = 0;
 	while (str[len] && str[len] != '=')
 		len++;
-	var_name = (char *)malloc(sizeof(char) * (len + 1)); // ++len len ++ linkedin post
+	var_name = (char *)malloc(sizeof(char) * (len + 1));
 	if (!str)
 		return (NULL);
 	len = 0;
@@ -33,7 +33,7 @@ char	*extract_variable_name(char *str)
 	return (var_name);
 }
 
-char	**split_var_value_pair(char	*str) // split this export VAR=value
+char	**split_var_value_pair(char *str)
 {
 	char	**new;
 	char	*equals_pos;
@@ -59,15 +59,14 @@ char	**split_var_value_pair(char	*str) // split this export VAR=value
 	return (new);
 }
 
-
-int	is_valid_variable_name(t_minibash *bash, char *str) // chaeck is valid 
+int	is_valid_variable_name(t_minibash *bash, char *str)
 {
 	int	i;
 
 	if (!str)
 		return (1);
 	i = 0;
-	if (str[i] == '=' || ft_isdigit(str[0]) || str[i] == '\0') // =  =VAR  42var 
+	if (str[i] == '=' || ft_isdigit(str[0]) || str[i] == '\0')
 	{
 		export_error(bash, str);
 		return (1);
@@ -90,9 +89,9 @@ int	init_empty_env(t_minibash *bash, t_env **env, t_cmd *cmd)
 
 	if (*env)
 		return (0);
-	if (!cmd->argument[1] || cmd->argument[1][0] == '\0') // export  export ""
+	if (!cmd->argument[1] || cmd->argument[1][0] == '\0')
 	{
-		if (cmd->argument[1] != NULL && cmd->argument[1][0] == '\0') // export ""
+		if (cmd->argument[1] != NULL && cmd->argument[1][0] == '\0')
 			export_error(bash, cmd->argument[1]);
 		return (1);
 	}
@@ -108,6 +107,11 @@ int	init_empty_env(t_minibash *bash, t_env **env, t_cmd *cmd)
 	return (0);
 }
 
+/*
+	export VAR1=hello VAR2=world VAR3=test
+	ila faild foot  export var1=valid 2var=invalid var3=valid
+*/
+
 void	builtin_export(t_minibash *bash, t_env **env, t_cmd *cmd)
 {
 	int	i;
@@ -115,9 +119,9 @@ void	builtin_export(t_minibash *bash, t_env **env, t_cmd *cmd)
 	if (init_empty_env(bash, env, cmd))
 		return ;
 	i = 1;
-	while (cmd->argument[i]) // export VAR1=hello VAR2=world VAR3=test
+	while (cmd->argument[i])
 	{
-		if (is_valid_variable_name(bash, cmd->argument[i])) // ila faild foot  export var1=valid 2var=invalid var3=valid
+		if (is_valid_variable_name(bash, cmd->argument[i]))
 			i++;
 		else
 			process_export_args(env, cmd, &i);

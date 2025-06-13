@@ -20,11 +20,11 @@ void	execute_command_pipeline(t_minibash *bash, t_env **env, t_token *token, t_c
 	(void)bash;
 	if (token)
 	{
-		debug_print_token_list(token); //? DEBUG
+		// debug_print_token_list(token); //? DEBUG
 		parse_input_commands(&token, cmd, *env);
-		debug_print_cmd_list(*cmd);    //? DEBUG
-		// execution(bash, env, *cmd);
-		//free_command_resources(cmd); 
+		// debug_print_cmd_list(*cmd);    //? DEBUG
+		execution(bash, env, *cmd);
+		// free_command_resources(cmd); 
 	}
 	free_lexer(&token);
 }

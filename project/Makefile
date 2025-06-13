@@ -8,14 +8,15 @@
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Darwin)
 	READLINE_DIR := $(shell brew --prefix readline)
-	CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code -I$(INCLUDE_DIR) -I$(READLINE_DIR)/include
+#CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code -I$(INCLUDE_DIR) -I$(READLINE_DIR)/include
+	CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code -g -fsanitize=address -I$(INCLUDE_DIR) -I$(READLINE_DIR)/include
 	LDFLAGS      = -L$(READLINE_DIR)/lib -lreadline -lhistory -lncurses
 	os_msg = "$(GREEN)OS DETECTED Mac!$(RESET)"
 
 else ifeq ($(UNAME_S),Linux)
 # CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code #!Edit
 
-	CFLAGS       = -Wall -Wextra -Werror 
+	CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code -g -fsanitize=address
 	LDFLAGS      = -L$(READLINE_DIR)/lib -lreadline -lhistory -lncurses #!edit
 	os_msg = "$(GREEN)OS DETECTED Linux!$(RESET)"
 endif

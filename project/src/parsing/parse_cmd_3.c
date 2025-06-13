@@ -6,8 +6,9 @@
 */
 void	free_argument_array(char **arr)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	if (!arr)
 		return ;
 	while (arr[i])
@@ -74,11 +75,11 @@ void	skip_nonword_tokens(t_token **tok_ptr, t_env *env)
 	{
 		*tok_ptr = (*tok_ptr)->next;
 		skip_whitespace(tok_ptr);
-		while ((*tok_ptr) && (*tok_ptr)->state == Normal &&
-			(((*tok_ptr)->type == '\"') || ((*tok_ptr)->type == '\'')))
+		while ((*tok_ptr) && (*tok_ptr)->state == Normal
+			&& (((*tok_ptr)->type == '\"') || ((*tok_ptr)->type == '\'')))
 			*tok_ptr = (*tok_ptr)->next;
-		if ((*tok_ptr) && (*tok_ptr)->state == Normal &&
-			((*tok_ptr)->type != '\"') && ((*tok_ptr)->type != '\'')
+		if ((*tok_ptr) && (*tok_ptr)->state == Normal
+			&& ((*tok_ptr)->type != '\"') && ((*tok_ptr)->type != '\'')
 			&& ((*tok_ptr)->type != '|'))
 			process_word(tok_ptr, env, 0, &arr);
 		else if ((*tok_ptr) && (((*tok_ptr)->state == Double)

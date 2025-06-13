@@ -6,11 +6,40 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:29:21 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/12 12:38:43 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/13 09:12:38 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	delete_heredoc_files(t_minibash *bash, t_cmd *cmd)
+{
+	t_heredoc_cleanup	cleanup;
+
+	cleanup.current_cmd = cmd;
+	while (cleanup.current_cmd)
+	{
+		cleanup.current_heredoc = cleanup.current_cmd->heredoc;
+		while (cleanup.current_heredoc)
+		{
+			cleanup.index_str = ft_itoa(cleanup.current_heredoc->index);
+			cleanup.temp_path = ft_strjoin_with_null(
+					cleanup.current_heredoc->delimiter, cleanup.index_str);
+			cleanup.full_filepath = ft_strjoin(
+					"/tmp/minishell/heredoc", cleanup.temp_path);
+			if (unlink(cleanup.full_filepath) != 0)
+			{
+				bash->exit_status = 1;
+				perror("Failed to delete heredoc file");
+			}
+			free(cleanup.index_str);
+			free(cleanup.temp_path);
+			free(cleanup.full_filepath);
+			cleanup.current_heredoc = cleanup.current_heredoc->next;
+		}
+		cleanup.current_cmd = cleanup.current_cmd->next;
+	}
+}
 
 /* Case 1: Handle heredoc operations
 	1.1
@@ -47,35 +76,6 @@ int	process_herdoc_builtins(t_minibash *bash, t_env **env, t_cmd *cmd)
 	else if (is_parent_builtins(tmp_cmd) && !has_pipes(tmp_cmd))
 		execute_parent_builtin(bash, env, tmp_cmd);
 	return (0);
-}
-
-void	delete_heredoc_files(t_minibash *bash, t_cmd *cmd)
-{
-	t_heredoc_cleanup	cleanup;
-
-	cleanup.current_cmd = cmd;
-	while (cleanup.current_cmd)
-	{
-		cleanup.current_heredoc = cleanup.current_cmd->heredoc;
-		while (cleanup.current_heredoc)
-		{
-			cleanup.index_str = ft_itoa(cleanup.current_heredoc->index);
-			cleanup.temp_path = ft_strjoin_with_null(
-					cleanup.current_heredoc->delimiter, cleanup.index_str);
-			cleanup.full_filepath = ft_strjoin(
-					"/tmp/minishell/heredoc", cleanup.temp_path);
-			if (unlink(cleanup.full_filepath) != 0)
-			{
-				bash->exit_status = 1;
-				perror("Failed to delete heredoc file");
-			}
-			free(cleanup.index_str);
-			free(cleanup.temp_path);
-			free(cleanup.full_filepath);
-			cleanup.current_heredoc = cleanup.current_heredoc->next;
-		}
-		cleanup.current_cmd = cleanup.current_cmd->next;
-	}
 }
 
 /* Case 1: SIGINT (Ctrl+C) during heredoc */

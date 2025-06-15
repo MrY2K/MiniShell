@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:10:59 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/12 12:26:57 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/15 13:19:19 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	write_in_heredoc_files(t_minibash *bash, t_env **env,
 		free (path);
 		return (perror("open"));
 	}
-	if (heredoc->expand == 1)
+	if (heredoc->expand)
 	{
 		expanded_line = expand_env_var_in_heredoc(bash, line, tmp_env);
 		ft_putendl_fd(expanded_line, fd);

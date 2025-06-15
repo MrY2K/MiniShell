@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:29:21 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/13 09:12:38 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/15 13:29:05 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,12 @@ void	delete_heredoc_files(t_minibash *bash, t_cmd *cmd)
 	1.1
 		echo hej << 42  :  print hej
 
-	Case 3 :
+	Case 3 : line to long >  has_redirections(cmd)
 		cd > file.txt -> change cur dir + create file
+*/
+
+/*
+	echo hej  << 13 > infile
 */
 
 int	process_herdoc_builtins(t_minibash *bash, t_env **env, t_cmd *cmd)
@@ -82,7 +86,7 @@ int	process_herdoc_builtins(t_minibash *bash, t_env **env, t_cmd *cmd)
 /* Case 2: Builtin executed successfully */
 /* Case 3: Continue to pipe/fork execution */
 
-int	execute_builtins_or_herdoc(t_minibash *bash, t_cmd *cmd)
+int	open_her_execute_builtins(t_minibash *bash, t_cmd *cmd)
 {
 	int		her_status;
 	t_env	**env;
@@ -125,7 +129,7 @@ void	execution(t_minibash *bash, t_env **env, t_cmd *cmd)
 	int		pid;
 
 	tmp_cmd = cmd;
-	if (execute_builtins_or_herdoc(bash, tmp_cmd))
+	if (open_her_execute_builtins(bash, tmp_cmd))
 		return ;
 	pid = fork();
 	if (!is_fork_succes(bash, pid))

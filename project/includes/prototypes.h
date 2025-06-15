@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/12 13:03:10 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/14 21:16:50 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ int 	validate_redirection_file(t_cmd *list);
 // herdoc 
 
 int		handle_heredoc_input(t_cmd *cmd);
-int		setup_heredoc_input(int fd, char *file);
+int		setup_heredoc_input(int fd);
 char	*generate_heredoc_file_name(t_heredoc *her);
 t_cmd	*get_last_heredoc(t_cmd *cmd);
 int	open_heredoc_file(char *file);

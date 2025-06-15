@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:28:31 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/13 12:13:01 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/15 15:24:40 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void	builtin_cd(t_minibash *bash, t_env **env, t_cmd *cmd)
 {
 	t_cd	cd;
 
-	cmd = NULL;
 	cd.arr_env = convert_env_list_to_array(env);
 	if (!cmd->argument[1] || cmd->argument[1][0] == 0)
 	{

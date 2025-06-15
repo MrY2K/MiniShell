@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/11 10:04:19 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/15 15:28:17 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	execute_command_pipeline(t_minibash *bash, t_env **env,
 	if (token && env)
 	{
 		parse_input_commands(&token, cmd, *env);
-		ft_putendl_fd("\n parse succes \n", 1);
 		execution(bash, env, *cmd);
 	}
 	//free_command_resources(cmd);
@@ -34,16 +33,19 @@ void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env **env)
 		line = readline("minishell$ ");
 		if (!line)
 		{
-			ft_putstr("exit\n");
+			ft_putendl_fd("exit", 1);
 			exit (bash->exit_status);
 		}
+		if (line && *line) 
+			add_history(line);
 		if (lexer(line, &tokens))
 		{
 			ft_putendl_fd("minishell: syntax error", 2);
 			bash->exit_status = 258;
 			free_lexer(&tokens);
 		}
-		execute_command_pipeline(bash, env, tokens, &cmd);
+		else
+			execute_command_pipeline(bash, env, tokens, &cmd);
 		tokens = NULL;
 		cmd = NULL;
 		free (line);
@@ -61,26 +63,6 @@ static void	init_minibash(t_minibash **bash)
 	ft_memset(*bash, 0, sizeof(t_minibash));
 	(*bash)->exit_status = 0;
 	(*bash)->env = NULL;
-}
-
-void	free_minibash(t_minibash **bash)
-{
-	t_env	*current;
-	t_env	*next;
-
-	if (!bash || !*bash)
-		return ;
-	current = (*bash)->env;
-	while (current)
-	{
-		next = current->next;
-		free(current->name);
-		free(current->value);
-		free(current);
-		current = next;
-	}
-	free(*bash);
-	*bash = NULL;
 }
 
 int	main(int ac, char **av, char **env)

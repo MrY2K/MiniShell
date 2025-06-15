@@ -1,74 +1,72 @@
-# ANSI Color codes
-RESET        = \033[0m
-BOLD         = \033[1m
-BLACK        = \033[30m
-RED          = \033[31m
-GREEN        = \033[32m
-YELLOW       = \033[33m
-BLUE         = \033[34m
-MAGENTA      = \033[35m
-CYAN         = \033[36m
-WHITE        = \033[37m
-BGBLACK      = \033[40m
-BGRED        = \033[41m
-BGGREEN      = \033[42m
-BGYELLOW     = \033[43m
-BGBLUE       = \033[44m
-BGMAGENTA    = \033[45m
-BGCYAN       = \033[46m
-BGWHITE      = \033[47m
+################################################ MANDATORY #############################################
 
+################################################
+#             COMPILER SETTINGS                #
+################################################
 
-# Define the executable name
-NAME         = minishell
+#Ssystem detection
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+	READLINE_DIR := $(shell brew --prefix readline)
+#CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code -I$(INCLUDE_DIR) -I$(READLINE_DIR)/include
+	CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code -g -fsanitize=address -I$(INCLUDE_DIR) -I$(READLINE_DIR)/include
+	LDFLAGS      = -L$(READLINE_DIR)/lib -lreadline -lhistory -lncurses
+	os_msg = "$(GREEN)OS DETECTED Mac!$(RESET)"
 
-# COMPILER SETTINGS
+else ifeq ($(UNAME_S),Linux)
+# CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code #!Edit
+
+	CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code -g -fsanitize=address
+	LDFLAGS      = -L$(READLINE_DIR)/lib -lreadline -lhistory -lncurses #!edit
+	os_msg = "$(GREEN)OS DETECTED Linux!$(RESET)"
+endif
 
 CC           = cc
-READLINE_DIR = /goinfre/ajelloul/homebrew/opt/readline
+# CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code -I$(INCLUDE_DIR) -I$(READLINE_DIR)/include
 
-CFLAGS       = -Wall -Wextra -Werror -I$(INCLUDE_DIR) -I$(READLINE_DIR)/include -g
-LDFLAGS      = -L$(READLINE_DIR)/lib -lreadline -lncurses
+# CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code
+# LDFLAGS      = -lreadline -lhistory -lncurses
+#CFLAGS      += -Wall -Wextra -Werror -fsanitize=address -g3
 
+# LDFLAGS      = -L$(READLINE_DIR)/lib -lreadline -lhistory -lncurses
 
-# Uncomment for extra optimization or debug flags
-#CFLAGS      += -Ofast
-#CFLAGS      += -fsanitize=address -g3
-#CFLAGS      += -Wunreachable-code
-
-# DIRECTORIES
+################################################
+#                 DIRECTORIES                  #
+################################################
 
 SRC_DIR      = src
-BUILD_DIR    = .build
+BUILD_DIR    = $(SRC_DIR)/.build
 INCLUDE_DIR  = includes
 
-
-# directories
+# Sub directories
 BUILTINS_DIR = $(SRC_DIR)/builtins
+LIB_DIR      = $(SRC_DIR)/lib
 ENV_DIR      = $(SRC_DIR)/env
+ERROR_DIR    = $(SRC_DIR)/Error
 EXEC_DIR     = $(SRC_DIR)/exec
 HEREDOC_DIR  = $(SRC_DIR)/heredoc
 PARSING_DIR  = $(SRC_DIR)/parsing
 REDIR_DIR    = $(SRC_DIR)/redirection
 SIGNALS_DIR  = $(SRC_DIR)/signals
 TOKEN_DIR    = $(SRC_DIR)/tokenizer
-LIB_DIR      = $(SRC_DIR)/lib
-ERROR_DIR    = $(SRC_DIR)/error
+
+################################################
+#                  FILES                       #
+################################################
+
+# Define the executable name
+NAME         = minishell
 
 # HEADERS
-
 HEADERS      = $(wildcard $(INCLUDE_DIR)/*.h)
 
-
-
 # Define source files
-MAIN_SRC     = $(SRC_DIR)/main.c
+MAIN_SRC     = $(SRC_DIR)/main.c $(SRC_DIR)/utils.c $(SRC_DIR)/debug.c
 
 # Builtin sources
 BUILTINS_SRC = $(wildcard $(BUILTINS_DIR)/*.c)
 
-
-# Other module sources
+# Other sub sources
 ENV_SRC      = $(wildcard $(ENV_DIR)/*.c)
 EXEC_SRC     = $(wildcard $(EXEC_DIR)/*.c)
 HEREDOC_SRC  = $(wildcard $(HEREDOC_DIR)/*.c)
@@ -100,10 +98,11 @@ DEPS         = $(OBJS:.o=.d)
 LIB          = $(LIB_DIR)/libft.a
 LIB_HDR      = $(LIB_DIR)/libft.h
 
+################################################
+#                   RULES                      #
+################################################
 
-# RULES
-
-.PHONY: all clean fclean re libclean libfclean debug norm  practice
+.PHONY: all clean fclean re libclean libfclean debug norm banner practice
 
 # Default target
 all:  $(NAME)
@@ -119,7 +118,7 @@ $(BUILD_DIR):
 	@mkdir -p $(BUILD_DIR)/redirection
 	@mkdir -p $(BUILD_DIR)/signals
 	@mkdir -p $(BUILD_DIR)/tokenizer
-	@mkdir -p $(BUILD_DIR)/error
+	@mkdir -p $(BUILD_DIR)/Error
 	@printf "$(CYAN)$(BOLD)%s$(RESET)\n" "Build directory structure created"
 
 
@@ -132,7 +131,7 @@ $(LIB):
 # Compile minishell
 $(NAME): $(BUILD_DIR) $(LIB) $(OBJS)
 	@printf "$(CYAN)$(BOLD)%s$(RESET)\n" "Linking minishell..."
-	@$(CC) $(CFLAGS) $(OBJS) $(LIB) $(LDFLAGS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIB) $(LDFLAGS) -o $(NAME)
 	@printf "$(GREEN)$(BOLD)%s$(RESET)\n" "✓ $(NAME) successfully built!"
 	@printf "$(GREEN)$(BOLD)%s$(RESET)\n" "Run ./minishell to start your shell!"
 
@@ -168,14 +167,6 @@ fclean: clean libfclean
 # Rebuild
 re: fclean all
 
-# Debug mode
-debug: CFLAGS += -g3 -fsanitize=address
-debug: re
-	@printf "$(MAGENTA)%s$(RESET)\n" "Debug mode enabled with -g3 and -fsanitize=address"
-
-# Banner
-
-
 # Norminette check
 norm:
 	@printf "$(YELLOW)%s$(RESET)\n" "Running norminette..."
@@ -187,3 +178,39 @@ norm:
 practice : all clean
 	@clear
 
+cl:
+	$(shell cl)
+
+readline:
+	$(shell 42-wizzard-brew)
+	$(shell brew install readline)
+	$(shell brew install ncurses)
+	$(shell brew link readline --force)
+	$(shell export LDFLAGS="-L$(brew --prefix readline)/lib")
+	$(shell export CPPFLAGS="-I$(brew --prefix readline)/include")
+
+# Include dependencies
+-include $(DEPS)
+
+################################################
+#                 COLORS                       #
+################################################
+
+RESET        = \033[0m
+BOLD         = \033[1m
+BLACK        = \033[30m
+RED          = \033[31m
+GREEN        = \033[32m
+YELLOW       = \033[33m
+BLUE         = \033[34m
+MAGENTA      = \033[35m
+CYAN         = \033[36m
+WHITE        = \033[37m
+BGBLACK      = \033[40m
+BGRED        = \033[41m
+BGGREEN      = \033[42m
+BGYELLOW     = \033[43m
+BGBLUE       = \033[44m
+BGMAGENTA    = \033[45m
+BGCYAN       = \033[46m
+BGWHITE      = \033[47m

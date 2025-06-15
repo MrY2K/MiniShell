@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/15 15:28:17 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/15 16:06:28 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env **env)
 		line = readline("minishell$ ");
 		if (!line)
 		{
-			ft_putendl_fd("exit", 1);
+			ft_putendl_fd("\nexit", 1);
 			exit (bash->exit_status);
 		}
 		if (line && *line) 
@@ -45,6 +45,7 @@ void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env **env)
 			free_lexer(&tokens);
 		}
 		else
+
 			execute_command_pipeline(bash, env, tokens, &cmd);
 		tokens = NULL;
 		cmd = NULL;

@@ -1,19 +1,24 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   prototypes.h                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/14 21:16:50 by ajelloul         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef PROTOTYPES_H
 # define PROTOTYPES_H
 
-# include "minishell.h"
+#include "../src/lib/libft.h"
+#include <signal.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+# include "structs.h"     
+# include "enums.h"     
+
+/* Signals */
+// void     sigint_handler(int signum);
+void            signals(void);
+
+/* Parsing */
+// int             ft_isspace(char c);
+
 
 /* Built-in */
 void	builtin_cd(t_minibash	*bash, t_env **env, t_cmd	*cmd);
@@ -197,8 +202,16 @@ void	skip_whitespace(t_token **tok_ptr);
 char	**combine_arguments(char **args, char **addition);
 void	free_argument_array(char **arr);
 void	process_word(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr);
-int	is_redirection(t_token *node);
+int		is_redirection(t_token *node);
 void	process_quoted(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr);
 void	free_args(char **args);
+
+
+// free parsing
+void	free_cmd_list(t_cmd **cmd_list);
+
+// Debug
+void debug_print_token_list(t_token *list);
+void debug_print_cmd_list(t_cmd *list);
 
 #endif

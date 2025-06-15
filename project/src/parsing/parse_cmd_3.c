@@ -86,7 +86,7 @@ void	skip_nonword_tokens(t_token **tok_ptr, t_env *env)
 				|| ((*tok_ptr)->state == Single)))
 			process_quoted(tok_ptr, env, 0, &arr);
 	}
-	free_args(arr);
+	free_argument_array(arr);
 }
 
 void	process_word(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr)

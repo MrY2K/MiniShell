@@ -6,11 +6,6 @@ void	process_quoted(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr)
 	process_word(tok_ptr, env, flag, arg_arr);
 }
 
-void	free_args(char **args)
-{
-	free_argument_array(args);
-}
-
 int	get_arg_count(char **arr)
 {
 	int	count;

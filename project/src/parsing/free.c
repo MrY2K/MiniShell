@@ -30,5 +30,22 @@ void	free_cmd_list(t_cmd **cmd_list)
 	}
 }
 
+void	free_argument_array(char **arr)
+{
+	int	i;
+
+	i = 0;
+	if (!arr)
+		return ;
+	while (arr[i])
+	{
+		free(arr[i]);
+		arr[i] = NULL;
+		i++;
+	}
+	free(arr);
+	arr = NULL;
+}
+
 // TODO: free redirections and heredocs if used
 // void	free_red(t_cmd **cmd_list)

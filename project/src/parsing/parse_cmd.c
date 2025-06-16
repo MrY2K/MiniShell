@@ -10,14 +10,14 @@
 /*
 * this bad boy here builds the command
 */
-void	parse_input_commands(t_token **token_list, t_cmd **cmd_list, t_env *env)
+void	parse_input_commands(t_token **token_list, t_cmd **cmd_list, t_env *env, t_minibash b)
 {
 	t_token	*cur_token;
 
 	cur_token = *token_list;
 	while (cur_token != NULL)
 	{
-		append_command(cmd_list, create_new_command(&cur_token, env));
+		append_command(cmd_list, create_new_command(&cur_token, env, b));
 	}
 	process_redirections(cmd_list, token_list, env);
 }
@@ -60,7 +60,7 @@ t_cmd	*last_command(t_cmd *cmd_list)
 * If the current token is a pipe, mark pipe and advance.
 * Otherwise, process the command segment.
 */
-t_cmd	*create_new_command(t_token **tok_ptr, t_env *env)
+t_cmd	*create_new_command(t_token **tok_ptr, t_env *env, t_minibash b)
 {
 	t_cmd	*node;
 
@@ -82,7 +82,7 @@ t_cmd	*create_new_command(t_token **tok_ptr, t_env *env)
 		*tok_ptr = (*tok_ptr)->next;
 	}
 	else if ((*tok_ptr) != NULL)
-		process_non_pipe_segment(&node, tok_ptr, env);
+		process_non_pipe_segment(&node, tok_ptr, env, b);
 	if (node->argument && node->argument[0])
 		node->main_cmd = node->argument[0];
 	node->next = NULL;

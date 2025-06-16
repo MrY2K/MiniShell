@@ -9,7 +9,9 @@ UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Darwin)
 	READLINE_DIR := $(shell brew --prefix readline)
 #CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code -I$(INCLUDE_DIR) -I$(READLINE_DIR)/include
-	CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code -g -fsanitize=address -I$(INCLUDE_DIR) -I$(READLINE_DIR)/include
+# CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code -g -fsanitize=address -I$(INCLUDE_DIR) -I$(READLINE_DIR)/include
+	CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code -g -I$(INCLUDE_DIR) -I$(READLINE_DIR)/include
+
 	LDFLAGS      = -L$(READLINE_DIR)/lib -lreadline -lhistory -lncurses
 	os_msg = "$(GREEN)OS DETECTED Mac!$(RESET)"
 

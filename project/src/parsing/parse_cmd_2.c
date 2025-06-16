@@ -6,7 +6,7 @@
 * by calling handle_token_part().
 */
 
-void	process_non_pipe_segment(t_cmd **cmd_node, t_token **t_ptr, t_env *env)
+void	process_non_pipe_segment(t_cmd **cmd_node, t_token **t_ptr, t_env *env, t_minibash b)
 {
 	char	**accumulated;
 
@@ -16,10 +16,10 @@ void	process_non_pipe_segment(t_cmd **cmd_node, t_token **t_ptr, t_env *env)
 	{
 		if ((*t_ptr) && (*t_ptr)->state == Normal &&
 			((*t_ptr)->type != -1 && (*t_ptr)->type != '$'))
-			skip_nonword_tokens(t_ptr, env);
+			skip_nonword_tokens(t_ptr, env, b);
 		if ((*t_ptr) && !((*t_ptr)->type == ' '
 				&& (*t_ptr)->state == Normal))
-			handle_token_part(cmd_node, t_ptr, env, &accumulated);
+			handle_token_part(cmd_node, t_ptr, env, &accumulated, b);
 		if ((*t_ptr) && ((*t_ptr)->type == ' '
 				&& (*t_ptr)->state == Normal))
 			skip_whitespace(t_ptr);
@@ -77,7 +77,7 @@ int	check_repeating_quote(char ***arg_arr, t_cmd **cmd_node, t_token **tok_ptr)
 */
 
 int	check_general_quote(t_cmd **cmd_node, t_token **tok_ptr,
-		t_env *env, char ***arg_arr)
+		t_env *env, char ***arg_arr, t_minibash b)
 {
 	if ((*tok_ptr) && (*tok_ptr)->state == Normal && (*tok_ptr)->type != '\"'
 		&& (*tok_ptr)->type != '\'' && (*tok_ptr)->type != '|' && (*tok_ptr)->type != ' ')
@@ -93,7 +93,7 @@ int	check_general_quote(t_cmd **cmd_node, t_token **tok_ptr,
 	}
 	else if ((*tok_ptr) && (((*tok_ptr)->state == Double) || ((*tok_ptr)->state == Single)))
 	{
-		process_quoted(tok_ptr, env, 1, arg_arr);
+		process_quoted(tok_ptr, env, 1, arg_arr, b);
 		if (*arg_arr && (*arg_arr)[0])
 		{
 			(*cmd_node)->argument = combine_arguments((*cmd_node)->argument, *arg_arr);
@@ -109,11 +109,11 @@ int	check_general_quote(t_cmd **cmd_node, t_token **tok_ptr,
 * Process a single token group.
 */
 void	handle_token_part(t_cmd **cmd_node, t_token **tok_ptr,
-		t_env *env, char ***arg_arr)
+		t_env *env, char ***arg_arr, t_minibash b)
 {
 	if (check_repeating_quote(arg_arr, cmd_node, tok_ptr))
 		return ;
-	if (check_general_quote(cmd_node, tok_ptr, env, arg_arr))
+	if (check_general_quote(cmd_node, tok_ptr, env, arg_arr, b))
 		return ;
 	else if ((*tok_ptr) && (*tok_ptr)->type != '|')
 		*tok_ptr = (*tok_ptr)->next;

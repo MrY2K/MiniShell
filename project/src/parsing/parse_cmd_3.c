@@ -1,25 +1,6 @@
 #include "../../includes/minishell.h"
 #include "../../includes/structs.h"
 
-/*
-* Free the argument array.
-*/
-void	free_argument_array(char **arr)
-{
-	int	i;
-
-	i = 0;
-	if (!arr)
-		return ;
-	while (arr[i])
-	{
-		free(arr[i]);
-		arr[i] = NULL;
-		i++;
-	}
-	free(arr);
-	arr = NULL;
-}
 
 /*
 * Combine two arrays of arguments.
@@ -63,7 +44,7 @@ void	skip_whitespace(t_token **tok_ptr)
 /*
 * Skip non-word tokens (like redirection tokens) and process their main_cmd.
 */
-void	skip_nonword_tokens(t_token **tok_ptr, t_env *env)
+void	skip_nonword_tokens(t_token **tok_ptr, t_env *env, t_minibash b)
 {
 	char	**arr;
 
@@ -84,7 +65,7 @@ void	skip_nonword_tokens(t_token **tok_ptr, t_env *env)
 			process_word(tok_ptr, env, 0, &arr);
 		else if ((*tok_ptr) && (((*tok_ptr)->state == Double)
 				|| ((*tok_ptr)->state == Single)))
-			process_quoted(tok_ptr, env, 0, &arr);
+			process_quoted(tok_ptr, env, 0, &arr, b);
 	}
 	free_argument_array(arr);
 }

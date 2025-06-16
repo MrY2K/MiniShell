@@ -1,6 +1,17 @@
 
 #include "minishell.h"
+#include "structures.h"
 
+
+char	**ft_word(t_splitor **tmp_x, t_environment *my_env, int j,
+		char ***arr_join);
+void	ft_join_words(char ***arr_join, t_splitor **tmp_x,
+		t_environment *my_env, int j);
+void	ft_join_word_2(char ***arr_join, t_splitor **tmp_x,
+		t_environment *my_env, int j);
+void	ft_join_double_2(char ***arr_join, t_splitor **tmp_x,
+		t_environment *my_env, int j);
+void	ft_skip_not_word(t_splitor **tmp_x, t_environment *my_env);
 
 void	ft_neuter_cmd(t_command **new_node, t_splitor **tmp_x,
 		t_environment *my_env, char ***arr_join);
@@ -215,13 +226,7 @@ void	ft_free_argment(char **arg)
 
 
 //UTILS
-int	redirection(t_splitor *start)
-{
-	if ((start)->type == '<' || (start)->type == '>'
-		|| (start)->type == DREDIR_OUT || (start)->type == HERE_DOC)
-		return (1);
-	return (0);
-}
+
 
 char	**ft_join_arg(char **arg, char **join)
 {
@@ -278,4 +283,128 @@ void	ft_skip_not_word(t_splitor **tmp_x, t_environment *my_env)
 			ft_double_and_sigle(tmp_x, my_env, 0, &str);
 	}
 	free_args(str);
+}
+
+
+void	ft_join_double_2(char ***arr_join, t_splitor **tmp_x,
+		t_environment *my_env, int j)
+{
+	char	*s;
+
+	s = NULL;
+	while ((*tmp_x) != NULL && ((*tmp_x)->state == D || (*tmp_x)->state == S))
+	{
+		if ((*tmp_x) != NULL && (*tmp_x)->state != S && (*tmp_x)->type == '$'
+			&& j == 1)
+		{
+			if ((*tmp_x)->type == '$' && (*tmp_x)->state == G && j == 1)
+			{
+				s = ft_expand((*tmp_x)->in, &my_env);
+				ft_split_expand(arr_join, s);
+			}
+			else if ((*tmp_x)->type == '$' && (*tmp_x)->state == D && j == 1)
+			{
+				s = ft_expand((*tmp_x)->in, &my_env);
+				ft_join_arr(arr_join, s);
+				free(s);
+			}
+		}
+		else if ((*tmp_x) != NULL)
+			ft_join_arr(arr_join, (*tmp_x)->in);
+		(*tmp_x) = (*tmp_x)->next;
+	}
+}
+
+void	ft_join_word_2(char ***arr_join, t_splitor **tmp_x,
+		t_environment *my_env, int j)
+{
+	char	*s;
+
+	s = NULL;
+	if ((*tmp_x) != NULL && (*tmp_x)->state != S && (*tmp_x)->type == '$'
+		&& j == 1)
+	{
+		if ((*tmp_x)->type == '$' && (*tmp_x)->state == G && j == 1)
+		{
+			s = ft_expand((*tmp_x)->in, &my_env);
+			ft_split_expand(arr_join, s);
+		}
+		else if ((*tmp_x)->type == '$' && (*tmp_x)->state == D && j == 1)
+		{
+			s = ft_expand((*tmp_x)->in, &my_env);
+			ft_join_arr(arr_join, s);
+			free(s);
+		}
+	}
+	else if ((*tmp_x) != NULL && ((*tmp_x)->state == G && (*tmp_x)->type == -1))
+		ft_join_arr(arr_join, (*tmp_x)->in);
+	else if ((*tmp_x) != NULL && ((*tmp_x)->state == D || (*tmp_x)->state == S))
+		ft_join_arr(arr_join, (*tmp_x)->in);
+	if ((*tmp_x) != NULL && (*tmp_x)->type != ' ' && !(redirection(*tmp_x)
+			&& (*tmp_x)->state == G))
+		(*tmp_x) = (*tmp_x)->next;
+}
+
+
+void	ft_join_words(char ***arr_join, t_splitor **tmp_x,
+		t_environment *my_env, int j)
+{
+	while ((*tmp_x) != NULL && (*tmp_x)->state == G && ((*tmp_x)->type == '\"'
+			|| (*tmp_x)->type == '\''))
+	{
+		if (((*tmp_x) != NULL && (*tmp_x)->state == G)
+			&& ((*tmp_x)->type == '\"' || (*tmp_x)->type == '\''))
+			(*tmp_x) = (*tmp_x)->next;
+		ft_join_double_2(arr_join, tmp_x, my_env, j);
+		ft_join_word_2(arr_join, tmp_x, my_env, j);
+	}
+}
+
+char	**ft_word(t_splitor **tmp_x, t_environment *my_env, int j,
+		char ***arr_join)
+{
+	char	*s;
+
+	s = NULL;
+	while ((*tmp_x) != NULL && ((*tmp_x)->state == G && (*tmp_x)->type != ' '
+			&& (*tmp_x)->type != '|' && (!redirection(*tmp_x) && !quotes(*tmp_x)
+				&& (*tmp_x)->state == G)))
+	{
+		if ((*tmp_x)->type == '$' && (*tmp_x)->state == G && j == 1)
+		{
+			s = ft_expand((*tmp_x)->in, &my_env);
+			ft_split_expand(arr_join, s);
+		}
+		else if ((*tmp_x)->type == '$' && (*tmp_x)->state == D && j == 1)
+		{
+			s = ft_expand((*tmp_x)->in, &my_env);
+			ft_split_expand(arr_join, s);
+		}
+		else
+			ft_join_arr(arr_join, (*tmp_x)->in);
+		(*tmp_x) = (*tmp_x)->next;
+		ft_join_words(arr_join, tmp_x, my_env, j);
+	}
+	return (*arr_join);
+}
+
+int	redirection(t_splitor *start)
+{
+	if ((start)->type == '<' || (start)->type == '>'
+		|| (start)->type == DREDIR_OUT || (start)->type == HERE_DOC)
+		return (1);
+	return (0);
+}
+int	ft_len_arg(char **arg)
+{
+	int	i;
+
+	i = 0;
+	if (arg == NULL || arg[0] == NULL)
+		return (0);
+	while (arg[i] != NULL)
+	{
+		i++;
+	}
+	return (i);
 }

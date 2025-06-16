@@ -62,7 +62,7 @@ void	execute_external_cmd(t_minibash *bash, t_env **env,
 	if (args[0][0] == '/')
 		path = args[0];
 	else
-		path = command_path(args[0], envp);
+		path = path_command(args[0], envp, bash);
 	if (!path)
 	{
 		ft_putendl_fd("minishell: command not found", 2);
@@ -99,7 +99,6 @@ void	execute_single_cmd(t_minibash *bash, t_env **env, t_cmd *cmd)
 
 void	execute_command(t_minibash *bash, t_env **env, t_cmd *cmd)
 {
-	(void) env;
 	if (has_herdoc(cmd) && has_redirections(cmd) && !has_pipes(cmd))
 	{
 		if (!handle_heredoc_input(cmd))

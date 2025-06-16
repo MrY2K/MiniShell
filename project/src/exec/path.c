@@ -5,89 +5,97 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/21 08:14:27 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/10 10:14:32 by ajelloul         ###   ########.fr       */
+/*   Created: 2025/06/16 00:00:00 by achoukri          #+#    #+#             */
+/*   Updated: 2025/06/16 13:56:05 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
-static char	*build_full_path(char *dir, char *command)
-{
-	char	*temp_join;
-	char	*full_path;
-
-	if (command[0] == '/')
-		return (ft_strdup(command));
-	temp_join = ft_strjoin(dir, "/");
-	if (!temp_join)
-		return (NULL);
-	full_path = ft_strjoin(temp_join, command);
-	free(temp_join);
-	return (full_path);
-}
-
-static char	*search_in_path_dirs(char **path_dirs, char *command)
-{
-	char	*full_path;
-	int		i;
-
-	if (!path_dirs || !command)
-		return (NULL);
-	i = 0;
-	while (path_dirs[i])
-	{
-		full_path = build_full_path(path_dirs[i], command);
-		if (full_path && is_valid_executable(full_path))
-		{
-			free_2d(path_dirs);
-			return (full_path);
-		}
-		if (full_path)
-			free(full_path);
-		i++;
-	}
-	free_2d(path_dirs);
-	return (NULL);
-}
-
-static bool	has_path_separator(char *command)
+void	free_ft_split(char **list)
 {
 	int	i;
 
-	if (!command)
-		return (false);
+	if (list == NULL)
+		return ;
 	i = 0;
-	while (command[i])
+	while (list[i] != NULL)
 	{
-		if (command[i] == '/')
-			return (true);
+		free(list[i]);
 		i++;
 	}
-	return (false);
+	free(list);
 }
 
-char	*command_path(char *command, char **env)
+static char	*search_in_path(char **list, char *cmd)
 {
-	char	*path_env;
-	char	**path_dirs;
+	char	*tmp;
+	char	*full_path;
+	int		i;
 
-	if (!command || !*command)
-		return (NULL);
-	if (has_path_separator(command))
+	i = 0;
+	while (list[i])
 	{
-		if (command[0] == '/')
-			return (handle_absolute_path(command));
+		if (cmd[0] == '/')
+			full_path = ft_strdup(cmd);
 		else
-			return (handle_relative_path(command));
+		{
+			tmp = ft_strjoin(list[i], "/");
+			full_path = ft_strjoin(tmp, cmd);
+			free(tmp);
+		}
+		if (access(full_path, F_OK) != -1 && access(full_path, X_OK) != -1)
+		{
+			free_ft_split(list);
+			return (full_path);
+		}
+		free(full_path);
+		i++;
 	}
-	path_env = get_env_variable("PATH", env);
-	if (!path_env)
-		path_env = getcwd(NULL, 0);
-	if (!path_env)
+	return (NULL);
+}
+
+static char	*get_path_variable(char **env, t_minibash *minibash)
+{
+	char	*path;
+
+	path = get_env_variable("PATH", env);
+	if (path == NULL)
+	{
+		path = getcwd(NULL, 0);
+		if (!path)
+		{
+			ft_putstr_fd("No such file or directory\n", 2);
+			minibash->exit_status = 127;
+			exit(EXIT_FAILURE);
+		}
+	}
+	return (path);
+}
+
+char	*path_command(char *cmd, char **env, t_minibash *minibash)
+{
+	char	*path;
+	char	**path_list;
+	char	*result;
+
+	if (cmd != NULL && cmd[0] == '\0')
+	{
+		ft_putstr_fd("minishell: command not found\n", 2);
+		minibash->exit_status = 127;
+		exit(127);
+	}
+	if (cmd == NULL)
 		return (NULL);
-	path_dirs = ft_split(path_env, ':');
-	if (!path_dirs)
-		return (NULL);
-	return (search_in_path_dirs(path_dirs, command));
+	if (cmd[0] == '.')
+		return (cmd);
+	path = get_path_variable(env, minibash);
+	path_list = ft_split(path, ':');
+	result = search_in_path(path_list, cmd);
+	if (result == NULL)
+	{
+		free_2d(path_list);
+		return (cmd);
+	}
+	return (result);
 }

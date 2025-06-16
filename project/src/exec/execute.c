@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:29:21 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/15 13:29:05 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/16 12:38:25 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,10 @@ void	execution(t_minibash *bash, t_env **env, t_cmd *cmd)
 	if (!is_fork_succes(bash, pid))
 		return ;
 	if (!pid)
-		execute_command(bash, env, cmd);
+	{
+		
+		execute_command(bash, env, tmp_cmd);
+	}
 	else
 		wait_for_child(bash, pid);
 	delete_heredoc_files(bash, cmd);

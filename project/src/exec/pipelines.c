@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 09:34:01 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/12 13:02:49 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/16 13:49:51 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	write_in_pipes(t_pipe *pi_pe, int i)
 	if (i > 0)
 	{
 		close(pi_pe->pipe_fds[i - 1][1]);
-		dup2(pi_pe->pipe_fds[i - 1][0], 1);
+		dup2(pi_pe->pipe_fds[i - 1][0], 0);
 		close(pi_pe->pipe_fds[i - 1][0]);
 	}
 	if (i < pi_pe->cmd_count - 1)
@@ -46,7 +46,8 @@ void	execute_child_process(t_pipe *pi_pe, int i,
 		dup2(pi_pe->fd_heredoc, 0);
 		close (pi_pe->fd_heredoc);
 	}
-	pi_pe->path = command_path(pi_pe->current_cmd->main_cmd, pi_pe->arr_env);
+	pi_pe->path = path_command(pi_pe->current_cmd->main_cmd, pi_pe->arr_env, bash);
+	printf ("Path : %s", pi_pe->path);
 	if (execve(pi_pe->path, pi_pe->current_cmd->argument, pi_pe->arr_env) == -1)
 	{
 		free_2d(pi_pe->arr_env);

@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:01:42 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/12 12:23:47 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/15 17:12:35 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	child_process(t_minibash *bash, t_env **env, t_heredoc *herdoc)
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		line = readline("> ");
+		line = readline("heredoc> ");
 		if (!line)
 		{
 			bash->exit_status = 0;

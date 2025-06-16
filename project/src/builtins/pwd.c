@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:50:57 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/15 16:11:15 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/16 16:42:26 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,8 @@
 void	builtin_pwd(t_minibash *bash, t_cmd *cmd)
 {
 	char	*current_dir;
-	char	buffer[PATH_MAX];
 
-	current_dir = getcwd(buffer, PATH_MAX);
+	current_dir = getcwd(NULL, 0);
 	if (!current_dir)
 		return (exit_with_error("getcwd", 1, bash));
 	if (cmd->argument[1] && cmd->argument[1][0] == '-'

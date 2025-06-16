@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/12 09:28:31 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/15 16:04:34 by achoukri         ###   ########.fr       */
+/*   Created: 2025/06/15 16:18:40 by ajelloul          #+#    #+#             */
+/*   Updated: 2025/06/16 16:42:18 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../../includes/minishell.h"
 
@@ -63,7 +64,6 @@ void	builtin_cd(t_minibash *bash, t_env **env, t_cmd *cmd)
 {
 	t_cd	cd;
 
-	cmd = NULL;
 	cd.arr_env = convert_env_list_to_array(env);
     // cd.user_arg = cmd->argument[1];
 	if (!cmd->argument[1] || cmd->argument[1][0] == 0)

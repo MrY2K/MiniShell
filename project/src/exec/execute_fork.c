@@ -1,14 +1,18 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   execute_fork.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/05 08:49:22 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/13 20:06:53 by achoukri         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// /* ************************************************************************** */
+// /*                                                                            */
+// /*                                                        :::      ::::::::   */
+// /*   execute_fork.c                                     :+:      :+:    :+:   */
+// /*                                                    +:+ +:+         +:+     */
+// /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
+// /*                                                +#+#+#+#+#+   +#+           */
+// /*   Created: 2025/06/05 08:49:22 by ajelloul          #+#    #+#             */
+// <<<<<<< HEAD
+// /*   Updated: 2025/06/15 14:52:31 by ajelloul         ###   ########.fr       */
+// =======
+// /*   Updated: 2025/06/13 20:06:53 by achoukri         ###   ########.fr       */
+// >>>>>>> origin/achoukri
+// /*                                                                            */
+// /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -37,7 +41,7 @@ int	handle_heredoc_input(t_cmd *cmd)
 		free(file);
 		return (0);
 	}
-	if (!setup_heredoc_input(fd, file))
+	if (!setup_heredoc_input(fd))
 	{
 		free(file);
 		return (0);
@@ -105,16 +109,14 @@ void	execute_command(t_minibash *bash, t_env **env, t_cmd *cmd)
 		}
 		handle_redirections(bash, cmd);
 		execute_external_cmd(bash, env, cmd, cmd->argument);
-		exit (bash->exit_status);
 	}
 	else if (has_pipes(cmd))
 	{
 		handle_pipes(bash, env, cmd);
-		exit(bash->exit_status);
 	}
 	else
 	{
 		execute_single_cmd(bash, env, cmd);
-		exit (bash->exit_status);
 	}
+	exit (bash->exit_status);
 }

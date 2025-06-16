@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 06:55:52 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/13 12:21:15 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/15 15:56:40 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,9 +115,11 @@ int	init_empty_env(t_minibash *bash, t_env **env, t_cmd *cmd)
 void	builtin_export(t_minibash *bash, t_env **env, t_cmd *cmd)
 {
 	int	i;
-
-	if (init_empty_env(bash, env, cmd))
-		return ;
+	if (!*env)
+	{
+		if (init_empty_env(bash, env, cmd))
+			return ;
+	}
 	i = 1;
 	while (cmd->argument[i])
 	{

@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:46:06 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/12 12:51:20 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/13 09:49:30 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,12 @@ int	open_heredoc_file(char *file)
 	return (fd);
 }
 
-int	setup_heredoc_input(int fd, char *file)
+int	setup_heredoc_input(int fd)
 {
 	if (dup2(fd, STDIN_FILENO) < 0)
 	{
 		perror("dup2");
 		close(fd);
-		free(file);
 		return (0);
 	}
 	close(fd);

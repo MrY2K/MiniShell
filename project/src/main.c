@@ -6,26 +6,21 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/16 15:43:22 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/16 16:41:42 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-
-void	ll(void) { system("leaks -q minishell"); }
-
-void	execute_command_pipeline(t_minibash *bash, t_env **env, t_token *token, t_cmd **cmd)
+void	execute_command_pipeline(t_minibash *bash, t_env **env, 
+	t_token *token, t_cmd **cmd)
 {
-	(void)bash;
-	if (token)
+	if (token && env)
 	{
-		// debug_print_token_list(token); //? DEBUG
 		parse_input_commands(&token, cmd, *env);
-		// debug_print_cmd_list(*cmd);    //? DEBUG
 		execution(bash, env, *cmd);
-		free_cmd_list(cmd);
 	}
+	//free_command_resources(cmd);
 	free_lexer(&token);
 }
 
@@ -38,16 +33,20 @@ void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env **env)
 		line = readline("minishell$ ");
 		if (!line)
 		{
-			ft_putstr("exit\n");
+			ft_putendl_fd("\nexit", 1);
 			exit (bash->exit_status);
 		}
+		if (line && *line) 
+			add_history(line);
 		if (lexer(line, &tokens))
 		{
 			ft_putendl_fd("minishell: syntax error", 2);
 			bash->exit_status = 258;
 			free_lexer(&tokens);
 		}
-		execute_command_pipeline(bash, env, tokens, &cmd);
+		else
+
+			execute_command_pipeline(bash, env, tokens, &cmd);
 		tokens = NULL;
 		cmd = NULL;
 		free (line);
@@ -65,26 +64,6 @@ static void	init_minibash(t_minibash **bash)
 	ft_memset(*bash, 0, sizeof(t_minibash));
 	(*bash)->exit_status = 0;
 	(*bash)->env = NULL;
-}
-
-void	free_minibash(t_minibash **bash)
-{
-	t_env	*current;
-	t_env	*next;
-
-	if (!bash || !*bash)
-		return ;
-	current = (*bash)->env;
-	while (current)
-	{
-		next = current->next;
-		free(current->name);
-		free(current->value);
-		free(current);
-		current = next;
-	}
-	free(*bash);
-	*bash = NULL;
 }
 
 int	main(int ac, char **av, char **env)

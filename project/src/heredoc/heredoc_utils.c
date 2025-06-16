@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 10:59:30 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/12 12:24:13 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/13 09:46:35 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ bool	has_herdoc(t_cmd *cmd)
 	else
 		return (false);
 }
+
+/* A safe string join function that allows s1 to be NULL */
 
 char	*ft_strjoin_with_null(char *s1, char *s2)
 {

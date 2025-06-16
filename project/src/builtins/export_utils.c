@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 10:35:02 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/13 12:18:20 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/16 12:03:57 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,10 @@
 
 bool	is_allowed_variable_character(char c)
 {
-	if ((c >= 'a' && c <= 'z')
+	return ((c >= 'a' && c <= 'z')
 		|| (c >= 'A' && c <= 'Z')
 		|| (c >= '0' && c <= '9')
-		|| c == '_')
-		return (true);
-	return (false);
+		|| c == '_');
 }
 
 bool	is_contains_char(char *str, char target_char)

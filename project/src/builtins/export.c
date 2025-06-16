@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 06:55:52 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/15 15:56:40 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/16 15:00:16 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*extract_variable_name(char *str)
 	while (str[len] && str[len] != '=')
 		len++;
 	var_name = (char *)malloc(sizeof(char) * (len + 1));
-	if (!str)
+	if (!var_name)
 		return (NULL);
 	len = 0;
 	while (str[len] && str[len] != '=')
@@ -71,8 +71,9 @@ int	is_valid_variable_name(t_minibash *bash, char *str)
 		export_error(bash, str);
 		return (1);
 	}
-	while (str[i])
+	while (str[i] && str[i] != '=')
 	{
+		
 		if (!is_allowed_variable_character(str[i]))
 		{
 			export_error(bash, str);
@@ -92,7 +93,9 @@ int	init_empty_env(t_minibash *bash, t_env **env, t_cmd *cmd)
 	if (!cmd->argument[1] || cmd->argument[1][0] == '\0')
 	{
 		if (cmd->argument[1] != NULL && cmd->argument[1][0] == '\0')
+		{
 			export_error(bash, cmd->argument[1]);
+		}
 		return (1);
 	}
 	if (is_valid_variable_name(bash, cmd->argument[1]))
@@ -114,6 +117,8 @@ int	init_empty_env(t_minibash *bash, t_env **env, t_cmd *cmd)
 
 void	builtin_export(t_minibash *bash, t_env **env, t_cmd *cmd)
 {
+	for (int j = 0; cmd->argument[j]; j++)
+    	printf("arg[%d]: '%s'\n", j, cmd->argument[j]);
 	int	i;
 	if (!*env)
 	{

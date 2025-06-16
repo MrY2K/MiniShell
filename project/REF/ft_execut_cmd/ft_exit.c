@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bouhammo <bouhammo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 23:39:14 by rel-mora          #+#    #+#             */
-/*   Updated: 2024/10/05 19:10:12 by bouhammo         ###   ########.fr       */
+/*   Updated: 2025/06/16 11:33:02 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	ft_exit_comp(int len, char **ptr)
 		exit(255);
 	}
 	else if (len > 2)
-	{
+	{	
 		g_exit_status = 1;
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 	}
@@ -79,6 +79,7 @@ void	ft_exit_comp(int len, char **ptr)
 
 void	ft_exit(t_environment **var, t_command *cmd)
 {
+	
 	int	len;
 
 	(void)var;

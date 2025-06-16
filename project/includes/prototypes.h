@@ -73,12 +73,8 @@ void			display_syntax_error(t_minibash *bash);
 // /*		PATH 		*/
 
 
-char			*command_path(char *command, char **env);
-char			*get_env_variable(char *name, char **env);
-bool			is_valid_executable(char *path);
-bool			is_directory_path(char *path);
-char			*handle_absolute_path(char *command);
-char			*handle_relative_path(char *command);
+char	*path_command(char *cmd, char **env, t_minibash *minibash);
+char	*get_env_variable(char *name, char **env);
 /*		EXECUTION  		*/
 int 			is_fork_succes(t_minibash *bash, int pid);
 void 			execute_pipe_chain(t_minibash *bash, t_cmd *cmd);

@@ -1,0 +1,213 @@
+{
+  "main": {
+    "id": "0c5eeccbe68b0e0f",
+    "type": "split",
+    "children": [
+      {
+        "id": "a5d237e11fb8e643",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3a2740ae09897100",
+            "type": "leaf",
+            "state": {
+              "type": "kanban",
+              "state": {
+                "file": "project/notes/Untitled Kanban.md",
+                "kanbanViewState": {
+                  "kanban-plugin": "board",
+                  "list-collapse": [
+                    false
+                  ]
+                }
+              },
+              "icon": "lucide-trello",
+              "title": "Untitled Kanban"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "28ff7b1644bf9be2",
+    "type": "split",
+    "children": [
+      {
+        "id": "91240a28c168dfb4",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a384bbd8378b246f",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "e37913065bf106ce",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "d2f42b9b4c5f3bf9",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "97bbf5c7226e24c9",
+    "type": "split",
+    "children": [
+      {
+        "id": "9a38fc02ab14c93d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3b3fd024ba3d0693",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "project/notes/Untitled Kanban.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Untitled Kanban"
+            }
+          },
+          {
+            "id": "d6ef0d7255022ca5",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "project/notes/Ayoub's Notes.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Ayoub's Notes"
+            }
+          },
+          {
+            "id": "28719cf403d1cf5f",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "ec4c30a3d9aa3ce8",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "project/notes/Untitled Kanban.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Untitled Kanban"
+            }
+          }
+        ],
+        "currentTab": 3
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "canvas:Create new canvas": false,
+      "command-palette:Open command palette": false,
+      "obsidian-kanban:Create new board": false,
+      "obsidian-excalidraw-plugin:New drawing": false
+    }
+  },
+  "active": "3a2740ae09897100",
+  "lastOpenFiles": [
+    "project/src/lib/libft.a",
+    "project/src/lib/build/ft_strcmp.o",
+    "project/src/lib/build/ft_atoi_base.o",
+    "project/src/lib/build/sort_int_tab.o",
+    "project/src/lib/build/hex_to_int.o",
+    "project/src/lib/build/ft_swap.o",
+    "project/src/lib/build/ft_putstr.o",
+    "project/src/lib/build/ft_putnbr.o",
+    "project/src/lib/build/ft_putnbr-27ecf715.o.tmp",
+    "project/src/lib/build/ft_putnbr_unsigned.o",
+    "project/src/lib/build/ft_putnbr_hex.o",
+    "project/notes/Aboubark's Notes.md",
+    "project/notes/Untitled Kanban.md",
+    "project/notes/2025-05-11.md",
+    "Untitled.canvas",
+    "project/notes/Drawings/Drawing 2025-05-11 09.19.04.excalidraw.md",
+    "project/notes/Ayoub's Notes.md",
+    "project/notes/Kanban Board.md",
+    "project/notes/Parsing.md",
+    "project/notes/Drawings/Drawing 2025-05-09 18.16.17_2.excalidraw.md",
+    "project/notes/Drawings/Drawing 2025-05-09 18.16.17_1.excalidraw.md",
+    "project/notes/Drawings/Drawing 2025-05-09 18.16.17_0.excalidraw.md",
+    "project/notes/Drawings/Drawing 2025-05-09 18.16.17.excalidraw.md",
+    "project/notes/Drawings/Drawing 2025-05-09 18.16.15.excalidraw.md",
+    "notes/Drawings/Drawing 2025-05-09 18.15.57.excalidraw.md",
+    "notes/Drawings/Drawing 2025-05-09 18.15.56.excalidraw.md",
+    "Excalidraw/Drawing 2025-05-09 18.15.23.excalidraw.md",
+    "Excalidraw/Drawing 2025-05-09 18.15.10.excalidraw.md",
+    "Excalidraw/Drawing 2025-05-09 18.15.11_0.excalidraw.md",
+    "Excalidraw/Drawing 2025-05-09 18.15.11.excalidraw.md",
+    "adsgf.md",
+    "project/notes/kanbanboard.md",
+    "README.md"
+  ]
+}

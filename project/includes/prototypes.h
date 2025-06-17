@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/16 21:21:49 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/17 02:06:32 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,6 +211,14 @@ void	free_argument_array(char **arr);
 void	process_word(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr);
 int		is_redirection(t_token *node);
 void	process_quoted(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr, t_minibash b);
+
+//  RED2
+char	*ft_fill_final(char **s);
+int	ft_check_ambiguous(t_token *tmp_t, t_env *env);
+int	ft_check_quote(t_token **tmp_t, char **final);
+char	*ft_skip_direction(t_token **tmp_t, t_env *env,
+		int *is_amb, int her);
+
 
 // free parsing
 void	free_cmd_list(t_cmd **cmd_list);

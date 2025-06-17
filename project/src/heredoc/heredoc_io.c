@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_io.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:10:59 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/15 17:10:12 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/17 23:09:38 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ void	append_regular_characters(t_expand_heredoc *ex, char *line)
 		ex->index++;
 		ex->len++;
 	}
-	ex->str = ft_substr(line, ex->j, ex->len);
-	ex->expanded_line = ft_strjoin(ex->expanded_line, ex->str);
-	free (ex->str);
+	ex->s = ft_substr(line, ex->j, ex->len);
+	ex->expanded_line = ft_strjoin(ex->expanded_line, ex->s);
+	free (ex->s);
 	ex->index--;
 }
 

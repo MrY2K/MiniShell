@@ -1,94 +1,58 @@
 #include "../../includes/minishell.h"
 #include "../../includes/structs.h"
 
-
-/*
-* Combine two arrays of arguments.
-*/
-char	**combine_arguments(char **args, char **addition)
+char	*ft_expand(char *arg, t_env **env, t_minibash b)
 {
-	t_ps	ps;
+	t_expand_heredoc	id;
 
-	ps.idx = 0;
-	ps.j = 0;
-	ps.arg_len = get_arg_count(args);
-	ps.join_len = get_arg_count(addition);
-	ps.new_args = malloc(((ps.arg_len + ps.join_len) + 1) * sizeof(char *));
-	ps.new_args[0] = NULL;
-	if (args)
+	id.i = 0;
+	id.s = NULL;
+	while (env != NULL && arg[id.i])
 	{
-		while (args[ps.idx])
+		if (ft_search("$\"\"", arg))
+			return (id.s = ft_strdup(""), id.s);
+		else if (arg[id.i] == '$')
 		{
-			ps.new_args[ps.j] = ft_strdup(args[ps.idx]);
-			ps.j++;
-			ps.idx++;
+			if (arg[id.i + 1] == '?')
+				return (id.s = ft_itoa(b.exit_status), id.s);
+			id.i++;
+			if (arg[id.i] == '\0')
+				return (id.s = ft_strdup("$"), id.s);
+			if (arg[id.i] == '\"' || arg[id.i] == '\'')
+				return (id.s = ft_strdup(""), id.s);
+			if (!ft_isalnum(arg[id.i]) || ft_isdigit(arg[id.i]))
+				return (id.s);
+			ft_go_to_env(&id.s, arg, &id.i, env);
 		}
+		id.i++;
 	}
-	ps.idx = 0;
-	while (addition && addition[ps.idx])
-		ps.new_args[ps.j++] = ft_strdup(addition[ps.idx++]);
-	ps.new_args[ps.j] = NULL;
-	free_argument_array(args);
-	return (ps.new_args);
+	return (id.s);
 }
 
-/*
-* Skip all whitespace tokens.
-*/
-void	skip_whitespace(t_token **tok_ptr)
+
+char **process_word(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr, t_minibash b)
 {
-	while ((*tok_ptr) && (*tok_ptr)->type == ' ')
-		*tok_ptr = (*tok_ptr)->next;
-}
+    char *s = NULL;
 
-/*
-* Skip non-word tokens (like redirection tokens) and process their main_cmd.
-*/
-void	skip_nonword_tokens(t_token **tok_ptr, t_env *env, t_minibash b)
-{
-	char	**arr;
-
-	arr = NULL;
-	while ((*tok_ptr) && (((*tok_ptr)->type == '<')
-			|| ((*tok_ptr)->type == '>')
-			|| ((*tok_ptr)->type == TOKEN_REDIR_APPEND)
-			|| ((*tok_ptr)->type == TOKEN_HEREDOC)))
-	{
-		*tok_ptr = (*tok_ptr)->next;
-		skip_whitespace(tok_ptr);
-		while ((*tok_ptr) && (*tok_ptr)->state == Normal
-			&& (((*tok_ptr)->type == '\"') || ((*tok_ptr)->type == '\'')))
-			*tok_ptr = (*tok_ptr)->next;
-		if ((*tok_ptr) && (*tok_ptr)->state == Normal
-			&& ((*tok_ptr)->type != '\"') && ((*tok_ptr)->type != '\'')
-			&& ((*tok_ptr)->type != '|'))
-			process_word(tok_ptr, env, 0, &arr);
-		else if ((*tok_ptr) && (((*tok_ptr)->state == Double)
-				|| ((*tok_ptr)->state == Single)))
-			process_quoted(tok_ptr, env, 0, &arr, b);
-	}
-	free_argument_array(arr);
-}
-
-void	process_word(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr)
-{
-	char	*temp;
-	int		arg_len;
-
-	(void)env;
-	(void)flag;
-	temp = ft_strdup((*tok_ptr)->value);
-	if (!*arg_arr)
-	{
-		*arg_arr = malloc(2 * sizeof(char *));
-		(*arg_arr)[0] = temp;
-		(*arg_arr)[1] = NULL;
-	}
-	else
-	{
-		arg_len = get_arg_count(*arg_arr);
-		(*arg_arr)[arg_len - 1] = ft_strjoin((*arg_arr)[arg_len - 1], temp);
-		free(temp);
-	}
-	*tok_ptr = (*tok_ptr)->next;
+    while ((*tok_ptr) != NULL
+        && (*tok_ptr)->state == Normal
+        && (*tok_ptr)->type != ' '
+        && (*tok_ptr)->type != '|'
+        && !is_redirection(*tok_ptr)
+        && !is_quote(*tok_ptr))
+    {
+        if ((*tok_ptr)->type == '$' && flag == 1)
+        {
+            s = ft_expand((*tok_ptr)->value, &env, b);
+            ft_split_expand(arg_arr, s);
+            // free(s);
+        }
+        else
+        {
+            ft_join_arr(arg_arr, (*tok_ptr)->value);
+        }
+        *tok_ptr = (*tok_ptr)->next;
+        ft_join_words(arg_arr, tok_ptr, env, flag, b);
+    }
+    return (*arg_arr);
 }

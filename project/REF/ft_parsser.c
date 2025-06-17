@@ -108,7 +108,7 @@ void	ft_not_pipe(t_command **new_node, t_splitor **tmp_x,
 		if ((*tmp_x) != NULL && (*tmp_x)->state == G && ((*tmp_x)->type != -1
 				&& (*tmp_x)->type != '$'))
 			ft_skip_not_word(tmp_x, my_env);
-		if ((*tmp_x) != NULL && !((*tmp_x)->type == 32 && (*tmp_x)->state == G))
+		if ((*tmp_x) != NULL && !((*tmp_x)->type == ' ' && (*tmp_x)->state == G))
 			ft_neuter_cmd(new_node, tmp_x, my_env, &join);
 		if ((*tmp_x) != NULL && ((*tmp_x)->type == ' ' && (*tmp_x)->state == G))
 			ft_skip_spaces(tmp_x);
@@ -155,6 +155,82 @@ int	ft_ckeck_repeate_quote(char ***arr_join, t_command **new_node,
 	if (ft_check_null(arr_join, new_node, tmp_x))
 		return (1);
 	return (0);
+}
+
+void	ft_join_next(char ***arr_join, t_splitor **tmp_x, t_environment *my_env,
+		int j)
+{
+	char	*s;
+
+	s = NULL;
+	while ((*tmp_x) != NULL && (*tmp_x)->state == G && ((*tmp_x)->type == -1
+			|| (*tmp_x)->type == '$'))
+	{
+		if ((*tmp_x)->type == '$' && (*tmp_x)->state == G && j == 1)
+		{
+			s = ft_expand((*tmp_x)->in, &my_env);
+			ft_split_expand(arr_join, s);
+		}
+		else
+		{
+			ft_join_arr(arr_join, (*tmp_x)->in);
+		}
+		(*tmp_x) = (*tmp_x)->next;
+	}
+}
+
+void	ft_join_double(char ***arr_join, t_splitor **tmp_x,
+		t_environment *my_env, int j)
+{
+	char	*s;
+
+	s = NULL;
+	if ((*tmp_x) != NULL && ((*tmp_x)->state != S && (*tmp_x)->type == '$')
+		&& j == 1)
+	{
+		if ((*tmp_x)->type == '$' && (*tmp_x)->state == G && j == 1)
+		{
+			s = ft_expand((*tmp_x)->in, &my_env);
+			ft_split_expand(arr_join, s);
+		}
+		else if ((*tmp_x)->type == '$' && (*tmp_x)->state == D && j == 1)
+		{
+			s = ft_expand((*tmp_x)->in, &my_env);
+			ft_join_arr(arr_join, s);
+			free(s);
+		}
+		(*tmp_x) = (*tmp_x)->next;
+	}
+	ft_join_words(arr_join, tmp_x, my_env, 1);
+	ft_join_next(arr_join, tmp_x, my_env, 1);
+}
+
+char	**ft_double_and_sigle(t_splitor **tmp_x, t_environment *my_env, int j,
+		char ***arr_join)
+{
+	char	*s;
+
+	s = NULL;
+	while (((*tmp_x) != NULL) && !(redirection(*tmp_x) && (*tmp_x)->state == G)
+		&& ((*tmp_x)->state == D || (*tmp_x)->state == S
+			|| (*tmp_x)->type == '\"' || (*tmp_x)->type == '\''))
+	{
+		if ((*tmp_x) != NULL && ((*tmp_x)->state == D && (*tmp_x)->type == '$')
+			&& j == 1)
+		{
+			s = ft_expand((*tmp_x)->in, &my_env);
+			ft_split_expand(arr_join, s);
+		}
+		else if ((*tmp_x) != NULL && ((*tmp_x)->state == D
+				|| (*tmp_x)->state == S))
+			ft_join_arr(arr_join, (*tmp_x)->in);
+		else if ((*tmp_x) != NULL && (((*tmp_x)->type == '$')
+				|| (*tmp_x)->type == -1))
+			ft_join_arr(arr_join, (*tmp_x)->in);
+		(*tmp_x) = (*tmp_x)->next;
+		ft_join_double(arr_join, tmp_x, my_env, j);
+	}
+	return (*arr_join);
 }
 
 int	ft_check_gene_quote(t_command **new_node, t_splitor **tmp_x,
@@ -218,7 +294,6 @@ void	ft_free_argment(char **arg)
 
 
 //UTILS
-
 
 char	**ft_join_arg(char **arg, char **join)
 {

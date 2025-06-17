@@ -13,13 +13,15 @@
 void	parse_input_commands(t_token **token_list, t_cmd **cmd_list, t_env *env, t_minibash b)
 {
 	t_token	*cur_token;
+	t_cmd	**tmp_cmd;
 
+	tmp_cmd = cmd_list;
 	cur_token = *token_list;
 	while (cur_token != NULL)
 	{
-		append_command(cmd_list, create_new_command(&cur_token, env, b));
+		append_command(tmp_cmd, create_new_command(&cur_token, env, b));
 	}
-	process_redirections(cmd_list, token_list, env);
+	process_redirections(tmp_cmd, token_list, env);
 }
 
 /*
@@ -55,11 +57,6 @@ t_cmd	*last_command(t_cmd *cmd_list)
 	return (last);
 }
 
-/*
-* Create a new command node from the tokens.
-* If the current token is a pipe, mark pipe and advance.
-* Otherwise, process the command segment.
-*/
 t_cmd	*create_new_command(t_token **tok_ptr, t_env *env, t_minibash b)
 {
 	t_cmd	*node;
@@ -97,11 +94,12 @@ void	join_to_arg_array(char ***arg_arr, char *tok_str)
 	int		current_len;
 	char	*dup;
 
-	current_len = get_arg_count(*arg_arr);
+	current_len = ft_len_arg(*arg_arr);
 	if (!tok_str)
 		return ;
 	if (current_len == 0)
 	{
+		*arg_arr = NULL;
 		*arg_arr = malloc(2 * sizeof(char *));
 		(*arg_arr)[0] = ft_strdup(tok_str);
 		(*arg_arr)[1] = NULL;

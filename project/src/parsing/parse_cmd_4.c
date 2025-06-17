@@ -1,159 +1,87 @@
 #include "../../includes/minishell.h"
 #include "../../includes/structs.h"
 
+void	ft_join_next(char ***arr_join, t_token **tmp_x, t_env *env,
+		int j, t_minibash b);
+void	ft_join_double(char ***arr_join, t_token **tmp_t,
+		t_env *env, int j, t_minibash b);
 
-static int ft_search(const char *s, const char *d);
-static void ft_go_to_env(char **out, char *arg, int *idx, t_env **env);
-char *ft_expand(char *arg, t_env **env, t_minibash b);
-int	ft_len_arg(char **arg);
-void	ft_join_arr(char ***arr_join, char *in, t_minibash b);
+void	ft_join_next(char ***arr_join, t_token **tmp_x, t_env *env,
+		int j, t_minibash b)
+{
+	char	*s;
 
+	s = NULL;
+	while ((*tmp_x) != NULL && (*tmp_x)->state == Normal && ((*tmp_x)->type == -1
+			|| (*tmp_x)->type == '$'))
+	{
+		if ((*tmp_x)->type == '$' && (*tmp_x)->state == Normal && j == 1)
+		{
+			s = ft_expand((*tmp_x)->value, &env, b);
+			ft_split_expand(arr_join, s);
+		}
+		else
+		{
+			ft_join_arr(arr_join, (*tmp_x)->value);
+		}
+		(*tmp_x) = (*tmp_x)->next;
+	}
+}
 
-/*
- * Pull in quoted text (single or double) and any embedded $-expansions,
- * joining everything into the same argument slot.
- */
-void process_quoted(t_token **tok_ptr, t_env *env, int flag,
+void	ft_join_double(char ***arr_join, t_token **tmp_t,
+		t_env *env, int j, t_minibash b)
+{
+	char	*s;
+
+	s = NULL;
+	if ((*tmp_t) != NULL && ((*tmp_t)->state != Single && (*tmp_t)->type == '$')
+		&& j == 1)
+	{
+		if ((*tmp_t)->type == '$' && (*tmp_t)->state == Normal && j == 1)
+		{
+			s = ft_expand((*tmp_t)->value, &env, b);
+			ft_split_expand(arr_join, s);
+		}
+		else if ((*tmp_t)->type == '$' && (*tmp_t)->state == Double && j == 1)
+		{
+			s = ft_expand((*tmp_t)->value, &env, b);
+			ft_join_arr(arr_join, s);
+			free(s);
+		}
+		(*tmp_t) = (*tmp_t)->next;
+	}
+	ft_join_words(arr_join, tmp_t, env, 1, b);
+	ft_join_next(arr_join, tmp_t, env, 1, b);
+}
+
+char **process_quoted(t_token **tok_ptr, t_env *env, int flag,
                     char ***arg_arr, t_minibash b)
 {
-    char *s;
+    char *s = NULL;
 
-    s = NULL;
-    // While we have a quote token
-    while (*tok_ptr
-        && ((*tok_ptr)->type == '"' || (*tok_ptr)->type == '\'')
-        && (*tok_ptr)->state == Normal)
+    while ((*tok_ptr) != NULL
+        && !is_redirection(*tok_ptr)
+        && ((*tok_ptr)->state == Double || (*tok_ptr)->state == Single
+            || (*tok_ptr)->type == '"' || (*tok_ptr)->type == '\''))
     {
-        // skip opening quote
-        *tok_ptr = (*tok_ptr)->next;
-
-        // 1) Handle any $-expansions inside quotes
-        while (*tok_ptr
-            && ((*tok_ptr)->state == Double || (*tok_ptr)->state == Single))
+        if ((*tok_ptr)->state == Double && (*tok_ptr)->type == '$' && flag)
         {
-            if ((*tok_ptr)->type == '$' && (*tok_ptr)->state == Double && flag)
-            {
-                s = ft_expand((*tok_ptr)->value, &env, b);
-                ft_join_arr(arg_arr, s, b);
-                free(s);
-            }
-            else
-            {
-                // literal text inside quotes
-                ft_join_arr(arg_arr, (*tok_ptr)->value, b);
-            }
-            *tok_ptr = (*tok_ptr)->next;
+            s = ft_expand((*tok_ptr)->value, &env, b);
+            ft_split_expand(arg_arr, s);
+            // free(s);
         }
-
-        // skip closing quote
-        if (*tok_ptr && ((*tok_ptr)->type == '"' || (*tok_ptr)->type == '\''))
-            *tok_ptr = (*tok_ptr)->next;
+        else if ((*tok_ptr)->state == Double || (*tok_ptr)->state == Single)
+        {
+            ft_join_arr(arg_arr, (*tok_ptr)->value);
+        }
+        else if ((*tok_ptr)->type == '$' || (*tok_ptr)->type == -1)
+        {
+            ft_join_arr(arg_arr, (*tok_ptr)->value);
+        }
+        *tok_ptr = (*tok_ptr)->next;
+        // Recursively handle more quoted/expanded tokens
+        ft_join_double(arg_arr, tok_ptr, env, flag, b);
     }
+    return (*arg_arr);
 }
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-// helper: check if string d is in s
-static int ft_search(const char *s, const char *d)
-{
-    int i = 0, j = 0;
-    int len = ft_strlen(s);
-    while (s[i])
-    {
-        if (s[i] == d[j])
-            j++;
-        if (j == len && s[i + 1] == d[j])
-            return 1;
-        i++;
-    }
-    return 0;
-}
-
-// helper: retrieve env var value, scanning arg from index *idx
-static void ft_go_to_env(char **out, char *arg, int *idx, t_env **env)
-{
-    t_env *tmp = *env;
-    *out = NULL;
-    while (tmp)
-    {
-        if (ft_search(tmp->name, arg + *idx))
-        {
-            *out = ft_strdup(tmp->value);
-            break;
-        }
-        tmp = tmp->next;
-    }
-}
-
-// Expand environment variables in arg; supports $?, $VAR, empty cases
-char *ft_expand(char *arg, t_env **env, t_minibash b)
-{
-    t_expand_heredoc id;
-
-    id.index = 0;
-    id.str = NULL;
-    while (env && arg[id.index])
-    {
-        if (ft_search("$\"\"", arg))
-            return (id.str = ft_strdup(""), id.str);
-        if (arg[id.index] == '$')
-        {
-            if (arg[id.index + 1] == '?')
-                return (id.expanded_line = ft_itoa(b.exit_status), id.str = ft_strdup(id.expanded_line), free(id.expanded_line), id.str);
-            id.index++;
-            if (arg[id.index] == '\0')
-                return (id.str = ft_strdup("$"), id.str);
-            if (arg[id.index] == '"' || arg[id.index] == '\'')
-                return (id.str = ft_strdup(""), id.str);
-            if (!ft_isalnum(arg[id.index]))
-                return id.str;
-            ft_go_to_env(&id.str, arg, &id.index, env);
-        }
-        id.index++;
-    }
-    return id.str;
-}
-
-void	ft_join_arr(char ***arr_join, char *in, t_minibash b)
-{
-	int		len_of_arr;
-	char	*str;
-
-	len_of_arr = ft_len_arg(*arr_join);
-	if (in == NULL)
-		return ;
-	if (len_of_arr == 0)
-	{
-		*arr_join = NULL;
-		*arr_join = malloc((1 + 1) * sizeof(char *));
-		(*arr_join)[0] = ft_strdup(in);
-		(*arr_join)[1] = NULL;
-	}
-	else
-	{
-		str = ft_strdup(in);
-		len_of_arr--;
-		(*arr_join)[len_of_arr] = ft_strjoin((*arr_join)[len_of_arr], str);
-		free(str);
-	}
-}
-
-int	redirection(t_token *start)
-{
-	if ((start)->type == '<' || (start)->type == '>'
-		|| (start)->type == TOKEN_REDIR_APPEND || (start)->type == TOKEN_HEREDOC)
-		return (1);
-	return (0);
-}
-int	ft_len_arg(char **arg)
-{
-	int	i;
-
-	i = 0;
-	if (arg == NULL || arg[0] == NULL)
-		return (0);
-	while (arg[i] != NULL)
-	{
-		i++;
-	}
-	return (i);
-}

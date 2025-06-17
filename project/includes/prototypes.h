@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/17 02:06:32 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/17 23:11:18 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,18 +203,51 @@ void	handle_token_part(t_cmd **cmd_node, t_token **tok_ptr,
         t_env *env, char ***arg_arr, t_minibash b);
 void	join_to_arg_array(char ***arg_arr, char *tok_str);
 void	process_redirections(t_cmd **cmd_list, t_token **tokens, t_env *env);
-int	get_arg_count(char **args);
+int		get_arg_count(char **args);
 void	skip_nonword_tokens(t_token **tok_ptr, t_env *env, t_minibash b);
 void	skip_whitespace(t_token **tok_ptr);
 char	**combine_arguments(char **args, char **addition);
 void	free_argument_array(char **arr);
-void	process_word(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr);
+char	**process_word(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr, t_minibash b);
 int		is_redirection(t_token *node);
-void	process_quoted(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr, t_minibash b);
+char	**process_quoted(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr, t_minibash b);
+
+
+// parse utils=
+int	redirection(t_token *start);
+int	ft_len_arg(char **arg);
+int	ft_search(char *s, char *d);
+int		is_quote(t_token *head);
+
+
+char	**ft_join_arg(char **arg, char **join);
+void	ft_join_arr(char ***arr_join, char *in);
+
+void	ft_join_double_2(char ***arr_join, t_token **tmp_t,
+		t_env *my_env, int j, t_minibash b);
+void	ft_join_word_2(char ***arr_join, t_token **tmp_t,
+		t_env *my_env, int j, t_minibash b);
+void	ft_join_words(char ***arr_join, t_token **tmp_t,
+		t_env *my_env, int j, t_minibash b);
+
+//more joiner for process quotes
+void	ft_join_next(char ***arr_join, t_token **tmp_x, t_env *env,
+		int j, t_minibash b);
+void	ft_join_double(char ***arr_join, t_token **tmp_t,
+		t_env *env, int j, t_minibash b);
+
+//
+char	*ft_expand(char *arg, t_env **env, t_minibash b);
+char	**ft_split_expand(char ***arr_join, char *s);
+void	ft_go_to_env(char **s, char *arg, int *i, t_env **env);
+
+
+
+
 
 //  RED2
 char	*ft_fill_final(char **s);
-int	ft_check_ambiguous(t_token *tmp_t, t_env *env);
+int	ft_check_ambiguous(t_token *tmp_t, t_env *env, t_minibash b);
 int	ft_check_quote(t_token **tmp_t, char **final);
 char	*ft_skip_direction(t_token **tmp_t, t_env *env,
 		int *is_amb, int her);

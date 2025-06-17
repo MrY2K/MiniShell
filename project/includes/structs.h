@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 09:25:15 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/12 23:58:13 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/17 12:37:48 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,21 @@ typedef struct s_minibash
 	t_env	*env;
 	int		exit_status;
 }	t_minibash;
+
+
+
+
+
+// for me --- more than 4 args 
+
+typedef struct s_expand_info
+{
+	t_minibash	*bash;
+	t_env		*env;
+	char		**expanded_line;
+	int			*index;
+	char		*line;
+}	t_expand_info;
 
 
 #endif

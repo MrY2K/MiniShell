@@ -26,7 +26,7 @@ void	builtin_echo(t_minibash *bash, t_cmd *cmd);
 void	builtin_env(t_minibash *bash, t_env	**env);
 void	builtin_exit(t_minibash *bash, t_cmd *cmd);
 void	builtin_pwd(t_minibash *bash, t_cmd *cmd);
-void	builtin_unset(t_minibash *bash, char **args);
+void	builtin_unset(t_minibash *bash, char **args, t_env **env);
 
 bool			is_builtins(t_cmd *cmd);
 void	execute_builtins(t_minibash *bash, t_env **env, t_cmd *cmd);
@@ -65,6 +65,9 @@ void			print_cmd_err(t_minibash *bash, char *cmd, char *msg, int exit);
 // void			execute_builtin(t_minibash *bash, t_cmd *cmd);
 void			display_errno_exit(char *msg, int status);
 void			display_syntax_error(t_minibash *bash);
+
+int				is_valid_exit_arg(char *arg);
+long long		ft_atoll(const char *str);
 
 /*		EXPORT UTILS	*/
 //void			display_exported_variable(t_minibash *bash);
@@ -123,6 +126,7 @@ void	add_node_to_env(t_env **head, t_env *node);
 // error package 
 
 void	display_ambiguous_errno(t_minibash *bash, int exit_st);
+void	cd_error(t_minibash *bash);
 
 // free 
 

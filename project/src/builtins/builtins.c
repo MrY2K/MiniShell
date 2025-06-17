@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 10:10:28 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/17 10:10:31 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/17 12:15:28 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	execute_builtins(t_minibash *bash, t_env **env, t_cmd *cmd)
 	if (!ft_strcmp(cmd->main_cmd, "cd"))
 		builtin_cd(bash, env, cmd);
 	else if (!ft_strcmp(cmd->main_cmd, "unset"))
-		builtin_unset(bash, cmd->argument);
+		builtin_unset(bash, cmd->argument, env);
 	else if (!ft_strcmp(cmd->main_cmd, "export"))
 		builtin_export(bash, env, cmd);
 	else if (!ft_strcmp(cmd->main_cmd, "pwd"))

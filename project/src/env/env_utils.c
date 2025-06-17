@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 12:25:39 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/13 12:27:05 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/17 12:00:21 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	free_environment_node(t_env **node)
 }
 
 /* Node is at the beginning of the list */
+
 void	remove_env_variable(t_env **env, char *var)
 {
 	t_env	*cur;

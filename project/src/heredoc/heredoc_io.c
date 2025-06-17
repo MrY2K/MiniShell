@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:10:59 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/15 17:10:12 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/17 12:39:52 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,46 +44,51 @@ void	append_regular_characters(t_expand_heredoc *ex, char *line)
 	ex->index--;
 }
 
-char	*expand_env_var_her(t_minibash *bash, t_env *env, char	**expanded_line, int *index, char *line)
+char	*expand_env_var_her(t_expand_info *info)
 {
 	t_env_var	var;
 
 	var.len = 0;
-	(*index)++;
-	var.j = *index;
-	if (line[*index] == '?')
+	(*info->index)++;
+	var.j = *info->index;
+	if (info->line[*info->index] == '?')
 	{
 		var.len++;
-		(*index)++;
+		(*info->index)++;
 	}
 	else
 	{
-		while (line[*index] && (ft_isalnum(line[*index])))
+		while (info->line[*info->index] && ft_isalnum(info->line[*info->index]))
 		{
-			(*index)++;
+			(*info->index)++;
 			var.len++;
 		}
 	}
-	(*index)--;
+	(*info->index)--;
 	var.j--;
-	var.sub = ft_substr(line, var.j, ++var.len);
-	var.str = expand(bash, &env, var.sub);
-	*expanded_line = ft_strjoin(*expanded_line, var.str);
+	var.sub = ft_substr(info->line, var.j, ++var.len);
+	var.str = expand(info->bash, &info->env, var.sub);
+	*info->expanded_line = ft_strjoin(*info->expanded_line, var.str);
 	free(var.sub);
-	return (free (var.str), *expanded_line);
+	return (free(var.str), *info->expanded_line);
 }
 
 char	*expand_env_var_in_heredoc(t_minibash *bash, char *line, t_env *env)
 {
 	t_expand_heredoc	ex;
+	t_expand_info		info;
 
 	ex.index = 0;
+	info.bash = bash;
+	info.env = env;
+	info.expanded_line = &ex.expanded_line;
+	info.index = &ex.index;
+	info.line = line;
 	while (line[ex.index])
 	{
 		ex.len = 0;
 		if (line[ex.index] == '$')
-			ex.expanded_line = expand_env_var_her(bash, env,
-					&ex.expanded_line, &ex.index, line);
+			ex.expanded_line = expand_env_var_her(&info);
 		else
 			append_regular_characters(&ex, line);
 		ex.index++;

@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:18:40 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/17 11:09:27 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/17 12:51:23 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,6 @@ void	handle_tilde_expansion(t_minibash *bash, char **env,
 	Case 3: Any other directory
 */
 
-/*
-	errno : It's a global variable in C that is automatically 
-		set by system calls or library functions when they fail
-*/
-
 void	handle_special_paths(t_minibash *bash, char **env, char *dir_path)
 {
 	bash->exit_status = 0;
@@ -56,7 +51,7 @@ void	handle_special_paths(t_minibash *bash, char **env, char *dir_path)
 		if (!dir_path)
 			print_cmd_err(bash, "cd", "OLDPWD not set", 1);
 		if (chdir(dir_path) == -1)
-			print_cmd_err(bash, "cd", strerror(errno), 1);
+			cd_error(bash);
 		else
 			printf("%s\n", dir_path);
 	}
@@ -66,12 +61,10 @@ void	handle_special_paths(t_minibash *bash, char **env, char *dir_path)
 		if (!dir_path)
 			print_cmd_err(bash, "cd", "HOME not set", 1);
 		if (chdir(dir_path) == -1)
-			print_cmd_err(bash, "cd", strerror(errno), 1);
+			cd_error(bash);
 	}
 	else if (chdir(dir_path) == -1)
-	{
-		print_cmd_err(bash, "cd", strerror(errno), 1);
-	}
+		cd_error(bash);
 }
 
 /*

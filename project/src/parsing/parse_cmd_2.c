@@ -1,5 +1,6 @@
 #include "../../includes/minishell.h"
 #include "../../includes/structs.h"
+
 /*
 * Process a segment of tokens until a pipe is encountered.
 * It skips whitespace and non-word tokens and adds valid tokens

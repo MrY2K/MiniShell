@@ -3,15 +3,7 @@
 #include "structures.h"
 
 
-char	**ft_word(t_splitor **tmp_x, t_environment *my_env, int j,
-		char ***arr_join);
-void	ft_join_words(char ***arr_join, t_splitor **tmp_x,
-		t_environment *my_env, int j);
-void	ft_join_word_2(char ***arr_join, t_splitor **tmp_x,
-		t_environment *my_env, int j);
-void	ft_join_double_2(char ***arr_join, t_splitor **tmp_x,
-		t_environment *my_env, int j);
-void	ft_skip_not_word(t_splitor **tmp_x, t_environment *my_env);
+
 
 void	ft_neuter_cmd(t_command **new_node, t_splitor **tmp_x,
 		t_environment *my_env, char ***arr_join);

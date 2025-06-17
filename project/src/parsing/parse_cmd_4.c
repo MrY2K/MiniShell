@@ -360,12 +360,7 @@ void	process_quoted(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr, t_
 // 	return (count);
 // }
 
-void	process_redirections(t_cmd **cmd_list, t_token **tokens, t_env *env)
-{
-	(void)cmd_list;
-	(void)tokens;
-	(void)env;
-}
+
 
 // void	ft_fill_redirection(t_pre *id, t_env *env, char *final)
 // {

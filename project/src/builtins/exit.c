@@ -6,31 +6,11 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 11:30:12 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/16 12:03:45 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/17 11:46:40 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-static int	is_numeric_arg(char *arg)
-{
-	int	i;
-
-	if (!arg || !*arg)
-		return (0);
-	i = 0;
-	if (arg[0] == '+' || arg[0] == '-')
-		i++;
-	if (!arg[i])
-		return (0);
-	while (arg[i])
-	{
-		if (!ft_isdigit(arg[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
 
 static int	count_arguments(char **args)
 {
@@ -44,7 +24,7 @@ static int	count_arguments(char **args)
 	return (count);
 }
 
-void	exit_msg(char *arg, int exit_code)
+static void	exit_msg(char *arg, int exit_code)
 {
 	ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 	if (arg)
@@ -57,26 +37,43 @@ void	exit_msg(char *arg, int exit_code)
 	exit(exit_code);
 }
 
+/*
+	CASE 1 :
+		exit -> It exits with the last command's exit status
+
+	CASE 2 :
+		exit <number>
+	
+	CASE 3 :
+		exit abc  12 ->  numeric argument required
+		exit 12 42  ->   too many arguments , no exit 
+
+*/
+
+/*
+	exit(300); // Will actually return 44 → Because 300 % 256 = 44
+*/
+
 static void	handle_exit_cases(t_minibash *bash, t_cmd *cmd, int arg_count)
 {
-	int	exit_code;
+	long long	exit_code_ll;
 
 	if (arg_count == 1)
 		exit(bash->exit_status);
 	else if (arg_count == 2)
 	{
-		if (!is_numeric_arg(cmd->argument[1]))
+		if (!is_valid_exit_arg(cmd->argument[1]))
 		{
 			bash->exit_status = 255;
 			exit_msg(cmd->argument[1], 255);
 		}
-		exit_code = ft_atoi(cmd->argument[1]);
-		bash->exit_status = exit_code;
-		exit(exit_code);
+		exit_code_ll = ft_atoll(cmd->argument[1]);
+		bash->exit_status = (int)exit_code_ll;
+		exit((unsigned char)exit_code_ll);
 	}
 	else
 	{
-		if (!is_numeric_arg(cmd->argument[1]))
+		if (!is_valid_exit_arg(cmd->argument[1]))
 		{
 			bash->exit_status = 255;
 			exit_msg(cmd->argument[1], 255);

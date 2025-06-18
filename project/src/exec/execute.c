@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:29:21 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/16 12:38:25 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/18 08:05:28 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	delete_heredoc_files(t_minibash *bash, t_cmd *cmd)
 /* Case 1: Handle heredoc operations
 	1.1
 		echo hej << 42  :  print hej
+		cd - << 1337  ; file heredoc and go to the old pwd
 
 	Case 3 : line to long >  has_redirections(cmd)
 		cd > file.txt -> change cur dir + create file

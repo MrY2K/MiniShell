@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 10:10:28 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/17 12:15:28 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/18 07:39:51 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,18 @@ void	execute_builtins(t_minibash *bash, t_env **env, t_cmd *cmd)
 
 void	execute_parent_builtin(t_minibash *bash, t_env **env, t_cmd *cmd)
 {
+	bool	should_execute;
+
 	if (has_redirections(cmd))
 		if (validate_redirection_file(cmd))
 			return ;
+	should_execute = false;
 	if (cmd->argument[1])
-		execute_builtins(bash, env, cmd);
-	if (!ft_strcmp(cmd->main_cmd, "exit") && !cmd->argument[1])
-		execute_builtins(bash, env, cmd);
-	if (!ft_strcmp(cmd->main_cmd, "cd") && !cmd->argument[1])
+		should_execute = true;
+	else if (!ft_strcmp(cmd->main_cmd, "exit")
+		|| !ft_strcmp(cmd->main_cmd, "cd"))
+		should_execute = true;
+	if (should_execute)
 		execute_builtins(bash, env, cmd);
 }
 

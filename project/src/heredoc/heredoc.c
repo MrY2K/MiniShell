@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:01:42 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/15 17:12:35 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/18 07:56:35 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ void	child_process(t_minibash *bash, t_env **env, t_heredoc *herdoc)
 		ignore it completely and continue whatever you were doing
 */
 
-int	handell_fork(t_minibash *bash, t_env **env, t_heredoc *herdoc)
+int	fork_heredoc(t_minibash *bash, t_env **env, t_heredoc *herdoc)
 {
 	int	pid;
 	int	status;
@@ -189,7 +189,7 @@ int	process_her_with_signals(t_minibash *bash, t_env **env, t_cmd *cmd)
 	heredoc = cmd->heredoc;
 	while (cmd && heredoc)
 	{
-		status = handell_fork(bash, env, heredoc);
+		status = fork_heredoc(bash, env, heredoc);
 		if (WTERMSIG(status) == SIGINT)
 		{
 			return (status);

@@ -65,6 +65,7 @@ void			print_cmd_err(t_minibash *bash, char *cmd, char *msg, int exit);
 // void			execute_builtin(t_minibash *bash, t_cmd *cmd);
 void			display_errno_exit(char *msg, int status);
 void			display_syntax_error(t_minibash *bash);
+void			execute_error(t_minibash *bash, char *msg);
 
 int				is_valid_exit_arg(char *arg);
 long long		ft_atoll(const char *str);

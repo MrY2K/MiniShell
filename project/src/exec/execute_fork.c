@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 12:24:24 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/17 12:24:29 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/18 11:41:59 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	execute_external_cmd(t_minibash *bash, t_env **env,
 	char	**envp;
 
 	if (!cmd || !args || !args[0])
-		return (bash->exit_status = 127, (void)0);
+		return ;
 	envp = convert_env_list_to_array(env);
 	if (args[0][0] == '/')
 		path = args[0];
@@ -61,20 +61,23 @@ void	execute_external_cmd(t_minibash *bash, t_env **env,
 		path = path_command(args[0], envp, bash);
 	if (!path)
 	{
-		ft_putendl_fd("minishell: command not found", 2);
+		execute_error(bash, "PATH");
 		free_2d(envp);
-		bash->exit_status = 127;
 		exit(127);
 	}
+	
 	if (execve(path, args, envp) == -1)
 	{
-		ft_putendl_fd("minishell: command not found", 2);
+		execute_error(bash, "command not found");
 		free(path);
 		free_2d(envp);
-		bash->exit_status = 127;
 		exit(127);
 	}
 }
+
+/*
+	case 1 : export > file 
+*/
 
 void	execute_single_cmd(t_minibash *bash, t_env **env, t_cmd *cmd)
 {
@@ -90,7 +93,11 @@ void	execute_single_cmd(t_minibash *bash, t_env **env, t_cmd *cmd)
 /*
 	Case 1 :
 		cat << ONE << TWO > out.txt
+		
+		cat << 42 < input -> cat the input of input
 
+		cat << 42 < input > out   ->  The content of input will be written to out.
+		
 */
 
 void	execute_command(t_minibash *bash, t_env **env, t_cmd *cmd)

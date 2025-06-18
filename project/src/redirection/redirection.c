@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 11:08:12 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/13 12:35:01 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/18 09:48:28 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,10 +117,10 @@ void	handle_redirections(t_minibash *bash, t_cmd *cmd)
 	{
 		if (red->type == TOKEN_REDIR_OUT)
 			handle_output_redirect(bash, red->file_path, red->is_ambig);
-		else if (red->type == TOKEN_REDIR_IN)
-			handle_input_redirect(bash, red->file_path, red->is_ambig);
 		else if (red->type == TOKEN_REDIR_APPEND)
 			handle_append_redirect(bash, red->file_path, red->is_ambig);
+		else if (red->type == TOKEN_REDIR_IN)
+			handle_input_redirect(bash, red->file_path, red->is_ambig);
 		red = red->next;
 	}
 }

@@ -14,7 +14,8 @@ char	*ft_expand(char *arg, t_env **env)
 		else if (arg[id.i] == '$')
 		{
 			if (arg[id.i + 1] == '?')
-				return (id.s = ft_itoa(	(*env)->exit_status), id.s); //! PASS EXIT
+				return ("d");
+				// return (id.s = ft_itoa(	(*env)->exit_status), id.s); //! PASS EXIT
 			id.i++;
 			if (arg[id.i] == '\0')
 				return (id.s = ft_strdup("$"), id.s);

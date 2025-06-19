@@ -35,6 +35,9 @@ char	*ft_skip_direction(t_token **tmp_t, t_env *env,
 
 	id.str = NULL;
 	id.final = NULL;
+	// if (*tmp_t)
+    //     printf("DEBUG: Processing token: '%s', type: %d, state: %d\n", 
+    //         (*tmp_t)->value, (*tmp_t)->type, (*tmp_t)->state);
 	if (ft_check_quote(tmp_t, &id.final))
 		;
 	else if ((*tmp_t) != NULL && (*tmp_t)->state == Normal && ((*tmp_t)->type == '\"'
@@ -51,9 +54,13 @@ char	*ft_skip_direction(t_token **tmp_t, t_env *env,
 		if (*is_ambig == 1 && her == 1)
 			return (NULL);
 		process_word(tmp_t, env, her, &id.str);
+        // printf("DEBUG: After process_word, id.str = %s\n", id.str ? id.str[0] : "(null)");
+
 	}
 	if (id.str != NULL)
 		id.final = ft_fill_final(id.str);
+    // printf("DEBUG: Final result = %s\n", id.final ? id.final : "(null)");
+
 	return (free_argument_array(id.str), id.final);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 12:24:24 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/18 11:41:59 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/18 12:38:21 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	execute_external_cmd(t_minibash *bash, t_env **env,
 		free_2d(envp);
 		exit(127);
 	}
-	
+	acc_ess(bash, envp, path, args);
 	if (execve(path, args, envp) == -1)
 	{
 		execute_error(bash, "command not found");

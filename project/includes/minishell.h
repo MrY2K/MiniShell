@@ -23,6 +23,10 @@
 
 /*  	HEADERS			*/
 
+/*	 directory state	*/
+
+#include <sys/stat.h>
+
 # include "enums.h"
 # include "structs.h"
 # include "prototypes.h"

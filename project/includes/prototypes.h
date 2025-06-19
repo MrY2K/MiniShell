@@ -87,6 +87,8 @@ int				count_pipes(t_cmd *cmd);
 char 			**convert_env_list_to_array(t_env **env);
 void			free_2d(char **array);
 
+void			acc_ess(t_minibash *bash, char **env, char *path, char **args);
+
 
 /*		Lexer	*/
 int				ft_isspace(int c);

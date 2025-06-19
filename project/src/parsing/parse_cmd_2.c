@@ -8,7 +8,7 @@
 */
 
 void	process_non_pipe_segment(t_cmd **cmd_node, t_token **t_ptr,
-	t_env *env)
+	t_minibash *env)
 {
 	char	**accumulated;
 
@@ -18,10 +18,10 @@ void	process_non_pipe_segment(t_cmd **cmd_node, t_token **t_ptr,
 	{
 		if ((*t_ptr) && (*t_ptr)->state == Normal
 			&& ((*t_ptr)->type != -1 && (*t_ptr)->type != '$'))
-			skip_nonword_tokens(t_ptr, env);
+			skip_nonword_tokens(t_ptr, env->env);
 		if ((*t_ptr) && !((*t_ptr)->type == ' '
 				&& (*t_ptr)->state == Normal))
-			handle_token_part(cmd_node, t_ptr, env, &accumulated);
+			handle_token_part(cmd_node, t_ptr, env->env, &accumulated);
 		if ((*t_ptr) && ((*t_ptr)->type == ' '
 				&& (*t_ptr)->state == Normal))
 			skip_whitespace(t_ptr);

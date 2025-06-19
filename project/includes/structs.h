@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 09:25:15 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/19 01:44:02 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/19 21:27:08 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ typedef struct s_env
 typedef struct s_cmd
 {
 	char			*main_cmd; // content
-	char			**argument; // arg
+	char			**argument; // arg "ls -la | $a"
 	char			**env_arr;
 	int				has_ambiguous; // is_amb
 	int				pipe; // is_pipe

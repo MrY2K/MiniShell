@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/19 01:34:08 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/19 23:32:21 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,12 +193,12 @@ void	cleanup_pipe_resources(t_pipe *pi_pe);
 
 // NEW 
 
-void	parse_input_commands(t_token **token_list, t_cmd **cmd_list, t_env *env);
+void	parse_input_commands(t_token **token_list, t_cmd **cmd_list, t_minibash *env);
 void	append_command(t_cmd **cmd_list, t_cmd *new_cmd);
 t_cmd	*last_command(t_cmd *cmd_list);
-t_cmd	*create_new_command(t_token **tok_ptr, t_env *env);
+t_cmd	*create_new_command(t_token **tok_ptr, t_minibash *env);
 void	join_to_arg_array(char ***arg_arr, char *tok_str);
-void	process_non_pipe_segment(t_cmd **cmd_node, t_token **tok_ptr, t_env *env);
+void	process_non_pipe_segment(t_cmd **cmd_node, t_token **tok_ptr, t_minibash *env);
 void	handle_token_part(t_cmd **cmd_node, t_token **tok_ptr,
         t_env *env, char ***arg_arr);
 void	join_to_arg_array(char ***arg_arr, char *tok_str);

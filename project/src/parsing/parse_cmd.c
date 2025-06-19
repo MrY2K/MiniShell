@@ -9,7 +9,7 @@
 /*
 * this bad boy here builds the command
 */
-void	parse_input_commands(t_token **token_list, t_cmd **cmd_list, t_env *env)
+void	parse_input_commands(t_token **token_list, t_cmd **cmd_list, t_minibash *env)
 {
 	t_token	*cur_token;
 	t_cmd	**tmp_cmd;
@@ -20,8 +20,7 @@ void	parse_input_commands(t_token **token_list, t_cmd **cmd_list, t_env *env)
 	{
 		append_command(tmp_cmd, create_new_command(&cur_token, env));
 	}
-	// free(cur_token);
-	process_redirections(tmp_cmd, token_list, env);
+	process_redirections(tmp_cmd, token_list, env->env);
 }
 
 /*
@@ -57,7 +56,7 @@ t_cmd	*last_command(t_cmd *cmd_list)
 	return (last);
 }
 
-t_cmd	*create_new_command(t_token **tok_ptr, t_env *env)
+t_cmd	*create_new_command(t_token **tok_ptr, t_minibash *env)
 {
 	t_cmd	*node;
 

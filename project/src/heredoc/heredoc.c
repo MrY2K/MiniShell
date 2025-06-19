@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:01:42 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/18 07:56:35 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/19 20:39:33 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,25 +73,25 @@ char	*expand(t_minibash *bash, t_env **env, char *str)
 	while (env && str[ex.index])
 	{
 		if (search("$\"\"", str))
-			return (ex.str = ft_strdup(""), ex.str);
+			return (ex.s = ft_strdup(""), ex.s);
 		else if (str[ex.index] == '$')
 		{
 			if (str[ex.index + 1] && str[ex.index + 1] == '?')
 				return (ex.expanded_line = ft_itoa(bash->exit_status), 
-					ex.str = ft_strdup(ex.expanded_line), 
-					free(ex.expanded_line), ex.str);
+					ex.s = ft_strdup(ex.expanded_line), 
+					free(ex.expanded_line), ex.s);
 			ex.index++;
 			if (!str[ex.index])
-				return (ex.str = ft_strdup("$"), ex.str);
+				return (ex.s = ft_strdup("$"), ex.s);
 			if (str[ex.index] == '\"' || str[ex.index] == '\'')
-				return (ex.str = ft_strdup(""), ex.str);
+				return (ex.s = ft_strdup(""), ex.s);
 			if (!ft_isalnum(str[ex.index]) || ft_isdigit(str[ex.index])) 
-				return (ex.str);
-			lookup_env_var(env, str, &ex.str, &ex.index);
+				return (ex.s);
+			lookup_env_var(env, str, &ex.s, &ex.index);
 		}
 		ex.index++;
 	}
-	return (ex.str);
+	return (ex.s);
 }
 
 /*

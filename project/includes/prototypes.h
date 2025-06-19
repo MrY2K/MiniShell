@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   prototypes.h                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
+/*   Updated: 2025/06/19 01:34:08 by achoukri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef PROTOTYPES_H
 # define PROTOTYPES_H
@@ -199,15 +210,65 @@ void	handle_token_part(t_cmd **cmd_node, t_token **tok_ptr,
         t_env *env, char ***arg_arr);
 void	join_to_arg_array(char ***arg_arr, char *tok_str);
 void	process_redirections(t_cmd **cmd_list, t_token **tokens, t_env *env);
-int	get_arg_count(char **args);
+int		get_arg_count(char **args);
 void	skip_nonword_tokens(t_token **tok_ptr, t_env *env);
 void	skip_whitespace(t_token **tok_ptr);
 char	**combine_arguments(char **args, char **addition);
 void	free_argument_array(char **arr);
-void	process_word(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr);
+char	**process_word(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr);
 int		is_redirection(t_token *node);
-void	process_quoted(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr);
-void	free_args(char **args);
+char	**process_quoted(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr);
+
+
+// parse utils=
+int	redirection(t_token *start);
+int	ft_len_arg(char **arg);
+int	ft_search(char *s, char *d);
+int		is_quote(t_token *head);
+
+
+char	**ft_join_arg(char **arg, char **join);
+void	ft_join_arr(char ***arr_join, char *in);
+
+void	ft_join_double_2(char ***arr_join, t_token **tmp_t,
+		t_env *my_env, int j);
+void	ft_join_word_2(char ***arr_join, t_token **tmp_t,
+		t_env *my_env, int j);
+void	ft_join_words(char ***arr_join, t_token **tmp_t,
+		t_env *my_env, int j);
+
+//more joiner for process quotes
+void	ft_join_next(char ***arr_join, t_token **tmp_x, t_env *env,
+		int j);
+void	ft_join_double(char ***arr_join, t_token **tmp_t,
+		t_env *env, int j);
+
+//
+char	*ft_expand(char *arg, t_env **env);
+char	**ft_split_expand(char ***arr_join, char *s);
+void	ft_go_to_env(char **s, char *arg, int *i, t_env **env);
+
+
+// red
+
+// red utils
+void		ft_add_redir(t_redirect **lst, t_redirect *_new);
+t_redirect	*ft_last_redir(t_redirect *lst);
+t_redirect	*ft_new_redir(void *content, t_token_type type, int is_ambig);
+void	ft_next(t_token **tok_ptr, t_cmd **cmd_ptr);
+void	add_back_node_her(t_heredoc **her, t_heredoc *new_her);
+
+//red utils 2
+char	*ft_str_join(char *s1, char *s2);
+t_heredoc	*new_node_her(char *file, int fd, int tokens, int is_expand);
+
+//  RED2
+char	*ft_fill_final(char **s);
+int	ft_check_ambiguous(t_token *tmp_t, t_env *env);
+int	ft_check_quote(t_token **tmp_t, char **final);
+char	*ft_skip_direction(t_token **tmp_t, t_env *env,
+		int *is_ambig, int her);
+void	ft_skip_spaces(t_token **tpm_t);
 
 
 // free parsing

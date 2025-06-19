@@ -6,11 +6,11 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 00:00:00 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/18 11:02:07 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/19 20:39:14 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../includes/minishell.h"
 
 void	free_ft_split(char **list)
 {

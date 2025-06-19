@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 13:08:06 by rel-mora          #+#    #+#             */
-/*   Updated: 2025/06/12 22:34:31 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:05:33 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ void	ft_initialize(t_splitor *x, t_command **cmd, t_environment **my_env)
 {
 	if (x != NULL && my_env != NULL)
 	{
-		ft_command(&x, cmd, *my_env);
 		debug_print_splitor_list(x);
+		ft_command(&x, cmd, *my_env);
 		debug_print_command_list(*cmd);
 		ft_exute(my_env, *cmd);
 	}

@@ -3,24 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/15 16:06:28 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/19 20:29:18 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void ll(void) { system("leaks -q minishell"); }
 
 void	execute_command_pipeline(t_minibash *bash, t_env **env, 
 	t_token *token, t_cmd **cmd)
 {
 	if (token && env)
 	{
+		// debug_print_token_list(token); //? DEBUG
 		parse_input_commands(&token, cmd, *env);
+		// debug_print_cmd_list(*cmd); //? DEBUG
 		execution(bash, env, *cmd);
 	}
-	//free_command_resources(cmd);
+	free_cmd_list(cmd);
 	free_lexer(&token);
 }
 
@@ -77,6 +81,7 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	tokens = NULL;
 	cmd = NULL;
+	// atexit(ll);
 	init_minibash(&bash);
 	initialize_environment(bash, env);
 	using_history();
@@ -85,3 +90,4 @@ int	main(int ac, char **av, char **env)
 	free_minibash(&bash);
 	return (exit_st);
 }
+

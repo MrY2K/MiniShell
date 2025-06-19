@@ -1,5 +1,5 @@
-src/.build/exec/path.o: src/exec/path.c \
-  src/exec/../../includes/minishell.h \
+src/.build/parsing/parse_utils_2.o: src/parsing/parse_utils_2.c \
+  src/parsing/../../includes/minishell.h \
   /goinfre/ajelloul/homebrew/opt/readline/include/readline/readline.h \
   /goinfre/ajelloul/homebrew/opt/readline/include/readline/rlstdc.h \
   /goinfre/ajelloul/homebrew/opt/readline/include/readline/rltypedefs.h \

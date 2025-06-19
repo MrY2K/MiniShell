@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 09:25:15 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/17 12:37:48 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/19 20:38:36 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,7 @@ typedef struct s_export_parser // check_var
 
 /*		Parsing	*/
 
-typedef struct s_expand_heredoc
-{
-    char	*str;       // s
-    int		index;   // Current index in the input string.   i
-	int		j;
-    char	*expanded_line;  // Final expanded string.
-    int		len;   // Length of the current variable or substring.
-}	t_expand_heredoc;
+
 
 typedef struct s_env_var
 {
@@ -136,6 +129,7 @@ typedef struct s_env
 	char			*name;
 	char			*value;
 	struct s_env	*next;
+	int              exit_status; //!
 }	t_env;
 
 
@@ -188,5 +182,24 @@ typedef struct s_expand_info
 	char		*line;
 }	t_expand_info;
 
+typedef struct s_expand_heredoc //t_pre
+{
+    char		*s;       // final
+	char		*expanded_line;  // Final expanded string.
+    int			len;   // Length of the current variable or substring.
+    int			index;   // Current index in the input string.   i
+	int			j;
+	int			i;
+	int			is_expand;
+	int			is_ambig;
+	t_cmd		*tmp_cmd;
+	t_token		*tmp_t;
+}	t_expand_heredoc;
+
+typedef struct s_dir
+{
+	char				*final;
+	char				**str;
+}						t_dir;
 
 #endif

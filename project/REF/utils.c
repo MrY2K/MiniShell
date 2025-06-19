@@ -6,25 +6,13 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 16:47:08 by rel-mora          #+#    #+#             */
-/*   Updated: 2025/06/09 00:58:18 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/16 20:45:09 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_len_arg(char **arg)
-{
-	int	i;
 
-	i = 0;
-	if (arg == NULL || arg[0] == NULL)
-		return (0);
-	while (arg[i] != NULL)
-	{
-		i++;
-	}
-	return (i);
-}
 
 char	**ft_split_expand(char ***arr_join, char *s)
 {

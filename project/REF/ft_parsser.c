@@ -323,11 +323,7 @@ char	**ft_join_arg(char **arg, char **join)
 	return (ps.new_arg);
 }
 
-void	ft_skip_spaces(t_splitor **tmp_x)
-{
-	while ((*tmp_x) != NULL && (*tmp_x)->type == ' ')
-		(*tmp_x) = (*tmp_x)->next;
-}
+
 
 void	ft_skip_not_word(t_splitor **tmp_x, t_environment *my_env)
 {

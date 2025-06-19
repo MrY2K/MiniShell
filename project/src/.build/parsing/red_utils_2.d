@@ -1,4 +1,4 @@
-src/.build/parsing/parse_cmd.o: src/parsing/parse_cmd.c \
+src/.build/parsing/red_utils_2.o: src/parsing/red_utils_2.c \
  src/parsing/../../includes/minishell.h \
  src/parsing/../../includes/enums.h src/parsing/../../includes/structs.h \
  src/parsing/../../includes/minishell.h \

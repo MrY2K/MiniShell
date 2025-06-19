@@ -1,13 +1,9 @@
 #include "../../includes/minishell.h"
 #include "../../includes/structs.h"
 
-void	ft_join_next(char ***arr_join, t_token **tmp_x, t_env *env,
-		int j, t_minibash b);
-void	ft_join_double(char ***arr_join, t_token **tmp_t,
-		t_env *env, int j, t_minibash b);
 
 void	ft_join_next(char ***arr_join, t_token **tmp_x, t_env *env,
-		int j, t_minibash b)
+		int j)
 {
 	char	*s;
 
@@ -17,7 +13,7 @@ void	ft_join_next(char ***arr_join, t_token **tmp_x, t_env *env,
 	{
 		if ((*tmp_x)->type == '$' && (*tmp_x)->state == Normal && j == 1)
 		{
-			s = ft_expand((*tmp_x)->value, &env, b);
+			s = ft_expand((*tmp_x)->value, &env);
 			ft_split_expand(arr_join, s);
 		}
 		else
@@ -29,7 +25,7 @@ void	ft_join_next(char ***arr_join, t_token **tmp_x, t_env *env,
 }
 
 void	ft_join_double(char ***arr_join, t_token **tmp_t,
-		t_env *env, int j, t_minibash b)
+		t_env *env, int j)
 {
 	char	*s;
 
@@ -39,23 +35,23 @@ void	ft_join_double(char ***arr_join, t_token **tmp_t,
 	{
 		if ((*tmp_t)->type == '$' && (*tmp_t)->state == Normal && j == 1)
 		{
-			s = ft_expand((*tmp_t)->value, &env, b);
+			s = ft_expand((*tmp_t)->value, &env);
 			ft_split_expand(arr_join, s);
 		}
 		else if ((*tmp_t)->type == '$' && (*tmp_t)->state == Double && j == 1)
 		{
-			s = ft_expand((*tmp_t)->value, &env, b);
+			s = ft_expand((*tmp_t)->value, &env);
 			ft_join_arr(arr_join, s);
 			free(s);
 		}
 		(*tmp_t) = (*tmp_t)->next;
 	}
-	ft_join_words(arr_join, tmp_t, env, 1, b);
-	ft_join_next(arr_join, tmp_t, env, 1, b);
+	ft_join_words(arr_join, tmp_t, env, 1);
+	ft_join_next(arr_join, tmp_t, env, 1);
 }
 
 char **process_quoted(t_token **tok_ptr, t_env *env, int flag,
-                    char ***arg_arr, t_minibash b)
+                    char ***arg_arr)
 {
     char *s = NULL;
 
@@ -66,7 +62,7 @@ char **process_quoted(t_token **tok_ptr, t_env *env, int flag,
     {
         if ((*tok_ptr)->state == Double && (*tok_ptr)->type == '$' && flag)
         {
-            s = ft_expand((*tok_ptr)->value, &env, b);
+            s = ft_expand((*tok_ptr)->value, &env);
             ft_split_expand(arg_arr, s);
             // free(s);
         }
@@ -80,7 +76,7 @@ char **process_quoted(t_token **tok_ptr, t_env *env, int flag,
         }
         *tok_ptr = (*tok_ptr)->next;
         // Recursively handle more quoted/expanded tokens
-        ft_join_double(arg_arr, tok_ptr, env, flag, b);
+        ft_join_double(arg_arr, tok_ptr, env, flag);
     }
     return (*arg_arr);
 }

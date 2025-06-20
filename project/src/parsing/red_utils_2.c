@@ -54,28 +54,28 @@ t_heredoc	*new_node_her(char *file, int fd, int tokens, int is_expand)
 
 char	*ft_fill_final(char **s)
 {
-    int		i;
-    char	*final;
-    char	*temp;
+	int		i;
+	char	*final;
+	char	*temp;
 
-    if (!s || !s[0])
-        return (NULL);
-    final = ft_strdup("");  // Initialize with empty string instead of NULL
-    i = 0;
-    while (s[i] != NULL)
-    {
-        temp = final;
-        final = ft_strjoin(final, s[i]);
-        free(temp);  // Free the old string to avoid memory leaks
-        if (s[i + 1] != NULL)
-        {
-            temp = final;
-            final = ft_strjoin(final, " ");
-            free(temp);
-        }
-        i++;
-    }
-    return (final);
+	if (!s || !s[0])
+		return (NULL);
+	final = ft_strdup("");  // Initialize with empty string instead of NULL
+	i = 0;
+	while (s[i] != NULL)
+	{
+		temp = final;
+		final = ft_strjoin(final, s[i]);
+		free(temp);  // Free the old string to avoid memory leaks
+		if (s[i + 1] != NULL)
+		{
+			temp = final;
+			final = ft_strjoin(final, " ");
+			free(temp);
+		}
+		i++;
+	}
+	return (final);
 }
 // char	*ft_fill_final(char **s)
 // {

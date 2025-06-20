@@ -1,17 +1,5 @@
 #include "../../includes/minishell.h"
 
-///------------------------- joiners
-char	**ft_split_expand(char ***arr_join, char *s);
-char	**ft_join_arg(char **arg, char **join);
-void	ft_join_arr(char ***arr_join, char *value);
-
-void	ft_join_double_2(char ***arr_join, t_token **tmp_t,
-		t_env *my_env, int j);
-void	ft_join_word_2(char ***arr_join, t_token **tmp_t,
-		t_env *my_env, int j);
-void	ft_join_words(char ***arr_join, t_token **tmp_t,
-		t_env *my_env, int j);
-
 
 char	**ft_join_arg(char **arg, char **join)
 {

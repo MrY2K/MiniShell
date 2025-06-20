@@ -14,6 +14,7 @@ void	ft_add_redir(t_redirect **lst, t_redirect *_new)
 		last->next = _new;
 	}
 }
+
 t_redirect	*ft_last_redir(t_redirect *lst)
 {
 	t_redirect	*last;

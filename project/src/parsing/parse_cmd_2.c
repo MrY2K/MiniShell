@@ -8,8 +8,9 @@
 */
 
 void	process_non_pipe_segment(t_cmd **cmd_node, t_token **t_ptr,
-	t_env *env)
+	t_env *env, t_minibash *b)
 {
+	(void)b;
 	char	**accumulated;
 
 	accumulated = NULL;

@@ -1,15 +1,16 @@
 #include "../../includes/minishell.h"
 
-int	ft_check_ambiguous(t_token *tmp_t, t_env *env)
+int				ft_check_ambiguous(t_token *tmp_t, t_env *env, t_minibash b)
 {
 	char	*s;
 	char	**str;
 
+	(void)b;
 	s = NULL;
 	while ((tmp_t) != NULL)
 	{
-		if ((tmp_t)->state == Normal && (redirection(tmp_t) || tmp_t->type == '|'
-				|| tmp_t->type == ' '))
+		if ((tmp_t)->state == Normal && (redirection(tmp_t)
+				|| tmp_t->type == '|' || tmp_t->type == ' '))
 			break ;
 		if ((tmp_t) != NULL && tmp_t->type == '$' && tmp_t->state == Normal)
 		{
@@ -30,7 +31,8 @@ int	ft_check_ambiguous(t_token *tmp_t, t_env *env)
 
 int	ft_check_quote(t_token **tmp_t, char **final)
 {
-	while (((*tmp_t) != NULL && (*tmp_t)->next != NULL && ((*tmp_t)->state == Normal
+	while (((*tmp_t) != NULL && (*tmp_t)->next != NULL
+			&& ((*tmp_t)->state == Normal
 				&& (*tmp_t)->next->state == Normal)) && (((*tmp_t)->type == '\"'
 				&& (*tmp_t)->next->type == '\"') || ((*tmp_t)->type == '\''
 				&& (*tmp_t)->next->type == '\''))
@@ -40,19 +42,17 @@ int	ft_check_quote(t_token **tmp_t, char **final)
 				&& (*tmp_t)->next->next->type == '$')))
 	{
 		(*tmp_t) = (*tmp_t)->next;
-		(*tmp_t) = (*tmp_t)->next;
-		return (1);
+		return ((*tmp_t) = (*tmp_t)->next, 1);
 	}
-	if (((*tmp_t) != NULL && (*tmp_t)->next != NULL && ((*tmp_t)->state == Normal
+	if (((*tmp_t) != NULL && (*tmp_t)->next != NULL
+			&& ((*tmp_t)->state == Normal
 				&& (*tmp_t)->next->state == Normal)) && (((*tmp_t)->type == '\"'
 				&& (*tmp_t)->next->type == '\"') || ((*tmp_t)->type == '\''
 				&& (*tmp_t)->next->type == '\'')))
 	{
 		(*tmp_t) = (*tmp_t)->next;
 		(*tmp_t) = (*tmp_t)->next;
-		*final = ft_strdup("");
-		return (1);
+		return (*final = ft_strdup(""), 1);
 	}
 	return (0);
 }
-

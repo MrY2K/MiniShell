@@ -51,32 +51,30 @@ void	ft_join_double(char ***arr_join, t_token **tmp_t,
 }
 
 char **process_quoted(t_token **tok_ptr, t_env *env, int flag,
-                    char ***arg_arr)
+					char ***arg_arr)
 {
-    char *s = NULL;
+	char *s = NULL;
 
-    while ((*tok_ptr) != NULL
-        && !is_redirection(*tok_ptr)
-        && ((*tok_ptr)->state == Double || (*tok_ptr)->state == Single
-            || (*tok_ptr)->type == '"' || (*tok_ptr)->type == '\''))
-    {
-        if ((*tok_ptr)->state == Double && (*tok_ptr)->type == '$' && flag)
-        {
-            s = ft_expand((*tok_ptr)->value, &env);
-            ft_split_expand(arg_arr, s);
-        }
-        else if ((*tok_ptr)->state == Double || (*tok_ptr)->state == Single)
-        {
-            ft_join_arr(arg_arr, (*tok_ptr)->value);
-        }
-        else if ((*tok_ptr)->type == '$' || (*tok_ptr)->type == -1)
-        {
-            ft_join_arr(arg_arr, (*tok_ptr)->value);
-        }
-        *tok_ptr = (*tok_ptr)->next;
-        // Recursively handle more quoted/expanded tokens
-        ft_join_double(arg_arr, tok_ptr, env, flag);
-    }
-    return (*arg_arr);
+	while ((*tok_ptr) != NULL
+		&& !is_redirection(*tok_ptr)
+		&& ((*tok_ptr)->state == Double || (*tok_ptr)->state == Single
+			|| (*tok_ptr)->type == '"' || (*tok_ptr)->type == '\''))
+	{
+		if ((*tok_ptr)->state == Double && (*tok_ptr)->type == '$' && flag)
+		{
+			s = ft_expand((*tok_ptr)->value, &env);
+			ft_split_expand(arg_arr, s);
+		}
+		else if ((*tok_ptr)->state == Double || (*tok_ptr)->state == Single)
+		{
+			ft_join_arr(arg_arr, (*tok_ptr)->value);
+		}
+		else if ((*tok_ptr)->type == '$' || (*tok_ptr)->type == -1)
+		{
+			ft_join_arr(arg_arr, (*tok_ptr)->value);
+		}
+		*tok_ptr = (*tok_ptr)->next;
+		ft_join_double(arg_arr, tok_ptr, env, flag);
+	}
+	return (*arg_arr);
 }
-//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

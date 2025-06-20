@@ -1,4 +1,4 @@
-src/.build/parsing/red_utils_2.o: src/parsing/red_utils_2.c \
+src/.build/parsing/parse_utils_2.o: src/parsing/parse_utils_2.c \
   src/parsing/../../includes/minishell.h \
   /goinfre/achoukri/homebrew/opt/readline/include/readline/readline.h \
   /goinfre/achoukri/homebrew/opt/readline/include/readline/rlstdc.h \

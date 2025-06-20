@@ -1,5 +1,5 @@
-src/.build/parsing/red_utils_2.o: src/parsing/red_utils_2.c \
-  src/parsing/../../includes/minishell.h \
+src/.build/tokenizer/lexer_core.o: src/tokenizer/lexer_core.c \
+  src/tokenizer/../../includes/minishell.h \
   /goinfre/achoukri/homebrew/opt/readline/include/readline/readline.h \
   /goinfre/achoukri/homebrew/opt/readline/include/readline/rlstdc.h \
   /goinfre/achoukri/homebrew/opt/readline/include/readline/rltypedefs.h \

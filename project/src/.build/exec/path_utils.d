@@ -1,5 +1,5 @@
-src/.build/parsing/red_utils_2.o: src/parsing/red_utils_2.c \
-  src/parsing/../../includes/minishell.h \
+src/.build/exec/path_utils.o: src/exec/path_utils.c \
+  src/exec/../../includes/minishell.h \
   /goinfre/achoukri/homebrew/opt/readline/include/readline/readline.h \
   /goinfre/achoukri/homebrew/opt/readline/include/readline/rlstdc.h \
   /goinfre/achoukri/homebrew/opt/readline/include/readline/rltypedefs.h \

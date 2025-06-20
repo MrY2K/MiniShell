@@ -9,7 +9,8 @@
 /*
 * this bad boy here builds the command
 */
-void	parse_input_commands(t_token **token_list, t_cmd **cmd_list, t_env *env)
+void	parse_input_commands(t_token **token_list, t_cmd **cmd_list,
+		t_env *env, t_minibash *b)
 {
 	t_token	*cur_token;
 	t_cmd	**tmp_cmd;
@@ -18,10 +19,9 @@ void	parse_input_commands(t_token **token_list, t_cmd **cmd_list, t_env *env)
 	cur_token = *token_list;
 	while (cur_token != NULL)
 	{
-		append_command(tmp_cmd, create_new_command(&cur_token, env));
+		append_command(tmp_cmd, create_new_command(&cur_token, env, b));
 	}
-	// free(cur_token);
-	process_redirections(tmp_cmd, token_list, env);
+	process_redirections(tmp_cmd, token_list, env, b);
 }
 
 /*
@@ -57,7 +57,7 @@ t_cmd	*last_command(t_cmd *cmd_list)
 	return (last);
 }
 
-t_cmd	*create_new_command(t_token **tok_ptr, t_env *env)
+t_cmd	*create_new_command(t_token **tok_ptr, t_env *env, t_minibash *b)
 {
 	t_cmd	*node;
 
@@ -79,7 +79,7 @@ t_cmd	*create_new_command(t_token **tok_ptr, t_env *env)
 		*tok_ptr = (*tok_ptr)->next;
 	}
 	else if ((*tok_ptr) != NULL)
-		process_non_pipe_segment(&node, tok_ptr, env);
+		process_non_pipe_segment(&node, tok_ptr, env, b);
 	if (node->argument && node->argument[0])
 		node->main_cmd = node->argument[0];
 	node->next = NULL;

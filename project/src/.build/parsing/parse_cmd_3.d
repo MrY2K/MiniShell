@@ -1,4 +1,4 @@
-src/.build/parsing/red_utils_2.o: src/parsing/red_utils_2.c \
+src/.build/parsing/parse_cmd_3.o: src/parsing/parse_cmd_3.c \
   src/parsing/../../includes/minishell.h \
   /goinfre/achoukri/homebrew/opt/readline/include/readline/readline.h \
   /goinfre/achoukri/homebrew/opt/readline/include/readline/rlstdc.h \
@@ -8,4 +8,5 @@ src/.build/parsing/red_utils_2.o: src/parsing/red_utils_2.c \
   /goinfre/achoukri/homebrew/opt/readline/include/readline/tilde.h \
   /goinfre/achoukri/homebrew/opt/readline/include/readline/history.h \
   includes/enums.h includes/structs.h includes/minishell.h \
-  includes/prototypes.h includes/../src/lib/libft.h includes/macros.h
+  includes/prototypes.h includes/../src/lib/libft.h includes/macros.h \
+  src/parsing/../../includes/structs.h

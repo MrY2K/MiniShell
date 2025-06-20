@@ -12,7 +12,7 @@ ifeq ($(UNAME_S),Darwin)
 # CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code -g -fsanitize=address -I$(INCLUDE_DIR) -I$(READLINE_DIR)/include
 	CFLAGS       = -Wall -Wextra -Werror -Wunreachable-code -g -I$(INCLUDE_DIR) -I$(READLINE_DIR)/include
 
-	LDFLAGS      = -L$(READLINE_DIR)/lib -lreadline -lhistory -lncurses
+	LDFLAGS      = -L$(READLINE_DIR)/lib -lreadline 
 	os_msg = "$(GREEN)OS DETECTED Mac!$(RESET)"
 
 else ifeq ($(UNAME_S),Linux)

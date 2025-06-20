@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prototypes.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/19 01:34:08 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/20 09:25:09 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,14 @@ void			remove_env_variable(t_env **env, char *var);
 
 //void			free_env(char **env);
 
-/**/
+
+
+
+/*  SIGNAL   */
+
+void  sigint_handler(int signum);
+
+
 
 /* Error && Exit*/
 void			exit_with_error(const char *msg, int exit, t_minibash *bash);
@@ -141,6 +148,7 @@ void	add_node_to_env(t_env **head, t_env *node);
 
 void	display_ambiguous_errno(t_minibash *bash, int exit_st);
 void	cd_error(t_minibash *bash);
+void	redirection_error(t_minibash *bash);
 
 // free 
 

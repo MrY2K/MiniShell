@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_herdoc_1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-mora <rel-mora@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 21:04:16 by bouhammo          #+#    #+#             */
-/*   Updated: 2024/09/29 10:52:47 by rel-mora         ###   ########.fr       */
+/*   Updated: 2025/06/19 20:48:31 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ void	write_in_file(t_here_doc *tmp, char *line, t_environment **var)
 	tmp->fd = open(path_file, O_CREAT | O_WRONLY | O_APPEND, 0600);
 	if (tmp->fd < 0)
 	{
+		ft_putendl_fd("tzzzz xxxx", 2);
 		perror("open");
 		return ;
 	}

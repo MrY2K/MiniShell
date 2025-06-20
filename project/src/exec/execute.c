@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:29:21 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/18 08:05:28 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/20 11:05:04 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	delete_heredoc_files(t_minibash *bash, t_cmd *cmd)
 			cleanup.temp_path = ft_strjoin_with_null(
 					cleanup.current_heredoc->delimiter, cleanup.index_str);
 			cleanup.full_filepath = ft_strjoin(
-					"/tmp/minishell/heredoc", cleanup.temp_path);
+					"/tmp/miniheredoc", cleanup.temp_path);
 			if (unlink(cleanup.full_filepath) != 0)
 			{
 				bash->exit_status = 1;
@@ -137,7 +137,6 @@ void	execution(t_minibash *bash, t_env **env, t_cmd *cmd)
 		return ;
 	if (!pid)
 	{
-		
 		execute_command(bash, env, tmp_cmd);
 	}
 	else

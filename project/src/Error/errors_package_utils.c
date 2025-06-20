@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 12:52:07 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/18 11:42:08 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/20 09:15:20 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,11 @@ void	execute_error(t_minibash *bash, char *msg)
 	ft_putstr_fd("minishell: ", 2);
 	ft_putendl_fd(msg, 2);
 	bash->exit_status = 127;
+}
+
+void	redirection_error(t_minibash *bash)
+{
+	ft_putstr_fd("minishell: No such file or directory\n", 2);
+	bash->exit_status = 1;
+	exit(1);
 }

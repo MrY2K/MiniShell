@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 12:24:24 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/18 12:38:21 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/20 11:40:06 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,18 @@ int	handle_heredoc_input(t_cmd *cmd)
 	fd = open_heredoc_file(file);
 	if (fd < 0)
 	{
+		ft_putstr_fd("minishell: No such file or directory\n", 2);
 		free(file);
-		return (0);
+		exit(1);
 	}
-	if (!setup_heredoc_input(fd))
+	if (dup2(fd, 0) < 0)
 	{
 		free(file);
-		return (0);
+		exit(1);
 	}
 	free(file);
-	return (1);
+	close(fd);
+	return (fd);
 }
 
 void	execute_external_cmd(t_minibash *bash, t_env **env,
@@ -102,23 +104,33 @@ void	execute_single_cmd(t_minibash *bash, t_env **env, t_cmd *cmd)
 
 void	execute_command(t_minibash *bash, t_env **env, t_cmd *cmd)
 {
+	int	her_fd;
+
+	her_fd = -1;
 	if (has_herdoc(cmd) && has_redirections(cmd) && !has_pipes(cmd))
 	{
-		if (!handle_heredoc_input(cmd))
+		her_fd = handle_heredoc_input(cmd);
+		if (her_fd != -1)
 		{
-			bash->exit_status = 1;
-			return ;
+			dup2(her_fd, 0);
+			close(her_fd);
 		}
 		handle_redirections(bash, cmd);
 		execute_external_cmd(bash, env, cmd, cmd->argument);
 	}
+	else if (has_herdoc(cmd) && !has_pipes(cmd))  // ADD THIS CONDITION 
+	{
+		her_fd = handle_heredoc_input(cmd);
+		if (her_fd != -1)
+		{
+			dup2(her_fd, 0);
+			close(her_fd);
+		}
+		execute_external_cmd(bash, env, cmd, cmd->argument);
+	}
 	else if (has_pipes(cmd))
-	{
 		handle_pipes(bash, env, cmd);
-	}
 	else
-	{
 		execute_single_cmd(bash, env, cmd);
-	}
 	exit (bash->exit_status);
 }

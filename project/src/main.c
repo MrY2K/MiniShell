@@ -6,13 +6,21 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/17 23:49:53 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/20 22:41:50 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 void ll(void) { system("leaks -q minishell"); }
+
+static void	sigint_handler(int signum)
+{
+	(void)signum;
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
 
 void	execute_command_pipeline(t_minibash *bash, t_env **env, 
 	t_token *token, t_cmd **cmd)
@@ -37,7 +45,7 @@ void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env **env)
 		line = readline("minishell$ ");
 		if (!line)
 		{
-			ft_putendl_fd("\nexit", 1);
+			write(1, "exit\n", 5);
 			exit (bash->exit_status);
 		}
 		if (line && *line) 
@@ -49,7 +57,6 @@ void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env **env)
 			free_lexer(&tokens);
 		}
 		else
-
 			execute_command_pipeline(bash, env, tokens, &cmd);
 		tokens = NULL;
 		cmd = NULL;
@@ -81,7 +88,10 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	tokens = NULL;
 	cmd = NULL;
-	// atexit(ll);
+	rl_catch_signals = 0;
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
+	atexit(ll);
 	init_minibash(&bash);
 	initialize_environment(bash, env);
 	using_history();
@@ -90,4 +100,3 @@ int	main(int ac, char **av, char **env)
 	free_minibash(&bash);
 	return (exit_st);
 }
-

@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/20 22:12:52 by achoukri          #+#    #+#             */
+/*   Updated: 2025/06/20 22:12:53 by achoukri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -22,7 +33,6 @@
 # include <string.h> // bsbah chi errno f cd builtins 
 
 /*  	HEADERS			*/
-
 # include "enums.h"
 # include "structs.h"
 # include "prototypes.h"

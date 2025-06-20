@@ -68,7 +68,6 @@ char **process_quoted(t_token **tok_ptr, t_env *env, int flag,
         {
             s = ft_expand((*tok_ptr)->value, &env, b);
             ft_split_expand(arg_arr, s);
-            // free(s);
         }
         else if ((*tok_ptr)->state == Double || (*tok_ptr)->state == Single)
         {
@@ -79,7 +78,6 @@ char **process_quoted(t_token **tok_ptr, t_env *env, int flag,
             ft_join_arr(arg_arr, (*tok_ptr)->value);
         }
         *tok_ptr = (*tok_ptr)->next;
-        // Recursively handle more quoted/expanded tokens
         ft_join_double(arg_arr, tok_ptr, env, flag, b);
     }
     return (*arg_arr);

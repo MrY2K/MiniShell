@@ -167,6 +167,7 @@ fclean: clean libfclean
 	@printf "$(YELLOW)%s$(RESET)\n" "Removing executable..."
 	@rm -f $(NAME)
 	@printf "$(RED)%s$(RESET)\n" "✓ $(NAME) removed"
+	@rm -f $(BUILD_DIR)
 
 # Rebuild
 re: fclean all

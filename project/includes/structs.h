@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 09:25:15 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/20 22:29:21 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/20 22:43:43 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ typedef struct s_env
 	char			*name;
 	char			*value;
 	struct s_env	*next;
+	int              exit_status; //!
 }	t_env;
 
 typedef struct s_cmd

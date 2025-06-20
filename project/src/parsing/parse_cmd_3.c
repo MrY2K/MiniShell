@@ -1,7 +1,7 @@
 #include "../../includes/minishell.h"
 #include "../../includes/structs.h"
 
-char	*ft_expand(char *arg, t_env **env, t_minibash b)
+char	*ft_expand(char *arg, t_env **env)
 {
 	t_expand_heredoc	id;
 
@@ -14,7 +14,8 @@ char	*ft_expand(char *arg, t_env **env, t_minibash b)
 		else if (arg[id.i] == '$')
 		{
 			if (arg[id.i + 1] == '?')
-				return (id.s = ft_itoa(b.exit_status), id.s);
+				return ("d");
+				// return (id.s = ft_itoa(	(*env)->exit_status), id.s); //! PASS EXIT
 			id.i++;
 			if (arg[id.i] == '\0')
 				return (id.s = ft_strdup("$"), id.s);
@@ -30,7 +31,7 @@ char	*ft_expand(char *arg, t_env **env, t_minibash b)
 }
 
 
-char **process_word(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr, t_minibash b)
+char **process_word(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr)
 {
     char *s = NULL;
 
@@ -43,7 +44,7 @@ char **process_word(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr, t_
     {
         if ((*tok_ptr)->type == '$' && flag == 1)
         {
-            s = ft_expand((*tok_ptr)->value, &env, b);
+            s = ft_expand((*tok_ptr)->value, &env);
             ft_split_expand(arg_arr, s);
             // free(s);
         }
@@ -52,7 +53,7 @@ char **process_word(t_token **tok_ptr, t_env *env, int flag, char ***arg_arr, t_
             ft_join_arr(arg_arr, (*tok_ptr)->value);
         }
         *tok_ptr = (*tok_ptr)->next;
-        ft_join_words(arg_arr, tok_ptr, env, flag, b);
+        ft_join_words(arg_arr, tok_ptr, env, flag);
     }
     return (*arg_arr);
 }

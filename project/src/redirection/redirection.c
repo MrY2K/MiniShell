@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 11:08:12 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/21 02:31:31 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 20:29:03 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,11 @@ void	handle_append_redirect(t_minibash *bash, char *file, int is_ambig)
 	if (is_ambig)
 		display_ambiguous_errno(bash, 1);
 	if (!file || !file[0])
-		display_syntax_error(bash);
+		redirection_error(bash);
 	fd = open(file, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	if (fd < 0)
 	{
-		perror("minishell");
-		bash->exit_status = 1;
-		exit(1);
+		redirection_error(bash);
 	}
 	if (dup2(fd, 1) < 0)
 	{
@@ -67,13 +65,13 @@ void	handle_output_redirect(t_minibash *bash, char *file, int is_ambig)
 	if (is_ambig)
 		display_ambiguous_errno(bash, 1);
 	if (!file || !file[0])
-		display_syntax_error(bash);
+	{
+		redirection_error(bash);
+	}
 	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
 	{
-		perror("minishell");
-		bash->exit_status = 1;
-		exit(1);
+		redirection_error(bash);
 	}
 	if (dup2(fd, 1) < 0)
 	{
@@ -91,15 +89,15 @@ void	handle_input_redirect(t_minibash *bash, char *file, int is_ambig)
 	if (is_ambig)
 		display_ambiguous_errno(bash, 1);
 	if (!file || !file[0])
-		display_syntax_error(bash);
+	{
+		redirection_error(bash);
+	}
 	fd = open(file, O_RDONLY, 0644);
 	if (fd < 0)
 	{
-		perror("minishell");
-		bash->exit_status = 1;
-		exit(1);
+		redirection_error(bash);
 	}
-	if (dup2(fd, STDOUT_FILENO) < 0)
+	if (dup2(fd, 0) < 0)
 	{
 		perror("dup2");
 		bash->exit_status = 1;
@@ -117,10 +115,10 @@ void	handle_redirections(t_minibash *bash, t_cmd *cmd)
 	{
 		if (red->type == TOKEN_REDIR_OUT)
 			handle_output_redirect(bash, red->file_path, red->is_ambig);
-		else if (red->type == TOKEN_REDIR_IN)
-			handle_input_redirect(bash, red->file_path, red->is_ambig);
 		else if (red->type == TOKEN_REDIR_APPEND)
 			handle_append_redirect(bash, red->file_path, red->is_ambig);
+		else if (red->type == TOKEN_REDIR_IN)
+			handle_input_redirect(bash, red->file_path, red->is_ambig);
 		red = red->next;
 	}
 }

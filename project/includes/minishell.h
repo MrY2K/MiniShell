@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 22:12:52 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/20 22:12:53 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 20:18:27 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@
 # include <string.h> // bsbah chi errno f cd builtins 
 
 /*  	HEADERS			*/
+
+/*	 directory state	*/
+
+#include <sys/stat.h>
+
 # include "enums.h"
 # include "structs.h"
 # include "prototypes.h"

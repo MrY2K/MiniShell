@@ -6,64 +6,11 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:01:42 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/21 04:22:10 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 20:28:44 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-/*
-	char	*expand(t_minibash *bash, t_env **env, char *str)
-{
-	t_expand_heredoc	ex;
-
-	ex.index = 0;
-	while (env && str[ex.index])
-	{
-		if (search("$\"\"", str)) // $""
-			return (ex.str = ft_strdup(""), ex.str);
-		else if (str[ex.index] == '$')
-		{
-			if (str[ex.index + 1] && str[ex.index + 1] == '?')
-				return (ex.expanded_line = ft_itoa(bash->exit_status), 
-					ex.str = ft_strdup(ex.expanded_line), 
-					free(ex.expanded_line), ex.str);
-			ex.index++;
-			if (!str[ex.index]) // echo $
-				return (ex.str = ft_strdup("$"), ex.str);
-			if (str[ex.index] == '\"' || str[ex.index] == '\'')
-				return (ex.str = ft_strdup(""), ex.str); // bra
-			//  Handle $"..." and $'...' cases 
-            // if (arg[id.i] == '\"' 
-			|| arg[id.i] == '\'') // echo $'hello\nworld'
-            // {
-            //     char quote_type = arg[id.i];
-            //     id.i++; // Skip opening quote
-                
-            //     // Find closing quote
-            //     while (arg[id.i] && arg[id.i] != quote_type)
-            //         id.i++;
-                
-            //     if (arg[id.i] == quote_type)
-            //         id.i++; // Skip closing quote
-                
-            //     // For $"" return empty, for $'' process escapes
-            //     if (quote_type == '\'')
-            //         return (process_ansi_c_string(arg, &id.i));
-            //     else
-            //         return (id.s = ft_strdup(""), id.s);
-            // }
-
-			if (!ft_isalnum(str[ex.index]) || 
-				ft_isdigit(str[ex.index])) // "$9var" "$_HOME" 
-				return (ex.str);
-			lookup_env_var(env, str, &ex.str, &ex.index);
-		}
-		ex.index++;
-	}
-	return (ex.str);
-}
-*/
 
 char	*expand(t_minibash *bash, t_env **env, char *str)
 {
@@ -151,7 +98,7 @@ void	child_process(t_minibash *bash, t_env **env, t_heredoc *herdoc)
 		ignore it completely and continue whatever you were doing
 */
 
-int	handell_fork(t_minibash *bash, t_env **env, t_heredoc *herdoc)
+int	fork_heredoc(t_minibash *bash, t_env **env, t_heredoc *herdoc)
 {
 	int	pid;
 	int	status;
@@ -171,6 +118,7 @@ int	handell_fork(t_minibash *bash, t_env **env, t_heredoc *herdoc)
 		else if (WIFSIGNALED(status))
 			bash->exit_status = 128 + WTERMSIG(status);
 	}
+	signal(SIGINT, sigint_handler);
 	return (status);
 }
 
@@ -191,7 +139,7 @@ int	process_her_with_signals(t_minibash *bash, t_env **env, t_cmd *cmd)
 	heredoc = cmd->heredoc;
 	while (cmd && heredoc)
 	{
-		status = handell_fork(bash, env, heredoc);
+		status = fork_heredoc(bash, env, heredoc);
 		if (WTERMSIG(status) == SIGINT)
 		{
 			return (status);

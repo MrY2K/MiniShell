@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/21 19:27:43 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 20:20:07 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@
 void			signals(void);
 
 /* Built-in */
-void			builtin_cd(t_minibash	*bash, t_env **env, t_cmd	*cmd);
-void			builtin_echo(t_minibash *bash, t_cmd *cmd);
-void			builtin_env(t_minibash *bash, t_env	**env);
-void			builtin_exit(t_minibash *bash, t_cmd *cmd);
-void			builtin_pwd(t_minibash *bash, t_cmd *cmd);
-void			builtin_unset(t_minibash *bash, char **args);
+void	builtin_cd(t_minibash	*bash, t_env **env, t_cmd	*cmd);
+void	builtin_echo(t_minibash *bash, t_cmd *cmd);
+void	builtin_env(t_minibash *bash, t_env	**env);
+void	builtin_exit(t_minibash *bash, t_cmd *cmd);
+void	builtin_pwd(t_minibash *bash, t_cmd *cmd);
+void	builtin_unset(t_minibash *bash, char **args, t_env **env);
 
 bool			is_builtins(t_cmd *cmd);
 void			execute_builtins(t_minibash *bash, t_env **env, t_cmd *cmd);
@@ -61,6 +61,15 @@ void			export(char **args, t_env *env);
 void			remove_env_variable(t_env **env, char *var);
 //void			free_env(char **env);
 
+
+
+
+/*  SIGNAL   */
+
+void  sigint_handler(int signum);
+
+
+
 /* Error && Exit*/
 void			exit_with_error(const char *msg, int exit, t_minibash *bash);
 void			export_error(t_minibash *bash, char *content);
@@ -68,6 +77,10 @@ void			print_cmd_err(t_minibash *bash, char *cmd, char *msg, int exit);
 // void			execute_builtin(t_minibash *bash, t_cmd *cmd);
 void			display_errno_exit(char *msg, int status);
 void			display_syntax_error(t_minibash *bash);
+void			execute_error(t_minibash *bash, char *msg);
+
+int				is_valid_exit_arg(char *arg);
+long long		ft_atoll(const char *str);
 
 /*		EXPORT UTILS	*/
 //void			display_exported_variable(t_minibash *bash);
@@ -82,6 +95,9 @@ bool			has_pipes(t_cmd *cmd);
 int				count_pipes(t_cmd *cmd);
 char			**convert_env_list_to_array(t_env **env);
 void			free_2d(char **array);
+
+void			acc_ess(t_minibash *bash, char **env, char *path, char **args);
+
 
 /*		Lexer	*/
 int				ft_isspace(int c);
@@ -122,7 +138,9 @@ void			initialize_environment(t_minibash *info, char **env);
 void			add_node_to_env(t_env **head, t_env *node);
 // error package 
 
-void			display_ambiguous_errno(t_minibash *bash, int exit_st);
+void	display_ambiguous_errno(t_minibash *bash, int exit_st);
+void	cd_error(t_minibash *bash);
+void	redirection_error(t_minibash *bash);
 
 // free 
 
@@ -151,11 +169,13 @@ int				validate_redirection_file(t_cmd *list);
 
 // herdoc 
 
-int				handle_heredoc_input(t_cmd *cmd);
-int				setup_heredoc_input(int fd);
-char			*generate_heredoc_file_name(t_heredoc *her);
-t_cmd			*get_last_heredoc(t_cmd *cmd);
-int				open_heredoc_file(char *file);
+int		handle_heredoc_input(t_cmd *cmd);
+int		setup_heredoc_input(int fd);
+char	*generate_heredoc_file_name(t_heredoc *her);
+t_cmd	*get_last_heredoc(t_cmd *cmd);
+int	open_heredoc_file(char *file);
+char	*expand_env_var_her(t_expand_info *info);
+
 
 // parsing 
 void			parse_command(t_token **token, t_cmd **cmd, t_env *env);

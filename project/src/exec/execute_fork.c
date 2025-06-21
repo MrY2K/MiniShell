@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/21 02:23:30 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/21 02:23:33 by achoukri         ###   ########.fr       */
+/*   Created: 2025/06/17 12:24:24 by ajelloul          #+#    #+#             */
+/*   Updated: 2025/06/21 20:24:00 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,18 @@ int	handle_heredoc_input(t_cmd *cmd)
 	fd = open_heredoc_file(file);
 	if (fd < 0)
 	{
+		ft_putstr_fd("minishell: No such file or directory\n", 2);
 		free(file);
-		return (0);
+		exit(1);
 	}
-	if (!setup_heredoc_input(fd))
+	if (dup2(fd, 0) < 0)
 	{
 		free(file);
-		return (0);
+		exit(1);
 	}
 	free(file);
-	return (1);
+	close(fd);
+	return (fd);
 }
 
 void	execute_external_cmd(t_minibash *bash, t_env **env,
@@ -53,7 +55,7 @@ void	execute_external_cmd(t_minibash *bash, t_env **env,
 	char	**envp;
 
 	if (!cmd || !args || !args[0])
-		return (bash->exit_status = 127, (void)0);
+		return ;
 	envp = convert_env_list_to_array(env);
 	if (args[0][0] == '/')
 		path = args[0];
@@ -61,20 +63,23 @@ void	execute_external_cmd(t_minibash *bash, t_env **env,
 		path = path_command(args[0], envp, bash);
 	if (!path)
 	{
-		ft_putendl_fd("minishell: command not found", 2);
+		execute_error(bash, "PATH");
 		free_2d(envp);
-		bash->exit_status = 127;
 		exit(127);
 	}
+	acc_ess(bash, envp, path, args);
 	if (execve(path, args, envp) == -1)
 	{
-		ft_putendl_fd("minishell: command not found", 2);
+		execute_error(bash, "command not found");
 		free(path);
 		free_2d(envp);
-		bash->exit_status = 127;
 		exit(127);
 	}
 }
+
+/*
+	case 1 : export > file 
+*/
 
 void	execute_single_cmd(t_minibash *bash, t_env **env, t_cmd *cmd)
 {
@@ -90,28 +95,42 @@ void	execute_single_cmd(t_minibash *bash, t_env **env, t_cmd *cmd)
 /*
 	Case 1 :
 		cat << ONE << TWO > out.txt
+		
+		cat << 42 < input -> cat the input of input
 
+		cat << 42 < input > out   ->  The content of input will be written to out.
+		
 */
 
 void	execute_command(t_minibash *bash, t_env **env, t_cmd *cmd)
 {
+	int	her_fd;
+
+	her_fd = -1;
 	if (has_herdoc(cmd) && has_redirections(cmd) && !has_pipes(cmd))
 	{
-		if (!handle_heredoc_input(cmd))
+		her_fd = handle_heredoc_input(cmd);
+		if (her_fd != -1)
 		{
-			bash->exit_status = 1;
-			return ;
+			dup2(her_fd, 0);
+			close(her_fd);
 		}
 		handle_redirections(bash, cmd);
 		execute_external_cmd(bash, env, cmd, cmd->argument);
 	}
+	else if (has_herdoc(cmd) && !has_pipes(cmd))  // ADD THIS CONDITION 
+	{
+		her_fd = handle_heredoc_input(cmd);
+		if (her_fd != -1)
+		{
+			dup2(her_fd, 0);
+			close(her_fd);
+		}
+		execute_external_cmd(bash, env, cmd, cmd->argument);
+	}
 	else if (has_pipes(cmd))
-	{
 		handle_pipes(bash, env, cmd);
-	}
 	else
-	{
 		execute_single_cmd(bash, env, cmd);
-	}
 	exit (bash->exit_status);
 }

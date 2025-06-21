@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 10:59:30 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/13 09:46:35 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/20 09:42:14 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	create_tmp_herdoc_files(t_cmd *tmp_cmd, char *idx_to_char)
 			idx_to_char = ft_itoa(heredoc->index);
 			line = ft_strjoin_with_null(heredoc->delimiter, idx_to_char);
 			free (idx_to_char);
-			path = ft_strjoin_with_null("/tmp/minishell/heredoc", line);
+			path = ft_strjoin_with_null("/tmp/miniheredoc", line);
 			free (line);
 			heredoc->fd = open(path, O_CREAT | O_WRONLY | O_APPEND, 0600);
 			free (path);
@@ -120,7 +120,7 @@ char	*get_path(t_heredoc *heredoc)
 
 	index_toa = ft_itoa(heredoc->index);
 	line = ft_strjoin_with_null(heredoc->delimiter, index_toa);
-	path = ft_strjoin("/tmp/minshell/heredoc", line);
+	path = ft_strjoin("/tmp/miniheredoc", line);
 	free (line);
 	free (index_toa);
 	return (path);

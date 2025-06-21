@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 00:00:00 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/17 01:57:02 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/19 20:39:14 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,12 @@ static char	*get_path_variable(char **env, t_minibash *minibash)
 	if (path == NULL)
 	{
 		path = getcwd(NULL, 0);
-		if (!path)
-		{
-			ft_putstr_fd("No such file or directory\n", 2);
-			minibash->exit_status = 127;
-			exit(EXIT_FAILURE);
-		}
+	}
+	if (!path)
+	{
+		ft_putstr_fd("No such file or directory\n", 2);
+		minibash->exit_status = 127;
+		exit(EXIT_FAILURE);
 	}
 	return (path);
 }

@@ -6,85 +6,95 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:10:59 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/21 02:22:29 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 20:28:01 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+
 void	lookup_env_var(t_env **env, char *arg, char **str, int *i)
 {
-	t_env	*_env;
+	t_env	*cur;
+	char	*var_name;
+	int		len;
 
-	_env = *env;
-	while (_env)
+	len = 0;
+	cur = *env;
+	while (arg[*i + len] && (ft_isalnum(arg[*i + len]) || arg[*i + len] == '_'))
+		len++;
+	if (len == 0)
+		return ;
+	var_name = ft_substr(arg, *i, len);
+	if (!var_name)
+		return ;
+	while (cur)
 	{
-		if (search(_env->name, arg + (*i)))
+		if (ft_strcmp(cur->name, var_name) == 0)
 		{
-			*str = ft_strdup(_env->value);
+			*str = ft_strdup(cur->value);
 			break ;
 		}
-		else
-			*str = NULL;
-		_env = _env->next;
+		cur = cur->next;
 	}
+	if (!*str)
+		*str = ft_strdup("");
+	free(var_name);
 }
 
 void	append_regular_characters(t_expand_heredoc *ex, char *line)
 {
+	char	*temp;
+
 	ex->j = ex->index;
+	ex->len = 0;
 	while (line[ex->index] && line[ex->index] != '$')
 	{
 		ex->index++;
 		ex->len++;
 	}
-	ex->s = ft_substr(line, ex->j, ex->len);
-	ex->expanded_line = ft_strjoin(ex->expanded_line, ex->s);
-	free (ex->s);
+	if (ex->len > 0)
+	{
+		ex->s = ft_substr(line, ex->j, ex->len);
+		if (ex->s)
+		{
+			if (!ex->expanded_line)
+				ex->expanded_line = ft_strdup("");
+			temp = ex->expanded_line;
+			ex->expanded_line = ft_strjoin(temp, ex->s);
+			free(temp);
+			free(ex->s);
+		}
+	}
 	ex->index--;
 }
 
-char	*expand_env_var_her(t_minibash *bash, t_env *env, char	**expanded_line,
-	int *index, char *line)
+bool	fast_check(char *line)
 {
-	t_env_var	var;
-
-	var.len = 0;
-	(*index)++;
-	var.j = *index;
-	if (line[*index] == '?')
-	{
-		var.len++;
-		(*index)++;
-	}
-	else
-	{
-		while (line[*index] && (ft_isalnum(line[*index])))
-		{
-			(*index)++;
-			var.len++;
-		}
-	}
-	(*index)--;
-	var.j--;
-	var.sub = ft_substr(line, var.j, ++var.len);
-	var.str = expand(bash, &env, var.sub);
-	*expanded_line = ft_strjoin(*expanded_line, var.str);
-	free(var.sub);
-	return (free (var.str), *expanded_line);
+	if (!line)
+		return (false);
+	return (line[0] == '\'' && line[1] == '$');
 }
 
 char	*expand_env_var_in_heredoc(t_minibash *bash, char *line, t_env *env)
 {
 	t_expand_heredoc	ex;
+	t_expand_info		info;
 
-	ex.index = 0;
+	if (fast_check(line))
+		return (ft_strdup(line));
+	ft_memset(&ex, 0, sizeof(ex));
+	ft_memset(&info, 0, sizeof(info));
+	ex.expanded_line = ft_strdup("");
+	info.bash = bash;
+	info.env = env;
+	info.expanded_line = &ex.expanded_line;
+	info.index = &ex.index;
+	info.line = line;
 	while (line[ex.index])
 	{
-		ex.len = 0;
 		if (line[ex.index] == '$')
-			ex.expanded_line = expand_env_var_her(bash, env,
-					&ex.expanded_line, &ex.index, line);
+			ex.expanded_line = expand_env_var_her(&info);
 		else
 			append_regular_characters(&ex, line);
 		ex.index++;
@@ -109,14 +119,9 @@ void	write_in_heredoc_files(t_minibash *bash, t_env **env,
 		free (path);
 		return (perror("open"));
 	}
-	if (heredoc->expand)
-	{
-		expanded_line = expand_env_var_in_heredoc(bash, line, tmp_env);
-		ft_putendl_fd(expanded_line, fd);
-		free (expanded_line);
-	}
-	else
-		ft_putendl_fd(line, fd);
+	expanded_line = expand_env_var_in_heredoc(bash, line, tmp_env);
+	ft_putendl_fd(expanded_line, fd);
+	free (expanded_line);
 	free (path);
 	close(fd);
 }

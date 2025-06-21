@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/21 02:00:39 by achoukri          #+#    #+#             */
+/*   Updated: 2025/06/21 02:00:48 by achoukri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 #include "../../includes/structs.h"
 
@@ -9,7 +21,6 @@ void	free_cmd_list(t_cmd **cmd_list)
 	while (*cmd_list)
 	{
 		tmp = (*cmd_list)->next;
-		// Free arguments array
 		if ((*cmd_list)->argument)
 		{
 			i = 0;
@@ -17,7 +28,6 @@ void	free_cmd_list(t_cmd **cmd_list)
 				free((*cmd_list)->argument[i++]);
 			free((*cmd_list)->argument);
 		}
-		// Free env_arr
 		if ((*cmd_list)->env_arr)
 		{
 			i = 0;
@@ -89,7 +99,6 @@ void	free_argument_array(char **arr)
 // 		tmp = NULL;
 // 	}
 // }
-
 
 // void	ft_free_command(t_command **cmd)
 // {

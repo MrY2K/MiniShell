@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/21 20:20:07 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 20:30:27 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@
 void			signals(void);
 
 /* Built-in */
-void	builtin_cd(t_minibash	*bash, t_env **env, t_cmd	*cmd);
-void	builtin_echo(t_minibash *bash, t_cmd *cmd);
-void	builtin_env(t_minibash *bash, t_env	**env);
-void	builtin_exit(t_minibash *bash, t_cmd *cmd);
-void	builtin_pwd(t_minibash *bash, t_cmd *cmd);
-void	builtin_unset(t_minibash *bash, char **args, t_env **env);
+void			builtin_cd(t_minibash	*bash, t_env **env, t_cmd	*cmd);
+void			builtin_echo(t_minibash *bash, t_cmd *cmd);
+void			builtin_env(t_minibash *bash, t_env	**env);
+void			builtin_exit(t_minibash *bash, t_cmd *cmd);
+void			builtin_pwd(t_minibash *bash, t_cmd *cmd);
+void			builtin_unset(t_minibash *bash, char **args, t_env **env);
 
 bool			is_builtins(t_cmd *cmd);
 void			execute_builtins(t_minibash *bash, t_env **env, t_cmd *cmd);
@@ -66,7 +66,7 @@ void			remove_env_variable(t_env **env, char *var);
 
 /*  SIGNAL   */
 
-void  sigint_handler(int signum);
+void			sigint_handler(int signum);
 
 
 
@@ -169,12 +169,12 @@ int				validate_redirection_file(t_cmd *list);
 
 // herdoc 
 
-int		handle_heredoc_input(t_cmd *cmd);
-int		setup_heredoc_input(int fd);
-char	*generate_heredoc_file_name(t_heredoc *her);
-t_cmd	*get_last_heredoc(t_cmd *cmd);
-int	open_heredoc_file(char *file);
-char	*expand_env_var_her(t_expand_info *info);
+int				handle_heredoc_input(t_cmd *cmd);
+int				setup_heredoc_input(int fd);
+char			*generate_heredoc_file_name(t_heredoc *her);
+t_cmd			*get_last_heredoc(t_cmd *cmd);
+int				open_heredoc_file(char *file);
+char			*expand_env_var_her(t_expand_info *info);
 
 
 // parsing 

@@ -1,4 +1,4 @@
-src/.build/Error/errors_package_utils.o: src/Error/errors_package_utils.c \
+src/.build/Error/errors_package.o: src/Error/errors_package.c \
   src/Error/../../includes/minishell.h \
   /goinfre/achoukri/homebrew/opt/readline/include/readline/readline.h \
   /goinfre/achoukri/homebrew/opt/readline/include/readline/rlstdc.h \

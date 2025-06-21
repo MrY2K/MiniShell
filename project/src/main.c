@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/21 19:12:43 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 20:30:33 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ll(void)
 	system("leaks -q minishell");
 }
 
-static void	sigint_handler(int signum)
+void	sigint_handler(int signum)
 {
 	(void)signum;
 	write(1, "\n", 1);

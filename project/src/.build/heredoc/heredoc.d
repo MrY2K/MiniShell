@@ -1,5 +1,5 @@
-src/.build/Error/errors_package_utils.o: src/Error/errors_package_utils.c \
-  src/Error/../../includes/minishell.h \
+src/.build/heredoc/heredoc.o: src/heredoc/heredoc.c \
+  src/heredoc/../../includes/minishell.h \
   /goinfre/achoukri/homebrew/opt/readline/include/readline/readline.h \
   /goinfre/achoukri/homebrew/opt/readline/include/readline/rlstdc.h \
   /goinfre/achoukri/homebrew/opt/readline/include/readline/rltypedefs.h \

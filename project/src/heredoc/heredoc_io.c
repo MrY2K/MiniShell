@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:10:59 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/20 16:22:59 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/21 10:18:49 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,12 @@
 
 void	lookup_env_var(t_env **env, char *arg, char **str, int *i)
 {
-	t_env	*_env;
+	t_env	*cur;
 	char	*var_name;
 	int		len;
 
-	*str = NULL;
-	_env = *env;
 	len = 0;
+	cur = *env;
 	while (arg[*i + len] && (ft_isalnum(arg[*i + len]) || arg[*i + len] == '_'))
 		len++;
 	if (len == 0)
@@ -29,40 +28,18 @@ void	lookup_env_var(t_env **env, char *arg, char **str, int *i)
 	var_name = ft_substr(arg, *i, len);
 	if (!var_name)
 		return ;
-	while (_env)
+	while (cur)
 	{
-		if (ft_strcmp(_env->name, var_name) == 0)
+		if (ft_strcmp(cur->name, var_name) == 0)
 		{
-			*str = ft_strdup(_env->value);
+			*str = ft_strdup(cur->value);
 			break ;
 		}
-		_env = _env->next;
+		cur = cur->next;
 	}
 	if (!*str)
 		*str = ft_strdup("");
 	free(var_name);
-}
-
-char	*ft__expand(t_minibash *bash, t_env **env, char *str)
-{
-	t_expand_heredoc	ex;
-	char				*result;
-
-	if (!str || !*str)
-		return (ft_strdup(""));
-	ft_memset(&ex, 0, sizeof(ex));
-	if (ft_strcmp(str, "?") == 0)
-		return (ft_itoa(bash->exit_status));
-	if (search("$\"\"", str))
-		return (ft_strdup(""));
-	if (str[0] && !str[1])
-	{
-		if (str[0] == '"' || str[0] == '\'' || !ft_isalnum(str[0])
-			|| ft_isdigit(str[0]))
-			return (ft_strdup(""));
-	}
-	lookup_env_var(env, str, &result, &ex.index);
-	return (result ? result : ft_strdup(""));
 }
 
 void	append_regular_characters(t_expand_heredoc *ex, char *line)
@@ -92,44 +69,11 @@ void	append_regular_characters(t_expand_heredoc *ex, char *line)
 	ex->index--;
 }
 
-char	*expand_env_var_her(t_expand_info *info)
+bool	fast_check(char *line)
 {
-	t_env_var	var;
-	char		*temp;
-
-	var.len = 0;
-	(*info->index)++;
-	var.j = *info->index;
-	if (info->line[*info->index] == '?')
-	{
-		var.str = ft_itoa(info->bash->exit_status);
-		(*info->index)++;
-	}
-	else
-	{
-		while (info->line[*info->index] && (ft_isalnum(info->line[*info->index])
-				|| info->line[*info->index] == '_'))
-		{
-			(*info->index)++;
-			var.len++;
-		}
-		if (var.len == 0)
-			var.str = ft_strdup("$");
-		else
-		{
-			var.sub = ft_substr(info->line, var.j, var.len);
-			var.str = ft__expand(info->bash, &info->env, var.sub);
-			free(var.sub);
-		}
-	}
-	if (!*info->expanded_line)
-		*info->expanded_line = ft_strdup("");
-	temp = *info->expanded_line;
-	*info->expanded_line = ft_strjoin(temp, var.str ? var.str : "");
-	free(temp);
-	free(var.str);
-	(*info->index)--;
-	return (*info->expanded_line);
+	if (!line)
+		return (false);
+	return (line[0] == '\'' && line[1] == '$');
 }
 
 char	*expand_env_var_in_heredoc(t_minibash *bash, char *line, t_env *env)
@@ -137,6 +81,8 @@ char	*expand_env_var_in_heredoc(t_minibash *bash, char *line, t_env *env)
 	t_expand_heredoc	ex;
 	t_expand_info		info;
 
+	if (fast_check(line))
+		return (ft_strdup(line));
 	ft_memset(&ex, 0, sizeof(ex));
 	ft_memset(&info, 0, sizeof(info));
 	ex.expanded_line = ft_strdup("");
@@ -173,14 +119,9 @@ void	write_in_heredoc_files(t_minibash *bash, t_env **env,
 		free (path);
 		return (perror("open"));
 	}
-	if (heredoc->expand == 1)
-	{
-		expanded_line = expand_env_var_in_heredoc(bash, line, tmp_env);
-		ft_putendl_fd(expanded_line, fd);
-		free (expanded_line);
-	}
-	else
-		ft_putendl_fd(line, fd);
+	expanded_line = expand_env_var_in_heredoc(bash, line, tmp_env);
+	ft_putendl_fd(expanded_line, fd);
+	free (expanded_line);
 	free (path);
 	close(fd);
 }

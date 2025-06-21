@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/20 09:25:09 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/21 10:18:37 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,7 @@ int		setup_heredoc_input(int fd);
 char	*generate_heredoc_file_name(t_heredoc *her);
 t_cmd	*get_last_heredoc(t_cmd *cmd);
 int	open_heredoc_file(char *file);
+char	*expand_env_var_her(t_expand_info *info);
 
 
 // parsing 

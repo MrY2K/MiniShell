@@ -1,5 +1,5 @@
-src/.build/signals/signals.o: src/signals/signals.c \
-  src/signals/../../includes/minishell.h \
+src/.build/heredoc/expand_heredoc.o: src/heredoc/expand_heredoc.c \
+  src/heredoc/../../includes/minishell.h \
   /goinfre/ajelloul/homebrew/opt/readline/include/readline/readline.h \
   /goinfre/ajelloul/homebrew/opt/readline/include/readline/rlstdc.h \
   /goinfre/ajelloul/homebrew/opt/readline/include/readline/rltypedefs.h \

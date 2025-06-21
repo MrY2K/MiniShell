@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 02:00:29 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/21 02:38:43 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 19:26:37 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,23 @@ char	**ft_split_expand(char ***arr_join, char *s)
 	return (free(s), free_argument_array(expand_split), *arr_join);
 }
 
-void	ft_go_to_env(char **s, char *arg, int *i, t_minibash **env)
+void	ft_go_to_env(char **s, char *arg, int *i, t_minibash **b)
 {
-	t_minibash	*tmp_env;
+	t_env	*tmp_env;
 
+	if (!s || !arg || !i || !b || !(*b))
+		return ;
 	*s = NULL;
-	tmp_env = *env;
+	tmp_env = (*b)->env;
 	while (tmp_env != NULL)
 	{
-		if (ft_search(tmp_env->env->name, arg + (*i)))
+		if (ft_search(tmp_env->name, arg + (*i)))
 		{
-			*s = ft_strdup(tmp_env->env->value);
+			*s = ft_strdup(tmp_env->value);
 			break ;
 		}
 		else
 			*s = NULL;
-		tmp_env->env = tmp_env->env->next;
+		tmp_env = tmp_env->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/21 04:53:55 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 19:27:43 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,7 @@ void			ft_join_double(char ***arr_join, t_token **tmp_t,
 //
 char			*ft_expand(char *arg, t_minibash *b);	
 char			**ft_split_expand(char ***arr_join, char *s);
-void			ft_go_to_env(char **s, char *arg, int *i, t_minibash **env);
+void			ft_go_to_env(char **s, char *arg, int *i, t_minibash **b);
 
 //  RED2
 char			*ft_fill_final(char **s);

@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 09:25:15 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/21 04:15:47 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 19:04:00 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include "minishell.h"
 
-// structure for combining arguments.
 typedef struct s_ps
 {
 	int		idx;
@@ -118,7 +117,7 @@ typedef struct s_env
 	char			*name;
 	char			*value;
 	struct s_env	*next;
-	// int              exit_status; //!
+	int				exit_status;
 }	t_env;
 
 typedef struct s_cmd

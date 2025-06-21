@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 02:07:58 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/21 02:30:46 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 02:55:13 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	ft_join_arr(char ***arr_join, char *value)
 }
 
 void	ft_join_double_2(char ***arr_join, t_token **tmp_t,
-		t_env *my_env, int j)
+		t_minibash *env, int j)
 {
 	char	*s;
 
@@ -77,12 +77,12 @@ void	ft_join_double_2(char ***arr_join, t_token **tmp_t,
 		{
 			if ((*tmp_t)->type == '$' && (*tmp_t)->state == N && j == 1)
 			{
-				s = ft_expand((*tmp_t)->value, &my_env);
+				s = ft_expand((*tmp_t)->value, env);
 				ft_split_expand(arr_join, s);
 			}
 			else if ((*tmp_t)->type == '$' && (*tmp_t)->state == D && j == 1)
 			{
-				s = ft_expand((*tmp_t)->value, &my_env);
+				s = ft_expand((*tmp_t)->value, env);
 				ft_join_arr(arr_join, s);
 				free(s);
 			}
@@ -94,7 +94,7 @@ void	ft_join_double_2(char ***arr_join, t_token **tmp_t,
 }
 
 void	ft_join_word_2(char ***arr_join, t_token **tmp_t,
-		t_env *my_env, int j)
+		t_minibash *env, int j)
 {
 	char	*s;
 
@@ -104,12 +104,12 @@ void	ft_join_word_2(char ***arr_join, t_token **tmp_t,
 	{
 		if ((*tmp_t)->type == '$' && (*tmp_t)->state == N && j == 1)
 		{
-			s = ft_expand((*tmp_t)->value, &my_env);
+			s = ft_expand((*tmp_t)->value, env);
 			ft_split_expand(arr_join, s);
 		}
 		else if ((*tmp_t)->type == '$' && (*tmp_t)->state == D && j == 1)
 		{
-			s = ft_expand((*tmp_t)->value, &my_env);
+			s = ft_expand((*tmp_t)->value, env);
 			ft_join_arr(arr_join, s);
 			free(s);
 		}
@@ -124,7 +124,7 @@ void	ft_join_word_2(char ***arr_join, t_token **tmp_t,
 }
 
 void	ft_join_words(char ***arr_join, t_token **tmp_t,
-		t_env *my_env, int j)
+		t_minibash *b, int j)
 {
 	while ((*tmp_t) != NULL && (*tmp_t)->state == N && ((*tmp_t)->type == '\"'
 			|| (*tmp_t)->type == '\''))
@@ -132,7 +132,7 @@ void	ft_join_words(char ***arr_join, t_token **tmp_t,
 		if (((*tmp_t) != NULL && (*tmp_t)->state == N)
 			&& ((*tmp_t)->type == '\"' || (*tmp_t)->type == '\''))
 			(*tmp_t) = (*tmp_t)->next;
-		ft_join_double_2(arr_join, tmp_t, my_env, j);
-		ft_join_word_2(arr_join, tmp_t, my_env, j);
+		ft_join_double_2(arr_join, tmp_t, b, j);
+		ft_join_word_2(arr_join, tmp_t, b, j);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/21 02:17:27 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 02:57:54 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,24 +183,23 @@ t_cmd			*last_command(t_cmd *cmd_list);
 t_cmd			*create_new_command(t_token **tok_ptr, t_env *env,
 					t_minibash *b);
 void			join_to_arg_array(char ***arg_arr, char *tok_str);
-void			process_non_pipe_segment(t_cmd **cmd_node, t_token **tok_ptr,
-					t_env *env, t_minibash *b);
+void			process_non_pipe_segment(t_cmd **cmd_node, t_token **tok_ptr, t_minibash *b);
 void			handle_token_part(t_cmd **cmd_node, t_token **tok_ptr,
-					t_env *env, char ***arg_arr);
+					t_minibash *b, char ***arg_arr);
 void			join_to_arg_array(char ***arg_arr, char *tok_str);
 void			process_redirections(t_cmd **cmd, t_token **tokens,
 					t_env *env, t_minibash *b);
 int				get_arg_count(char **args);
 void			skip_nonword_tokens(t_token **tok_ptr,
-					t_env *env);
+					t_minibash *b);
 void			skip_whitespace(t_token **tok_ptr);
 char			**combine_arguments(char **args, char **addition);
 void			free_argument_array(char **arr);
-char			**process_word(t_token **tok_ptr, t_env *env, int flag,
+char			**process_word(t_token **tok_ptr, t_minibash *env, int flag,
 					char ***arg_arr);
 int				is_redirection(t_token *node);
-char			**process_quoted(t_token **tok_ptr, t_env *env,
-					int flag, char ***arg_arr);
+char			**process_quoted(t_token **tok_ptr, t_minibash *b, int flag,
+					char ***arg_arr);
 
 // parse utils:
 int				redirection(t_token *start);
@@ -212,29 +211,29 @@ char			**ft_join_arg(char **arg, char **join);
 void			ft_join_arr(char ***arr_join, char *in);
 
 void			ft_join_double_2(char ***arr_join, t_token **tmp_t,
-					t_env *my_env, int j);
+					t_minibash *env, int j);
 void			ft_join_word_2(char ***arr_join, t_token **tmp_t,
-					t_env *my_env, int j);
+					t_minibash *env, int j);
 void			ft_join_words(char ***arr_join, t_token **tmp_t,
-					t_env *my_env, int j);
+					t_minibash *env, int j);
 
 //more joiner for process quotes
-void			ft_join_next(char ***arr_join, t_token **tmp_x, t_env *env,
+void			ft_join_next(char ***arr_join, t_token **tmp_x, t_minibash *b,
 					int j);
 void			ft_join_double(char ***arr_join, t_token **tmp_t,
-					t_env *env, int j);
+					t_minibash *b, int j);
 
 //
-char			*ft_expand(char *arg, t_env **env);
+char			*ft_expand(char *arg, t_minibash *b);	
 char			**ft_split_expand(char ***arr_join, char *s);
-void			ft_go_to_env(char **s, char *arg, int *i, t_env **env);
+void			ft_go_to_env(char **s, char *arg, int *i, t_minibash **env);
 
 //  RED2
 char			*ft_fill_final(char **s);
 int				ft_check_ambiguous(t_token *tmp_t, t_env *env, t_minibash b);
 int				ft_check_quote(t_token **tmp_t, char **final);
-char			*ft_skip_direction(t_token **tmp_t, t_env *env,
-					int *is_ambig, int her, t_minibash *b);
+char			*ft_skip_direction(t_token **tmp_t, t_minibash *b,
+					int *is_ambig, int her);
 
 // free parsing
 void			free_cmd_list(t_cmd **cmd_list);

@@ -6,14 +6,13 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 02:10:34 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/21 02:30:49 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 02:57:40 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	process_non_pipe_segment(t_cmd **cmd_node, t_token **t_ptr,
-	t_env *env, t_minibash *b)
+void	process_non_pipe_segment(t_cmd **cmd_node, t_token **t_ptr, t_minibash *b)
 {
 	char	**accumulated;
 
@@ -24,10 +23,10 @@ void	process_non_pipe_segment(t_cmd **cmd_node, t_token **t_ptr,
 	{
 		if ((*t_ptr) && (*t_ptr)->state == N
 			&& ((*t_ptr)->type != -1 && (*t_ptr)->type != '$'))
-			skip_nonword_tokens(t_ptr, env);
+			skip_nonword_tokens(t_ptr, b);
 		if ((*t_ptr) && !((*t_ptr)->type == ' '
 				&& (*t_ptr)->state == N))
-			handle_token_part(cmd_node, t_ptr, env, &accumulated);
+			handle_token_part(cmd_node, t_ptr, b, &accumulated);
 		if ((*t_ptr) && ((*t_ptr)->type == ' '
 				&& (*t_ptr)->state == N))
 			skip_whitespace(t_ptr);
@@ -76,12 +75,12 @@ int	check_repeating_quote(char ***arg_arr, t_cmd **cmd_node, t_token **tok_ptr)
 }
 
 int	check_general_quote(t_cmd **node, t_token **p,
-		t_env *env, char ***arg_arr)
+		t_minibash *b, char ***arg_arr)
 {
 	if ((*p) && (*p)->state == N && (*p)->type != '\"'
 		&& (*p)->type != '\'' && (*p)->type != '|' && (*p)->type != ' ')
 	{
-		process_word(p, env, 1, arg_arr);
+		process_word(p, b, 1, arg_arr);
 		if (*arg_arr && (*arg_arr)[0])
 		{
 			(*node)->argument = ft_join_arg((*node)->argument, *arg_arr);
@@ -92,7 +91,7 @@ int	check_general_quote(t_cmd **node, t_token **p,
 	}
 	else if ((*p) && (((*p)->state == D) || ((*p)->state == S)))
 	{
-		process_quoted(p, env, 1, arg_arr);
+		process_quoted(p, b, 1, arg_arr);
 		if (*arg_arr && (*arg_arr)[0])
 		{
 			(*node)->argument = ft_join_arg((*node)->argument, *arg_arr);
@@ -108,11 +107,11 @@ int	check_general_quote(t_cmd **node, t_token **p,
 * Process a single token group.
 */
 void	handle_token_part(t_cmd **cmd_node, t_token **tok_ptr,
-		t_env *env, char ***arg_arr)
+		t_minibash *b, char ***arg_arr)
 {
 	if (check_repeating_quote(arg_arr, cmd_node, tok_ptr))
 		return ;
-	if (check_general_quote(cmd_node, tok_ptr, env, arg_arr))
+	if (check_general_quote(cmd_node, tok_ptr, b, arg_arr))
 		return ;
 	else if ((*tok_ptr) && (*tok_ptr)->type != '|')
 		*tok_ptr = (*tok_ptr)->next;

@@ -6,13 +6,13 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 02:15:33 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/21 02:31:05 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 02:57:01 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	skip_nonword_tokens(t_token **tok_ptr, t_env *env)
+void	skip_nonword_tokens(t_token **tok_ptr, t_minibash *b)
 {
 	char	**arr;
 
@@ -30,10 +30,10 @@ void	skip_nonword_tokens(t_token **tok_ptr, t_env *env)
 		if ((*tok_ptr) && (*tok_ptr)->state == N
 			&& ((*tok_ptr)->type != '\"') && ((*tok_ptr)->type != '\'')
 			&& ((*tok_ptr)->type != '|'))
-			process_word(tok_ptr, env, 0, &arr);
+			process_word(tok_ptr, b, 0, &arr);
 		else if ((*tok_ptr) && (((*tok_ptr)->state == D)
 				|| ((*tok_ptr)->state == S)))
-			process_quoted(tok_ptr, env, 0, &arr);
+			process_quoted(tok_ptr, b, 0, &arr);
 	}
 	free_argument_array(arr);
 }

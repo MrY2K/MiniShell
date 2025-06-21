@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 02:16:16 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/21 02:31:18 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 02:48:26 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_handle_redirection(t_expand_heredoc *id, t_env *env,
 	{
 		id->tmp_t = id->tmp_t->next;
 		ft_skip_spaces(&id->tmp_t);
-		final = ft_skip_direction(&id->tmp_t, env, &id->is_ambig, 1, b);
+		final = ft_skip_direction(&id->tmp_t, b, &id->is_ambig, 1);
 		ft_add_red(&(id->tmp_cmd->red), ft_new_redir(final, '>', id->is_ambig));
 	}
 	else if (id->tmp_t != NULL && id->tmp_t->type == '<'
@@ -27,7 +27,7 @@ void	ft_handle_redirection(t_expand_heredoc *id, t_env *env,
 	{
 		id->tmp_t = id->tmp_t->next;
 		ft_skip_spaces(&id->tmp_t);
-		final = ft_skip_direction(&id->tmp_t, env, &id->is_ambig, 1, b);
+		final = ft_skip_direction(&id->tmp_t, b, &id->is_ambig, 1);
 		ft_add_red(&(id->tmp_cmd->red), ft_new_redir(final, '<', id->is_ambig));
 	}
 	else if (id->tmp_t != NULL && id->tmp_t->type == TOKEN_REDIR_APPEND
@@ -35,14 +35,14 @@ void	ft_handle_redirection(t_expand_heredoc *id, t_env *env,
 	{
 		id->tmp_t = id->tmp_t->next;
 		ft_skip_spaces(&id->tmp_t);
-		final = ft_skip_direction(&id->tmp_t, env, &id->is_ambig, 1, b);
+		final = ft_skip_direction(&id->tmp_t, b, &id->is_ambig, 1);
 		ft_add_red(&(id->tmp_cmd->red), ft_new_redir(final, TOKEN_REDIR_APPEND,
 				id->is_ambig));
 	}
 }
 
-char	*ft_skip_direction(t_token **tmp_t, t_env *env,
-		int *is_ambig, int her, t_minibash *b)
+char	*ft_skip_direction(t_token **tmp_t, t_minibash *b,
+		int *is_ambig, int her)
 {
 	t_dir	id;
 
@@ -53,17 +53,17 @@ char	*ft_skip_direction(t_token **tmp_t, t_env *env,
 	else if ((*tmp_t) != NULL && (*tmp_t)->state == N
 		&& ((*tmp_t)->type == '\"' || (*tmp_t)->type == '\''))
 	{
-		*is_ambig = ft_check_ambiguous((*tmp_t), env, *b);
+		*is_ambig = ft_check_ambiguous((*tmp_t), b->env, *b);
 		if (*is_ambig == 1 && her == 1)
 			return (NULL);
-		process_quoted(tmp_t, env, her, &id.str);
+		process_quoted(tmp_t, b->env, her, &id.str);
 	}
 	else if ((*tmp_t) != NULL && (*tmp_t)->state == N)
 	{
-		*is_ambig = ft_check_ambiguous((*tmp_t), env, *b);
+		*is_ambig = ft_check_ambiguous((*tmp_t), b->env, *b);
 		if (*is_ambig == 1 && her == 1)
 			return (NULL);
-		process_word(tmp_t, env, her, &id.str);
+		process_word(tmp_t, b, her, &id.str);
 	}
 	if (id.str != NULL)
 		id.final = ft_fill_final(id.str);
@@ -82,7 +82,7 @@ void	ft_handle_her(t_expand_heredoc *id, t_env *env,
 			&& ((id->tmp_t->next != NULL && id->tmp_t->next->type == ' ')
 				|| (id->tmp_t->next == NULL)))
 			id->is_expand = 1;
-		final = ft_skip_direction(&id->tmp_t, env, &id->is_ambig, 0, b);
+		final = ft_skip_direction(&id->tmp_t, b, &id->is_ambig, 0);
 		add_back_node_her(&(id->tmp_cmd->heredoc),
 			new_node_her(final, -1, id->j, id->is_expand));
 		id->j++;

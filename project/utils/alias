@@ -1,3 +1,0 @@
-alias pp='/Users/ajelloul/Desktop/unix_bash/project/utils/pull_and_push.sh'
-alias deadline='/Users/ajelloul/Desktop/unix_bash/project/utils/deadline.sh'
-alias leaks_finder='cd /Users/ajelloul/Desktop/unix_bash/project/utils && ./make_a_docker_container.sh'

@@ -6,13 +6,25 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/20 00:02:08 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 04:16:21 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void ll(void) { system("leaks -q minishell"); }
+void	ll(void)
+{
+	system("leaks -q minishell");
+}
+
+static void	sigint_handler(int signum)
+{
+	(void)signum;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
 
 void	execute_command_pipeline(t_minibash *bash, t_env **env, 
 	t_token *token, t_cmd **cmd)
@@ -20,7 +32,7 @@ void	execute_command_pipeline(t_minibash *bash, t_env **env,
 	if (token && env)
 	{
 		// debug_print_token_list(token); //? DEBUG
-		parse_input_commands(&token, cmd, bash);
+		parse_input_commands(&token, cmd, *env, bash);
 		// debug_print_cmd_list(*cmd); //? DEBUG
 		execution(bash, env, *cmd);
 	}
@@ -36,10 +48,7 @@ void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env **env)
 	{
 		line = readline("minishell$ ");
 		if (!line)
-		{
-			ft_putendl_fd("\nexit", 1);
-			exit (bash->exit_status);
-		}
+			break ;
 		if (line && *line) 
 			add_history(line);
 		if (lexer(line, &tokens))
@@ -49,12 +58,14 @@ void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env **env)
 			free_lexer(&tokens);
 		}
 		else
-
 			execute_command_pipeline(bash, env, tokens, &cmd);
 		tokens = NULL;
 		cmd = NULL;
 		free (line);
 	}
+	rl_clear_history();
+	write(1, "exit\n", 5);
+	exit (bash->exit_status);
 }
 
 static void	init_minibash(t_minibash **bash)
@@ -81,13 +92,15 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	tokens = NULL;
 	cmd = NULL;
+	rl_catch_signals = 0;
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
 	// atexit(ll);
 	init_minibash(&bash);
 	initialize_environment(bash, env);
-	using_history();
+	// using_history(); // no need for this i think ?
 	ft_readline(bash, tokens, cmd, &bash->env);
 	exit_st = bash->exit_status;
 	free_minibash(&bash);
 	return (exit_st);
 }
-

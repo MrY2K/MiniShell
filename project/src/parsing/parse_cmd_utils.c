@@ -1,19 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_cmd_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/21 02:14:28 by achoukri          #+#    #+#             */
+/*   Updated: 2025/06/21 02:30:56 by achoukri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 int		redirection(t_token *start);
 int		ft_len_arg(char **arg);
 int		ft_search(char *s, char *d);
 
-
-
-int		redirection(t_token *start)
+int	redirection(t_token *start)
 {
 	if ((start)->type == '<' || (start)->type == '>'
-		|| (start)->type == TOKEN_REDIR_APPEND || (start)->type == TOKEN_HEREDOC)
+		|| (start)->type == TOKEN_REDIR_APPEND
+		|| (start)->type == TOKEN_HEREDOC)
 		return (1);
 	return (0);
 }
-int		ft_len_arg(char **arg)
+
+int	ft_len_arg(char **arg)
 {
 	int	i;
 
@@ -27,7 +39,7 @@ int		ft_len_arg(char **arg)
 	return (i);
 }
 
-int		ft_search(char *s, char *d)
+int	ft_search(char *s, char *d)
 {
 	int	i;
 	int	j;
@@ -53,10 +65,9 @@ void	skip_whitespace(t_token **tok_ptr)
 		*tok_ptr = (*tok_ptr)->next;
 }
 
-int		is_quote(t_token *head)
+int	is_quote(t_token *head)
 {
 	if ((head)->type == '\"' || (head)->type == '\'')
 		return (1);
 	return (0);
 }
-

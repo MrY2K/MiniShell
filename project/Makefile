@@ -65,7 +65,7 @@ NAME         = minishell
 HEADERS      = $(wildcard $(INCLUDE_DIR)/*.h)
 
 # Define source files
-MAIN_SRC     = $(SRC_DIR)/main.c $(SRC_DIR)/utils.c $(SRC_DIR)/debug.c
+MAIN_SRC     = $(SRC_DIR)/main.c
 
 # Builtin sources
 BUILTINS_SRC = $(wildcard $(BUILTINS_DIR)/*.c)
@@ -167,6 +167,7 @@ fclean: clean libfclean
 	@printf "$(YELLOW)%s$(RESET)\n" "Removing executable..."
 	@rm -f $(NAME)
 	@printf "$(RED)%s$(RESET)\n" "✓ $(NAME) removed"
+	@rm -f $(BUILD_DIR)
 
 # Rebuild
 re: fclean all

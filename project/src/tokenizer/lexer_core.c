@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_core.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 12:43:22 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/11 12:43:45 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/21 02:31:37 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ void	handle_env_variables(char *input, t_lexer_state *ls, t_token **tokens)
 		&& ((input[ls->i + 1] == '\"' && input[ls->i + 2] == '\"')
 			|| (input[ls->i + 1] == '\'' && input[ls->i + 2] == '\'')))
 	{
-		ls->state = Normal;
+		ls->state = N;
 		ls->i += 3;
 		ls->len += 3;
 	}

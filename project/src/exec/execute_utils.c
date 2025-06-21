@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 15:44:10 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/12 12:43:32 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/21 02:49:04 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ bool	has_redirections(t_cmd *cmd)
 
 	if (!cmd)
 		return (false);
-	red = cmd->redirections;
+	red = cmd->red;
 	while (red)
 	{
 		if (red->type == TOKEN_REDIR_APPEND || red->type == TOKEN_REDIR_IN

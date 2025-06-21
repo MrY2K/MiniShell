@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:29:21 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/16 12:38:25 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/21 02:23:11 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,6 @@ void	execution(t_minibash *bash, t_env **env, t_cmd *cmd)
 		return ;
 	if (!pid)
 	{
-		
 		execute_command(bash, env, tmp_cmd);
 	}
 	else

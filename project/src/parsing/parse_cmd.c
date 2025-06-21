@@ -1,15 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_cmd.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/21 02:15:01 by achoukri          #+#    #+#             */
+/*   Updated: 2025/06/21 04:17:00 by achoukri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-/*
-	* move each function to its place 
-	todo: understand how parser work step by step
-	todo: handle red
-*/
-
-/*
-* this bad boy here builds the command
-*/
-void	parse_input_commands(t_token **token_list, t_cmd **cmd_list, t_minibash *env)
+void	parse_input_commands(t_token **token_list, t_cmd **cmd_list,
+		t_env *env, t_minibash *b)
 {
 	t_token	*cur_token;
 	t_cmd	**tmp_cmd;
@@ -18,14 +22,11 @@ void	parse_input_commands(t_token **token_list, t_cmd **cmd_list, t_minibash *en
 	cur_token = *token_list;
 	while (cur_token != NULL)
 	{
-		append_command(tmp_cmd, create_new_command(&cur_token, env));
+		append_command(tmp_cmd, create_new_command(&cur_token, env, b));
 	}
-	process_redirections(tmp_cmd, token_list, env->env);
+	process_redirections(tmp_cmd, token_list, env, b);
 }
 
-/*
-* Append a new command node to the command list.
-*/
 void	append_command(t_cmd **cmd_list, t_cmd *new_cmd)
 {
 	t_cmd	*last;
@@ -41,9 +42,6 @@ void	append_command(t_cmd **cmd_list, t_cmd *new_cmd)
 	}
 }
 
-/*
-* Returns the last command value the list.
-*/
 t_cmd	*last_command(t_cmd *cmd_list)
 {
 	t_cmd	*last;
@@ -56,7 +54,7 @@ t_cmd	*last_command(t_cmd *cmd_list)
 	return (last);
 }
 
-t_cmd	*create_new_command(t_token **tok_ptr, t_minibash *env)
+t_cmd	*create_new_command(t_token **tok_ptr, t_env *env, t_minibash *b)
 {
 	t_cmd	*node;
 
@@ -67,18 +65,18 @@ t_cmd	*create_new_command(t_token **tok_ptr, t_minibash *env)
 	node->main_cmd = NULL;
 	node->arg_len = 0;
 	node->pipe = 0;
-	node->redirections = NULL;
+	node->red = NULL;
 	node->heredoc = NULL;
 	node->env_arr = NULL;
 	if ((*tok_ptr) != NULL && ((*tok_ptr)->type == '|'
-			&& (*tok_ptr)->state == Normal))
+			&& (*tok_ptr)->state == N))
 	{
 		join_to_arg_array(&(node->argument), (*tok_ptr)->value);
 		node->pipe = 1;
 		*tok_ptr = (*tok_ptr)->next;
 	}
 	else if ((*tok_ptr) != NULL)
-		process_non_pipe_segment(&node, tok_ptr, env);
+		process_non_pipe_segment(&node, tok_ptr, env, b);
 	if (node->argument && node->argument[0])
 		node->main_cmd = node->argument[0];
 	node->next = NULL;

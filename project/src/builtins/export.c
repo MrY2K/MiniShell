@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 06:55:52 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/16 15:00:16 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/21 02:23:59 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ int	is_valid_variable_name(t_minibash *bash, char *str)
 	}
 	while (str[i] && str[i] != '=')
 	{
-		
 		if (!is_allowed_variable_character(str[i]))
 		{
 			export_error(bash, str);
@@ -117,9 +116,8 @@ int	init_empty_env(t_minibash *bash, t_env **env, t_cmd *cmd)
 
 void	builtin_export(t_minibash *bash, t_env **env, t_cmd *cmd)
 {
-	for (int j = 0; cmd->argument[j]; j++)
-    	printf("arg[%d]: '%s'\n", j, cmd->argument[j]);
 	int	i;
+
 	if (!*env)
 	{
 		if (init_empty_env(bash, env, cmd))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 12:45:17 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/11 13:36:32 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/21 02:31:51 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,20 @@
 t_state	get_state(char c, t_lexer_state *ls)
 {
 	if (ls->double_q == -1 && ls->single_q == -1 && c == '\"')
-		return (ls->double_q = 1, Normal);
+		return (ls->double_q = 1, N);
 	else if (ls->double_q == 1 && ls->single_q == -1 && c == '\"')
-		return (ls->double_q = -1, Normal);
+		return (ls->double_q = -1, N);
 	else if (ls->double_q == 1 && ls->single_q == -1 && ft_isprint(c))
-		return (Double);
+		return (D);
 	else if (ls->double_q == -1 && ls->single_q == -1 
 		&& c != '\'' && ft_isprint(c))
-		return (Normal);
+		return (N);
 	else if (ls->double_q == -1 && ls->single_q == -1 && c == '\'')
-		return (ls->single_q = 1, Normal);
+		return (ls->single_q = 1, N);
 	else if (ls->double_q == -1 && ls->single_q == 1 && c == '\'')
-		return (ls->single_q = -1, Normal);
+		return (ls->single_q = -1, N);
 	else if (ls->double_q == -1 && ls->single_q == 1 && ft_isprint(c))
-		return (Single);
+		return (S);
 	return (NUL);
 }
 
@@ -84,7 +84,7 @@ int	is_syntax_error(t_token **tokens)
 	{
 		return (1);
 	}
-	if (check_middle_syntax(&start, Normal))
+	if (check_middle_syntax(&start, N))
 	{
 		return (1);
 	}

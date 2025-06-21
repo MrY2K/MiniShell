@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/21 02:06:41 by achoukri          #+#    #+#             */
+/*   Updated: 2025/06/21 04:16:29 by achoukri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 #include "../../includes/structs.h"
 
@@ -59,7 +71,6 @@ void	ft_free_her(t_heredoc **her)
 	}
 }
 
-
 void	free_cmd_list(t_cmd **cmd)
 {
 	t_cmd	*tmp_cmd;
@@ -71,8 +82,8 @@ void	free_cmd_list(t_cmd **cmd)
 	while (tmp_cmd)
 	{
 		free_argument_array(tmp_cmd->argument);
-		if (tmp_cmd->redirections)
-			ft_free_doc(&tmp_cmd->redirections);
+		if (tmp_cmd->red)
+			ft_free_doc(&tmp_cmd->red);
 		if (tmp_cmd->heredoc)
 			ft_free_her(&tmp_cmd->heredoc);
 		if (tmp_cmd->env_arr)

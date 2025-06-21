@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:01:42 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/17 23:09:19 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 04:22:10 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@
 	}
 	return (ex.str);
 }
-*/ 
+*/
 
 char	*expand(t_minibash *bash, t_env **env, char *str)
 {
@@ -77,15 +77,15 @@ char	*expand(t_minibash *bash, t_env **env, char *str)
 		else if (str[ex.index] == '$')
 		{
 			if (str[ex.index + 1] && str[ex.index + 1] == '?')
-				return (ex.expanded_line = ft_itoa(bash->exit_status), 
-					ex.s = ft_strdup(ex.expanded_line), 
+				return (ex.expanded_line = ft_itoa(bash->exit_status),
+					ex.s = ft_strdup(ex.expanded_line),
 					free(ex.expanded_line), ex.s);
 			ex.index++;
 			if (!str[ex.index])
 				return (ex.s = ft_strdup("$"), ex.s);
 			if (str[ex.index] == '\"' || str[ex.index] == '\'')
 				return (ex.s = ft_strdup(""), ex.s);
-			if (!ft_isalnum(str[ex.index]) || ft_isdigit(str[ex.index])) 
+			if (!ft_isalnum(str[ex.index]) || ft_isdigit(str[ex.index]))
 				return (ex.s);
 			lookup_env_var(env, str, &ex.s, &ex.index);
 		}
@@ -131,9 +131,11 @@ void	child_process(t_minibash *bash, t_env **env, t_heredoc *herdoc)
 
 /*
 	Signals : 
-		WIFEXITED(status): Checks if the child exited normally (not killed by a signal)
+		WIFEXITED(status): Checks if the child exited
+		normally (not killed by a signal)
 
-		WEXITSTATUS(status): Extracts the exit status (only valid if WIFEXITED is true)
+		WEXITSTATUS(status): Extracts the exit status
+		(only valid if WIFEXITED is true)
 
 		WIFSIGNALED(status): Checks if the child was terminated by a signal
 

@@ -6,13 +6,14 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 02:10:34 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/21 04:17:19 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 04:17:29 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	process_non_pipe_segment(t_cmd **cmd_node, t_token **t_ptr, t_minibash *b)
+void	process_non_pipe_segment(t_cmd **cmd_node, t_token **t_ptr,
+			t_minibash *b)
 {
 	char	**accumulated;
 

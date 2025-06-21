@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/21 04:14:14 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 04:53:55 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,18 +177,18 @@ void			cleanup_pipe_resources(t_pipe *pi_pe);
 
 // NEW 
 void			parse_input_commands(t_token **token_list, t_cmd **cmd_list,
-					t_env *env, t_minibash *b);
+					t_minibash *b);
 void			append_command(t_cmd **cmd_list, t_cmd *new_cmd);
 t_cmd			*last_command(t_cmd *cmd_list);
-t_cmd			*create_new_command(t_token **tok_ptr, t_env *env,
-					t_minibash *b);
+t_cmd			*create_new_command(t_token **tok_ptr, t_minibash *b);
 void			join_to_arg_array(char ***arg_arr, char *tok_str);
-void			process_non_pipe_segment(t_cmd **cmd_node, t_token **tok_ptr, t_minibash *b);
+void			process_non_pipe_segment(t_cmd **cmd_node,
+					t_token **tok_ptr, t_minibash *b);
 void			handle_token_part(t_cmd **cmd_node, t_token **tok_ptr,
 					t_minibash *b, char ***arg_arr);
 void			join_to_arg_array(char ***arg_arr, char *tok_str);
 void			process_redirections(t_cmd **cmd, t_token **tokens,
-					t_env *env, t_minibash *b);
+					t_minibash *b);
 int				get_arg_count(char **args);
 void			skip_nonword_tokens(t_token **tok_ptr,
 					t_minibash *b);
@@ -230,7 +230,7 @@ void			ft_go_to_env(char **s, char *arg, int *i, t_minibash **env);
 
 //  RED2
 char			*ft_fill_final(char **s);
-int				ft_check_ambiguous(t_token *tmp_t, t_env *env, t_minibash b);
+int				ft_check_ambiguous(t_token *tmp_t, t_minibash *b);
 int				ft_check_quote(t_token **tmp_t, char **final);
 char			*ft_skip_direction(t_token **tmp_t, t_minibash *b,
 					int *is_ambig, int her);
@@ -250,5 +250,6 @@ void			ft_next(t_token **tok_ptr, t_cmd **cmd_ptr);
 void			add_back_node_her(t_heredoc **her, t_heredoc *new_her);
 
 t_heredoc		*new_node_her(char *file, int fd, int tokens, int is_expand);
+void			ft_handle_red(t_expand_heredoc *id, char *final, t_minibash *b);
 
 #endif

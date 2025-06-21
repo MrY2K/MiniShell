@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 12:45:17 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/21 02:31:51 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 04:22:35 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_state	get_state(char c, t_lexer_state *ls)
 		return (ls->double_q = -1, N);
 	else if (ls->double_q == 1 && ls->single_q == -1 && ft_isprint(c))
 		return (D);
-	else if (ls->double_q == -1 && ls->single_q == -1 
+	else if (ls->double_q == -1 && ls->single_q == -1
 		&& c != '\'' && ft_isprint(c))
 		return (N);
 	else if (ls->double_q == -1 && ls->single_q == -1 && c == '\'')

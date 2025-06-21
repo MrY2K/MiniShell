@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/21 04:16:21 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 04:43:03 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ static void	sigint_handler(int signum)
 	rl_redisplay();
 }
 
-void	execute_command_pipeline(t_minibash *bash, t_env **env, 
+void	execute_command_pipeline(t_minibash *bash, t_env **env,
 	t_token *token, t_cmd **cmd)
 {
 	if (token && env)
 	{
 		// debug_print_token_list(token); //? DEBUG
-		parse_input_commands(&token, cmd, *env, bash);
+		parse_input_commands(&token, cmd, bash);
 		// debug_print_cmd_list(*cmd); //? DEBUG
 		execution(bash, env, *cmd);
 	}
@@ -49,7 +49,7 @@ void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env **env)
 		line = readline("minishell$ ");
 		if (!line)
 			break ;
-		if (line && *line) 
+		if (line && *line)
 			add_history(line);
 		if (lexer(line, &tokens))
 		{

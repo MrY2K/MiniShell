@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 22:48:27 by achoukri          #+#    #+#             */
-/*   Updated: 2025/04/24 10:22:16 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 04:23:20 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 	if (s == NULL || f == NULL)
 		return ;
 	i = 0;
-	while (s[i]) 
+	while (s[i])
 	{
 		f(i, &s[i]);
 		i++;

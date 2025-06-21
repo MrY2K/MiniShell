@@ -6,14 +6,13 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 02:16:16 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/21 02:48:26 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 04:41:34 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	ft_handle_redirection(t_expand_heredoc *id, t_env *env,
-	char *final, t_minibash *b)
+void	ft_handle_red(t_expand_heredoc *id, char *final, t_minibash *b)
 {
 	if (id->tmp_t != NULL && id->tmp_t->type == '>' && id->tmp_t->state == N)
 	{
@@ -53,14 +52,14 @@ char	*ft_skip_direction(t_token **tmp_t, t_minibash *b,
 	else if ((*tmp_t) != NULL && (*tmp_t)->state == N
 		&& ((*tmp_t)->type == '\"' || (*tmp_t)->type == '\''))
 	{
-		*is_ambig = ft_check_ambiguous((*tmp_t), b->env, *b);
+		*is_ambig = ft_check_ambiguous((*tmp_t), b);
 		if (*is_ambig == 1 && her == 1)
 			return (NULL);
-		process_quoted(tmp_t, b->env, her, &id.str);
+		process_quoted(tmp_t, b, her, &id.str);
 	}
 	else if ((*tmp_t) != NULL && (*tmp_t)->state == N)
 	{
-		*is_ambig = ft_check_ambiguous((*tmp_t), b->env, *b);
+		*is_ambig = ft_check_ambiguous((*tmp_t), b);
 		if (*is_ambig == 1 && her == 1)
 			return (NULL);
 		process_word(tmp_t, b, her, &id.str);
@@ -70,8 +69,7 @@ char	*ft_skip_direction(t_token **tmp_t, t_minibash *b,
 	return (free_argument_array(id.str), id.final);
 }
 
-void	ft_handle_her(t_expand_heredoc *id, t_env *env,
-		char *final, t_minibash *b)
+void	ft_handle_her(t_expand_heredoc *id, char *final, t_minibash *b)
 {
 	while ((id->tmp_t != NULL && id->tmp_t->type == TOKEN_HEREDOC
 			&& id->tmp_t->state == N))
@@ -89,7 +87,7 @@ void	ft_handle_her(t_expand_heredoc *id, t_env *env,
 	}
 }
 
-void	ft_handler_red_her(t_expand_heredoc *id, t_env *env, t_minibash *b)
+void	ft_handler_red_her(t_expand_heredoc *id, t_minibash *b)
 {
 	char	*final;
 
@@ -99,10 +97,10 @@ void	ft_handler_red_her(t_expand_heredoc *id, t_env *env, t_minibash *b)
 	{
 		if (id->tmp_t != NULL && (redirection(id->tmp_t)
 				&& id->tmp_t->type != TOKEN_HEREDOC))
-			ft_handle_redirection(id, env, final, b);
+			ft_handle_red(id, final, b);
 		else if ((id->tmp_t != NULL && id->tmp_t->type == TOKEN_HEREDOC
 				&& id->tmp_t->state == N))
-			ft_handle_her(id, env, final, b);
+			ft_handle_her(id, final, b);
 	}
 	if (id->tmp_t != NULL && !(id->tmp_t->type == '|'
 			&& id->tmp_t->state == N))
@@ -110,7 +108,7 @@ void	ft_handler_red_her(t_expand_heredoc *id, t_env *env, t_minibash *b)
 }
 
 void	process_redirections(t_cmd **cmd, t_token **tokens,
-		t_env *env, t_minibash *b)
+			t_minibash *b)
 {
 	t_expand_heredoc	id;
 
@@ -129,7 +127,7 @@ void	process_redirections(t_cmd **cmd, t_token **tokens,
 		while ((id.tmp_cmd != NULL && id.tmp_t != NULL)
 			&& !(id.tmp_t->state == N && id.tmp_t->type == '|'))
 		{
-			ft_handler_red_her(&id, env, b);
+			ft_handler_red_her(&id, b);
 			id.i++;
 		}
 		ft_next(&id.tmp_t, &id.tmp_cmd);

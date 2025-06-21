@@ -6,12 +6,11 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 02:06:41 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/21 04:16:29 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 04:57:38 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../includes/structs.h"
 
 void	free_argument_array(char **arr)
 {

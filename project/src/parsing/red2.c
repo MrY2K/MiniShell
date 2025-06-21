@@ -6,13 +6,13 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 02:20:27 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/21 02:45:09 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 04:35:26 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	ft_check_ambiguous(t_token *tmp_t, t_env *env, t_minibash b)
+int	ft_check_ambiguous(t_token *tmp_t, t_minibash *b)
 {
 	char	*s;
 	char	**str;
@@ -26,7 +26,7 @@ int	ft_check_ambiguous(t_token *tmp_t, t_env *env, t_minibash b)
 			break ;
 		if ((tmp_t) != NULL && tmp_t->type == '$' && tmp_t->state == N)
 		{
-			s = ft_expand(tmp_t->value, &b);
+			s = ft_expand(tmp_t->value, b);
 			if (s == NULL || (s != NULL && (s[0] == ' ' || s[0] == '\0')))
 				return (free(s), 1);
 			str = ft_split(s, ' ');

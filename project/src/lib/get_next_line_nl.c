@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 16:30:19 by achoukri          #+#    #+#             */
-/*   Updated: 2025/04/24 10:21:00 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 04:23:13 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*read_to_static_buffer(int fd, char **static_buffer, char *buff)
 			return (free(buff), free(*static_buffer), NULL);
 		else if (bytes_read == 0)
 			break ;
-		buff[bytes_read] = '\0'; 
+		buff[bytes_read] = '\0';
 		if (!*static_buffer)
 			tmp = ft_strdup(buff);
 		else

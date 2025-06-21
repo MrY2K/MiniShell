@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 01:44:24 by achoukri          #+#    #+#             */
-/*   Updated: 2025/04/24 10:24:35 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 04:25:33 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_itoa(int n)
 	long	nbr;
 
 	nbr = n;
-	if (nbr == 0) 
+	if (nbr == 0)
 		return (ft_strdup("0"));
 	digit_count = digit_counter(nbr);
 	tmp = ft_calloc(digit_count + 1, sizeof(char));

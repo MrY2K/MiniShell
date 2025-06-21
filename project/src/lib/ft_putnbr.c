@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 21:46:33 by achoukri          #+#    #+#             */
-/*   Updated: 2025/04/24 10:22:43 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 04:22:58 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_putnbr(int n)
 	int	count;
 
 	count = 0;
-	if (n == -2147483648) 
+	if (n == -2147483648)
 	{
 		count += ft_putchar('-');
 		count += ft_putchar('2');

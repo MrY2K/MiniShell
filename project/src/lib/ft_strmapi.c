@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 21:15:05 by achoukri          #+#    #+#             */
-/*   Updated: 2025/04/24 10:21:49 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 04:23:38 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	if (final == NULL)
 		return (NULL);
 	i = 0;
-	while (i < len) 
+	while (i < len)
 	{
 		final[i] = f(i, s[i]);
 		i++;

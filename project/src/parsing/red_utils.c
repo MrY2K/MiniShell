@@ -6,13 +6,13 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 02:16:08 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/21 02:31:14 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 04:44:59 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	ft_add_redir(t_redirect **lst, t_redirect *_new)
+void	ft_add_red(t_redirect **lst, t_redirect *_new)
 {
 	t_redirect	*last;
 

@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 00:03:08 by achoukri          #+#    #+#             */
-/*   Updated: 2025/04/24 10:23:18 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 04:23:52 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	flag_dispatcher(const char format, va_list args)
 	int	count;
 
 	count = 0;
-	if (format == 'c') 
+	if (format == 'c')
 		count = ft_putchar(va_arg(args, int));
 	else if (format == 's')
 		count = ft_putstr(va_arg(args, char *));

@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   red2.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/21 02:20:27 by achoukri          #+#    #+#             */
+/*   Updated: 2025/06/21 02:20:29 by achoukri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-int				ft_check_ambiguous(t_token *tmp_t, t_env *env, t_minibash b)
+int	ft_check_ambiguous(t_token *tmp_t, t_env *env, t_minibash b)
 {
 	char	*s;
 	char	**str;
@@ -9,10 +21,10 @@ int				ft_check_ambiguous(t_token *tmp_t, t_env *env, t_minibash b)
 	s = NULL;
 	while ((tmp_t) != NULL)
 	{
-		if ((tmp_t)->state == Normal && (redirection(tmp_t)
+		if ((tmp_t)->state == N && (redirection(tmp_t)
 				|| tmp_t->type == '|' || tmp_t->type == ' '))
 			break ;
-		if ((tmp_t) != NULL && tmp_t->type == '$' && tmp_t->state == Normal)
+		if ((tmp_t) != NULL && tmp_t->type == '$' && tmp_t->state == N)
 		{
 			s = ft_expand(tmp_t->value, &env);
 			if (s == NULL || (s != NULL && (s[0] == ' ' || s[0] == '\0')))
@@ -32,8 +44,8 @@ int				ft_check_ambiguous(t_token *tmp_t, t_env *env, t_minibash b)
 int	ft_check_quote(t_token **tmp_t, char **final)
 {
 	while (((*tmp_t) != NULL && (*tmp_t)->next != NULL
-			&& ((*tmp_t)->state == Normal
-				&& (*tmp_t)->next->state == Normal)) && (((*tmp_t)->type == '\"'
+			&& ((*tmp_t)->state == N
+				&& (*tmp_t)->next->state == N)) && (((*tmp_t)->type == '\"'
 				&& (*tmp_t)->next->type == '\"') || ((*tmp_t)->type == '\''
 				&& (*tmp_t)->next->type == '\''))
 		&& ((*tmp_t)->next->next != NULL
@@ -45,8 +57,8 @@ int	ft_check_quote(t_token **tmp_t, char **final)
 		return ((*tmp_t) = (*tmp_t)->next, 1);
 	}
 	if (((*tmp_t) != NULL && (*tmp_t)->next != NULL
-			&& ((*tmp_t)->state == Normal
-				&& (*tmp_t)->next->state == Normal)) && (((*tmp_t)->type == '\"'
+			&& ((*tmp_t)->state == N
+				&& (*tmp_t)->next->state == N)) && (((*tmp_t)->type == '\"'
 				&& (*tmp_t)->next->type == '\"') || ((*tmp_t)->type == '\''
 				&& (*tmp_t)->next->type == '\'')))
 	{

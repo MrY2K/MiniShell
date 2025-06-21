@@ -1,41 +1,43 @@
-#include "../../includes/minishell.h"
-#include "../../includes/structs.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_cmd_2.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/21 02:10:34 by achoukri          #+#    #+#             */
+/*   Updated: 2025/06/21 02:14:09 by achoukri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*
-* Process a segment of tokens until a pipe is encountered.
-* It skips whitespace and non-word tokens and adds valid tokens
-* by calling handle_token_part().
-*/
+#include "../../includes/minishell.h"
 
 void	process_non_pipe_segment(t_cmd **cmd_node, t_token **t_ptr,
 	t_env *env, t_minibash *b)
 {
-	(void)b;
 	char	**accumulated;
 
+	(void)b;
 	accumulated = NULL;
 	while ((*t_ptr) != NULL && !((*t_ptr)->type == '|'
-			&& (*t_ptr)->state == Normal))
+			&& (*t_ptr)->state == N))
 	{
-		if ((*t_ptr) && (*t_ptr)->state == Normal
+		if ((*t_ptr) && (*t_ptr)->state == N
 			&& ((*t_ptr)->type != -1 && (*t_ptr)->type != '$'))
 			skip_nonword_tokens(t_ptr, env);
 		if ((*t_ptr) && !((*t_ptr)->type == ' '
-				&& (*t_ptr)->state == Normal))
+				&& (*t_ptr)->state == N))
 			handle_token_part(cmd_node, t_ptr, env, &accumulated);
 		if ((*t_ptr) && ((*t_ptr)->type == ' '
-				&& (*t_ptr)->state == Normal))
+				&& (*t_ptr)->state == N))
 			skip_whitespace(t_ptr);
 	}
 }
 
-/*
-* Check for adjacent empty quotes and update the command's args.
-*/
 int	check_empty_case(char ***arg_arr, t_cmd **cmd_node, t_token **tok_ptr)
 {
-	if ((*tok_ptr) && (*tok_ptr)->next && ((*tok_ptr)->state == Normal
-			&& (*tok_ptr)->next->state == Normal)
+	if ((*tok_ptr) && (*tok_ptr)->next && ((*tok_ptr)->state == N
+			&& (*tok_ptr)->next->state == N)
 		&& (((*tok_ptr)->type == '\"' && (*tok_ptr)->next->type == '\"')
 			|| ((*tok_ptr)->type == '\'' && (*tok_ptr)->next->type == '\'')))
 	{
@@ -44,7 +46,8 @@ int	check_empty_case(char ***arg_arr, t_cmd **cmd_node, t_token **tok_ptr)
 		join_to_arg_array(arg_arr, "");
 		if ((*arg_arr)[0])
 		{
-			(*cmd_node)->argument = ft_join_arg((*cmd_node)->argument, *arg_arr);
+			(*cmd_node)->argument = ft_join_arg((*cmd_node)->argument,
+					*arg_arr);
 			free_argument_array(*arg_arr);
 			*arg_arr = NULL;
 		}
@@ -54,13 +57,10 @@ int	check_empty_case(char ***arg_arr, t_cmd **cmd_node, t_token **tok_ptr)
 	return (0);
 }
 
-// /*
-// * Check for repeating quotes value sequence.
-// */
 int	check_repeating_quote(char ***arg_arr, t_cmd **cmd_node, t_token **tok_ptr)
 {
 	while ((*tok_ptr) && (*tok_ptr)->next
-		&& ((*tok_ptr)->state == Normal && (*tok_ptr)->next->state == Normal)
+		&& ((*tok_ptr)->state == N && (*tok_ptr)->next->state == N)
 		&& (((*tok_ptr)->type == '\"' && (*tok_ptr)->next->type == '\"')
 			|| ((*tok_ptr)->type == '\'' && (*tok_ptr)->next->type == '\''))
 		&& ((*tok_ptr)->next->next
@@ -75,31 +75,27 @@ int	check_repeating_quote(char ***arg_arr, t_cmd **cmd_node, t_token **tok_ptr)
 	return (0);
 }
 
-/*
-* Process general word tokens and quoted strings.
-*/
-
-int	check_general_quote(t_cmd **cmd_node, t_token **tok_ptr,
+int	check_general_quote(t_cmd **node, t_token **p,
 		t_env *env, char ***arg_arr)
 {
-	if ((*tok_ptr) && (*tok_ptr)->state == Normal && (*tok_ptr)->type != '\"'
-		&& (*tok_ptr)->type != '\'' && (*tok_ptr)->type != '|' && (*tok_ptr)->type != ' ')
+	if ((*p) && (*p)->state == N && (*p)->type != '\"'
+		&& (*p)->type != '\'' && (*p)->type != '|' && (*p)->type != ' ')
 	{
-		process_word(tok_ptr, env, 1, arg_arr);
+		process_word(p, env, 1, arg_arr);
 		if (*arg_arr && (*arg_arr)[0])
 		{
-			(*cmd_node)->argument = ft_join_arg((*cmd_node)->argument, *arg_arr);
+			(*node)->argument = ft_join_arg((*node)->argument, *arg_arr);
 			free_argument_array(*arg_arr);
 			*arg_arr = NULL;
 		}
 		return (1);
 	}
-	else if ((*tok_ptr) && (((*tok_ptr)->state == Double) || ((*tok_ptr)->state == Single)))
+	else if ((*p) && (((*p)->state == D) || ((*p)->state == S)))
 	{
-		process_quoted(tok_ptr, env, 1, arg_arr);
+		process_quoted(p, env, 1, arg_arr);
 		if (*arg_arr && (*arg_arr)[0])
 		{
-			(*cmd_node)->argument = ft_join_arg((*cmd_node)->argument, *arg_arr);
+			(*node)->argument = ft_join_arg((*node)->argument, *arg_arr);
 			free_argument_array(*arg_arr);
 			*arg_arr = NULL;
 		}

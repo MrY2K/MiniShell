@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 09:50:57 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/16 16:42:26 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 02:23:45 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,5 @@ void	builtin_pwd(t_minibash *bash, t_cmd *cmd)
 		return ;
 	}
 	ft_putendl_fd(current_dir, 1);
-	// free(current_dir);
 	bash->exit_status = 0;
 }

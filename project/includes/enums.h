@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 09:56:20 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/20 22:12:02 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 02:09:09 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ typedef enum e_env_type
 
 typedef enum e_state
 {
-	Normal ,
-	Single,
-	Double,
+	N,
+	S,
+	D,
 	NUL,
 }	t_state;
 

@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/20 23:30:20 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 02:17:27 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,13 +244,12 @@ void			debug_print_token_list(t_token *list);
 void			debug_print_cmd_list(t_cmd *list);
 
 void			ft_skip_spaces(t_token **tpm_t);
-void			ft_add_redir(t_redirect **lst, t_redirect *_new);
+void			ft_add_red(t_redirect **lst, t_redirect *_new);
 t_redirect		*ft_last_redir(t_redirect *lst);
 t_redirect		*ft_new_redir(void *content, t_token_type type, int is_ambig);
 void			ft_next(t_token **tok_ptr, t_cmd **cmd_ptr);
 void			add_back_node_her(t_heredoc **her, t_heredoc *new_her);
 
 t_heredoc		*new_node_her(char *file, int fd, int tokens, int is_expand);
-
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:10:59 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/17 23:09:38 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 02:22:29 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ void	append_regular_characters(t_expand_heredoc *ex, char *line)
 	ex->index--;
 }
 
-char	*expand_env_var_her(t_minibash *bash, t_env *env, char	**expanded_line, int *index, char *line)
+char	*expand_env_var_her(t_minibash *bash, t_env *env, char	**expanded_line,
+	int *index, char *line)
 {
 	t_env_var	var;
 

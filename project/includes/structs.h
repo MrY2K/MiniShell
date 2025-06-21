@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 09:25:15 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/20 22:43:43 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 02:18:54 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ typedef struct s_cmd
 	int				needs_expansion;
 	int				arg_len;
 	t_heredoc		*heredoc;
-	t_redirect		*redirections;
+	t_redirect		*red;
 	struct s_cmd	*next;
 }	t_cmd;
 

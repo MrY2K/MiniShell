@@ -1,5 +1,16 @@
-#include "../../includes/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   red_utils_2.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/21 02:15:40 by achoukri          #+#    #+#             */
+/*   Updated: 2025/06/21 02:16:00 by achoukri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "../../includes/minishell.h"
 
 char	*ft_str_join(char *s1, char *s2)
 {
@@ -60,13 +71,13 @@ char	*ft_fill_final(char **s)
 
 	if (!s || !s[0])
 		return (NULL);
-	final = ft_strdup("");  // Initialize with empty string instead of NULL
+	final = ft_strdup("");
 	i = 0;
 	while (s[i] != NULL)
 	{
 		temp = final;
 		final = ft_strjoin(final, s[i]);
-		free(temp);  // Free the old string to avoid memory leaks
+		free(temp);
 		if (s[i + 1] != NULL)
 		{
 			temp = final;
@@ -77,23 +88,6 @@ char	*ft_fill_final(char **s)
 	}
 	return (final);
 }
-// char	*ft_fill_final(char **s)
-// {
-// 	int		i;
-// 	char	*final;
-
-// 	final = NULL;
-// 	i = 0;
-// 	while (s[i] != NULL)
-// 	{
-// 		final = ft_strjoin(final, s[i]);
-// 		if (s[i + 1] != NULL)
-// 			final = ft_strjoin(final, " ");
-// 		i++;
-// 	}
-// 	return (final);
-// }
-
 
 void	ft_skip_spaces(t_token **tpm_t)
 {

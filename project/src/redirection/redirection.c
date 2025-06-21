@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 11:08:12 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/13 12:35:01 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/21 02:26:10 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	handle_redirections(t_minibash *bash, t_cmd *cmd)
 {
 	t_redirect	*red;
 
-	red = cmd->redirections;
+	red = cmd->red;
 	while (red)
 	{
 		if (red->type == TOKEN_REDIR_OUT)
@@ -133,21 +133,21 @@ int	validate_redirection_file(t_cmd *list)
 	if (list == NULL)
 		return (0);
 	cmd = list;
-	while (cmd->redirections)
+	while (cmd->red)
 	{
 		fd = -1;
-		if (cmd->redirections->type == TOKEN_REDIR_APPEND)
-			fd = open(cmd->redirections->file_path,
+		if (cmd->red->type == TOKEN_REDIR_APPEND)
+			fd = open(cmd->red->file_path,
 					O_CREAT | O_WRONLY | O_APPEND, 0644);
-		else if (cmd->redirections->type == TOKEN_REDIR_OUT)
-			fd = open(cmd->redirections->file_path,
+		else if (cmd->red->type == TOKEN_REDIR_OUT)
+			fd = open(cmd->red->file_path,
 					O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		else if (cmd->redirections->type == TOKEN_REDIR_IN)
-			fd = open(cmd->redirections->file_path, O_RDONLY, 0644);
+		else if (cmd->red->type == TOKEN_REDIR_IN)
+			fd = open(cmd->red->file_path, O_RDONLY, 0644);
 		if (fd < 0)
 			return (1);
 		close(fd);
-		cmd->redirections = cmd->redirections->next;
+		cmd->red = cmd->red->next;
 	}
 	return (0);
 }

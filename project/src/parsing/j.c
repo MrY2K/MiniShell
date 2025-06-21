@@ -1,5 +1,16 @@
-#include "../../includes/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   j.c                                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/21 02:07:58 by achoukri          #+#    #+#             */
+/*   Updated: 2025/06/21 02:10:02 by achoukri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "../../includes/minishell.h"
 
 char	**ft_join_arg(char **arg, char **join)
 {
@@ -59,17 +70,17 @@ void	ft_join_double_2(char ***arr_join, t_token **tmp_t,
 	char	*s;
 
 	s = NULL;
-	while ((*tmp_t) != NULL && ((*tmp_t)->state == Double || (*tmp_t)->state == Single))
+	while ((*tmp_t) != NULL && ((*tmp_t)->state == D || (*tmp_t)->state == S))
 	{
-		if ((*tmp_t) != NULL && (*tmp_t)->state != Single && (*tmp_t)->type == '$'
-			&& j == 1)
+		if ((*tmp_t) != NULL && (*tmp_t)->state != S
+			&& (*tmp_t)->type == '$' && j == 1)
 		{
-			if ((*tmp_t)->type == '$' && (*tmp_t)->state == Normal && j == 1)
+			if ((*tmp_t)->type == '$' && (*tmp_t)->state == N && j == 1)
 			{
 				s = ft_expand((*tmp_t)->value, &my_env);
 				ft_split_expand(arr_join, s);
 			}
-			else if ((*tmp_t)->type == '$' && (*tmp_t)->state == Double && j == 1)
+			else if ((*tmp_t)->type == '$' && (*tmp_t)->state == D && j == 1)
 			{
 				s = ft_expand((*tmp_t)->value, &my_env);
 				ft_join_arr(arr_join, s);
@@ -88,41 +99,40 @@ void	ft_join_word_2(char ***arr_join, t_token **tmp_t,
 	char	*s;
 
 	s = NULL;
-	if ((*tmp_t) != NULL && (*tmp_t)->state != Single && (*tmp_t)->type == '$'
+	if ((*tmp_t) != NULL && (*tmp_t)->state != S && (*tmp_t)->type == '$'
 		&& j == 1)
 	{
-		if ((*tmp_t)->type == '$' && (*tmp_t)->state == Normal && j == 1)
+		if ((*tmp_t)->type == '$' && (*tmp_t)->state == N && j == 1)
 		{
 			s = ft_expand((*tmp_t)->value, &my_env);
 			ft_split_expand(arr_join, s);
 		}
-		else if ((*tmp_t)->type == '$' && (*tmp_t)->state == Double && j == 1)
+		else if ((*tmp_t)->type == '$' && (*tmp_t)->state == D && j == 1)
 		{
 			s = ft_expand((*tmp_t)->value, &my_env);
 			ft_join_arr(arr_join, s);
 			free(s);
 		}
 	}
-	else if ((*tmp_t) != NULL && ((*tmp_t)->state == Normal && (*tmp_t)->type == -1))
+	else if ((*tmp_t) != NULL && ((*tmp_t)->state == N && (*tmp_t)->type == -1))
 		ft_join_arr(arr_join, (*tmp_t)->value);
-	else if ((*tmp_t) != NULL && ((*tmp_t)->state == Double || (*tmp_t)->state == Single))
+	else if ((*tmp_t) != NULL && ((*tmp_t)->state == D || (*tmp_t)->state == S))
 		ft_join_arr(arr_join, (*tmp_t)->value);
 	if ((*tmp_t) != NULL && (*tmp_t)->type != ' ' && !(redirection(*tmp_t)
-			&& (*tmp_t)->state == Normal))
+			&& (*tmp_t)->state == N))
 		(*tmp_t) = (*tmp_t)->next;
 }
 
 void	ft_join_words(char ***arr_join, t_token **tmp_t,
 		t_env *my_env, int j)
 {
-	while ((*tmp_t) != NULL && (*tmp_t)->state == Normal && ((*tmp_t)->type == '\"'
+	while ((*tmp_t) != NULL && (*tmp_t)->state == N && ((*tmp_t)->type == '\"'
 			|| (*tmp_t)->type == '\''))
 	{
-		if (((*tmp_t) != NULL && (*tmp_t)->state == Normal)
+		if (((*tmp_t) != NULL && (*tmp_t)->state == N)
 			&& ((*tmp_t)->type == '\"' || (*tmp_t)->type == '\''))
 			(*tmp_t) = (*tmp_t)->next;
 		ft_join_double_2(arr_join, tmp_t, my_env, j);
 		ft_join_word_2(arr_join, tmp_t, my_env, j);
 	}
 }
-

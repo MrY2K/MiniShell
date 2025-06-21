@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipelines.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 09:34:01 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/16 13:49:51 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/21 02:22:48 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ void	execute_child_process(t_pipe *pi_pe, int i,
 		dup2(pi_pe->fd_heredoc, 0);
 		close (pi_pe->fd_heredoc);
 	}
-	pi_pe->path = path_command(pi_pe->current_cmd->main_cmd, pi_pe->arr_env, bash);
+	pi_pe->path = path_command(pi_pe->current_cmd->main_cmd,
+			pi_pe->arr_env, bash);
 	printf ("Path : %s", pi_pe->path);
 	if (execve(pi_pe->path, pi_pe->current_cmd->argument, pi_pe->arr_env) == -1)
 	{

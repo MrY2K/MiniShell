@@ -6,12 +6,11 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/20 23:50:02 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 02:25:02 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <unistd.h>
 
 void	ll(void)
 {
@@ -66,7 +65,7 @@ void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env **env)
 	}
 	rl_clear_history();
 	write(1, "exit\n", 5);
-	// exit (bash->exit_status);
+	exit (bash->exit_status);
 }
 
 static void	init_minibash(t_minibash **bash)
@@ -99,7 +98,7 @@ int	main(int ac, char **av, char **env)
 	// atexit(ll);
 	init_minibash(&bash);
 	initialize_environment(bash, env);
-	// using_history();
+	// using_history(); // no need for this i think ?
 	ft_readline(bash, tokens, cmd, &bash->env);
 	exit_st = bash->exit_status;
 	free_minibash(&bash);

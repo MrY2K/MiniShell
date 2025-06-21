@@ -1,14 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_cmd.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/21 02:15:01 by achoukri          #+#    #+#             */
+/*   Updated: 2025/06/21 02:21:02 by achoukri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-/*
-	* move each function to its place 
-	todo: understand how parser work step by step
-	todo: handle red
-*/
-
-/*
-* this bad boy here builds the command
-*/
 void	parse_input_commands(t_token **token_list, t_cmd **cmd_list,
 		t_env *env, t_minibash *b)
 {
@@ -24,9 +27,6 @@ void	parse_input_commands(t_token **token_list, t_cmd **cmd_list,
 	process_redirections(tmp_cmd, token_list, env, b);
 }
 
-/*
-* Append a new command node to the command list.
-*/
 void	append_command(t_cmd **cmd_list, t_cmd *new_cmd)
 {
 	t_cmd	*last;
@@ -42,9 +42,6 @@ void	append_command(t_cmd **cmd_list, t_cmd *new_cmd)
 	}
 }
 
-/*
-* Returns the last command value the list.
-*/
 t_cmd	*last_command(t_cmd *cmd_list)
 {
 	t_cmd	*last;
@@ -68,11 +65,11 @@ t_cmd	*create_new_command(t_token **tok_ptr, t_env *env, t_minibash *b)
 	node->main_cmd = NULL;
 	node->arg_len = 0;
 	node->pipe = 0;
-	node->redirections = NULL;
+	node->red = NULL;
 	node->heredoc = NULL;
 	node->env_arr = NULL;
 	if ((*tok_ptr) != NULL && ((*tok_ptr)->type == '|'
-			&& (*tok_ptr)->state == Normal))
+			&& (*tok_ptr)->state == N))
 	{
 		join_to_arg_array(&(node->argument), (*tok_ptr)->value);
 		node->pipe = 1;

@@ -1,11 +1,5 @@
 src/.build/Error/errors_package_utils.o: src/Error/errors_package_utils.c \
-  src/Error/../../includes/minishell.h \
-  /goinfre/achoukri/homebrew/opt/readline/include/readline/readline.h \
-  /goinfre/achoukri/homebrew/opt/readline/include/readline/rlstdc.h \
-  /goinfre/achoukri/homebrew/opt/readline/include/readline/rltypedefs.h \
-  /goinfre/achoukri/homebrew/opt/readline/include/readline/keymaps.h \
-  /goinfre/achoukri/homebrew/opt/readline/include/readline/chardefs.h \
-  /goinfre/achoukri/homebrew/opt/readline/include/readline/tilde.h \
-  /goinfre/achoukri/homebrew/opt/readline/include/readline/history.h \
-  includes/enums.h includes/structs.h includes/minishell.h \
-  includes/prototypes.h includes/../src/lib/libft.h
+ src/Error/../../includes/minishell.h src/Error/../../includes/enums.h \
+ src/Error/../../includes/structs.h src/Error/../../includes/minishell.h \
+ src/Error/../../includes/prototypes.h \
+ src/Error/../../includes/../src/lib/libft.h

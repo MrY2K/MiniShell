@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:40:45 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/21 23:27:44 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/22 02:12:23 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,9 +148,9 @@ void	execute_command_pipeline(t_minibash *bash, t_env **env,
 {
 	if (token && env)
 	{
-		debug_print_token_list(token); //? DEBUG
+		// debug_print_token_list(token); //? DEBUG
 		parse_input_commands(&token, cmd, bash);
-		debug_print_cmd_list(*cmd); //? DEBUG
+		// debug_print_cmd_list(*cmd); //? DEBUG
 		execution(bash, env, *cmd);
 	}
 	free_cmd_list(cmd);

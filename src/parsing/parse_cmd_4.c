@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 02:13:56 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/21 02:56:27 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/22 02:11:55 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ char	**process_quoted(t_token **tok_ptr, t_minibash *b, int flag,
 
 	s = NULL;
 	while ((*tok_ptr) != NULL
-		&& !is_redirection(*tok_ptr)
 		&& ((*tok_ptr)->state == D || (*tok_ptr)->state == S
 			|| (*tok_ptr)->type == '"' || (*tok_ptr)->type == '\''))
 	{

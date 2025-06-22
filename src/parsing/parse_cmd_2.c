@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 02:10:34 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/22 02:06:31 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/22 01:21:53 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,6 @@ int	check_general_quote(t_cmd **node, t_token **p,
 		}
 		return (1);
 	}
-	// else if ((*p) && ((*p)->type == '"' || (*p)->type == '\'') && (*p)->state == N) 	// Add this safety check to prevent infinite loops
-	// {
-	// 	*p = (*p)->next; // Skip unmatched quotes
-	// 	return (1);
-	// }
 	return (0);
 }
 
@@ -115,18 +110,6 @@ int	check_general_quote(t_cmd **node, t_token **p,
 void	handle_token_part(t_cmd **cmd_node, t_token **tok_ptr,
 		t_minibash *b, char ***arg_arr)
 {
-	static int	debug_count;
-
-	debug_count = 0;
-	if (debug_count++ > 100)
-	{
-		printf("INFINITE LOOP DETECTED in handle_token_part\n");
-		if (*tok_ptr) {
-			printf("Current token: '%s', type: %d, state: %d\n", 
-				(*tok_ptr)->value, (*tok_ptr)->type, (*tok_ptr)->state);
-		}
-		exit(1);
-	}
 	if (check_repeating_quote(arg_arr, cmd_node, tok_ptr))
 		return ;
 	if (check_general_quote(cmd_node, tok_ptr, b, arg_arr))

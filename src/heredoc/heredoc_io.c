@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:10:59 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/21 22:17:36 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/24 16:40:38 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,14 @@ void	lookup_env_var(t_env **env, char *arg, char **str, int *i)
 		*str = ft_strdup("");
 	free(var_name);
 }
+
+/*
+	This function appends all regular characters (before a '$')
+
+	Input line:     "Hello $USER"  
+	After call:      expanded_line = "Hello "
+
+*/
 
 void	append_regular_characters(t_expand_heredoc *ex, char *line)
 {

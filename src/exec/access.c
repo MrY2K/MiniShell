@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 11:42:38 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/21 21:23:21 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/26 16:24:04 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	ft_handle_absolute_path_script(t_minibash *bash,
 	char *path, char **args)
 {
 	if (access(path, F_OK) == -1)
-		ft_handle_error_exit(bash, args, "No such file or directory\n", 127);
+		ft_handle_error_exit(bash, args, "No such file or directory\n", 126);
 	ft_handle_permission_denied(bash, path, args);
 	ft_handle_directory_check(bash, path, args);
 }

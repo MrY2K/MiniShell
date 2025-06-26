@@ -128,7 +128,7 @@ $(LIB):
 # Compile minishell
 $(NAME): $(BUILD_DIR) $(LIB) $(OBJS)
 	@printf "$(CYAN)$(BOLD)%s$(RESET)\n" "Linking minishell..."
-	$(CC) $(CFLAGS) $(OBJS) $(LIB) $(LDFLAGS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIB) $(LDFLAGS) -o $(NAME)
 	@printf "$(GREEN)$(BOLD)%s$(RESET)\n" "✓ $(NAME) successfully built!"
 	@printf "$(GREEN)$(BOLD)%s$(RESET)\n" "Run ./minishell to start your shell!"
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prototypes.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 12:24:29 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/21 22:31:32 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/25 12:31:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,13 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "structs.h"     
-# include "enums.h"     
+# include "structs.h"
+# include "enums.h"
 
 /* Signals */
-void			signals(void);
 void			sigint_handler(int signum);
+void			handle_sigquit(int sign_al);
+void			here_pipe_signals(int sig_nal);
 
 /* Built-in */
 void			builtin_cd(t_minibash	*bash, t_env **env, t_cmd	*cmd);
@@ -139,12 +140,12 @@ int				count_pipes(t_cmd *cmd);
 int				**allocate_pipe_fds(t_minibash *bash, int command_count);
 void			cleanup_pipe_resources(t_pipe *pi_pe);
 
-/*   REDIRECTIONS     */ 
+/*   REDIRECTIONS     */
 
 void			handle_redirections(t_minibash *bash, t_cmd *cmd);
 int				validate_redirection_file(t_cmd *list);
 
-/*		herdoc		*/ 
+/*		herdoc		*/
 
 int				handle_heredoc_input(t_cmd *cmd);
 int				setup_heredoc_input(int fd);
@@ -214,7 +215,7 @@ void			ft_join_next(char ***arr_join, t_token **tmp_x, t_minibash *b,
 void			ft_join_double(char ***arr_join, t_token **tmp_t,
 					t_minibash *b, int j);
 
-char			*ft_expand(char *arg, t_minibash *b);	
+char			*ft_expand(char *arg, t_minibash *b);
 char			**ft_split_expand(char ***arr_join, char *s);
 void			ft_go_to_env(char **s, char *arg, int *i, t_minibash **b);
 

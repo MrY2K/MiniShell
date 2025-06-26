@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 12:24:24 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/21 22:35:15 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/25 19:47:26 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	execute_external_cmd(t_minibash *bash, t_env **env,
 }
 
 /*
-	case 1 : export > file 
+	case 1 : export > file
 */
 
 void	execute_single_cmd(t_minibash *bash, t_env **env, t_cmd *cmd)
@@ -95,11 +95,11 @@ void	execute_single_cmd(t_minibash *bash, t_env **env, t_cmd *cmd)
 /*
 	Case 1 :
 		cat << ONE << TWO > out.txt
-		
+
 		cat << 42 < input -> cat the input of input
 
 		cat << 42 < input > out   ->  The content of input will be written to out.
-		
+
 */
 
 static void	handle_heredoc_execution(t_minibash *bash, t_env **env, t_cmd *cmd)
@@ -116,6 +116,12 @@ static void	handle_heredoc_execution(t_minibash *bash, t_env **env, t_cmd *cmd)
 		handle_redirections(bash, cmd);
 	execute_external_cmd(bash, env, cmd, cmd->argument);
 }
+/*
+	cat << ONE << TWO > out.txt
+
+	cat << 42
+
+*/
 
 void	execute_command(t_minibash *bash, t_env **env, t_cmd *cmd)
 {

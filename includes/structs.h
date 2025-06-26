@@ -6,7 +6,7 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 09:25:15 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/22 01:55:40 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 20:48:15 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef struct s_lexer_state
+typedef struct s_lexer_state 
 {
 	int				i;
 	int				start;
@@ -102,7 +102,7 @@ typedef struct s_cd
 	char	*path;
 }			t_cd;
 
-typedef struct s_env_converter
+typedef struct s_env_converter 
 {
 	char	**env_array;
 	int		len;

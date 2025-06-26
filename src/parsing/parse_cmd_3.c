@@ -6,12 +6,11 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 02:13:26 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/22 02:12:41 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/21 02:54:03 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <stdio.h>
 
 char	*ft_expand(char *arg, t_minibash *b)
 {

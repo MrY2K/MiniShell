@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:56:50 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/12 13:01:44 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/25 20:13:10 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,25 @@ void	cleanup_pipe_resources(t_pipe *pi_pe)
 		free(pi_pe->child_pids);
 		pi_pe->child_pids = NULL;
 	}
+}
+
+/**
+ * Handles SIGQUIT (Ctrl+\) signal in child process
+ * Prints "Quit: 3" and optionally ignores further SIGQUIT signals
+*/
+
+void	handle_sigquit(int signum)
+{
+	if (signum == SIGQUIT)
+	{
+		signal(SIGQUIT, SIG_IGN);
+	}
+}
+/*	130	*/
+
+void	here_pipe_signals(int sig_nal)
+{
+	(void) sig_nal;
+	write(1, "\n", 1);
+	exit(130);
 }

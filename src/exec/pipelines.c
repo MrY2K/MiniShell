@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 09:34:01 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/21 22:09:58 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/22 13:00:39 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,14 @@ void	wait_and_cleanup_pipes(t_minibash *bash, t_pipe *pi_pe)
 	}
 	cleanup_pipe_resources(pi_pe);
 }
+/*
+	If a user presses Ctrl+C while writing a heredoc or in a pipe :
+		It only kills the child process that is running the heredoc
+
+		ex : cat << EOF  
+			^C
+	
+*/
 
 void	handle_pipes(t_minibash *bash, t_env **env, t_cmd *cmd)
 {
@@ -142,6 +150,7 @@ void	handle_pipes(t_minibash *bash, t_env **env, t_cmd *cmd)
 	i = 0;
 	while (i < pi_pe.cmd_count)
 	{
+		signal(SIGINT, here_pipe_signals);
 		execute_pipe_cmd(&pi_pe, i, bash, env);
 		i++;
 	}

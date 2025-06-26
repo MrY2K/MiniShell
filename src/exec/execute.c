@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:29:21 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/21 20:28:18 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/25 12:32:04 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,21 +108,36 @@ int	open_her_execute_builtins(t_minibash *bash, t_cmd *cmd)
 	return (0);
 }
 
+/*
+	status is an int set by waitpid()
+	contains encoded info about how the child process ended
+
+	WIFSIGNALED(status) : Was the child killed by a signal
+
+	WTERMSIG(status) :gives the signal number that terminated the child
+*/
+
 static void	wait_for_child(t_minibash *bash, int pid)
 {
 	int	status;
 
-	if (waitpid(pid, &status, 0) == -1)
-	{
-		perror("minishell waitpid");
-		bash->exit_status = 1;
-		return ;
-	}
+	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		bash->exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 		bash->exit_status = 128 + WTERMSIG(status);
 }
+
+/*
+	Tells the parent shell to ignore Ctrl+C (SIGINT) during the child exec
+
+
+
+	Allow Ctrl+C to kill the child process
+		Use the default action for this signal
+
+	Restore the shell’s custom Ctrl+C handler after the command is done
+*/
 
 void	execution(t_minibash *bash, t_env **env, t_cmd *cmd)
 {
@@ -135,11 +150,17 @@ void	execution(t_minibash *bash, t_env **env, t_cmd *cmd)
 	pid = fork();
 	if (!is_fork_succes(bash, pid))
 		return ;
+	signal(SIGINT, SIG_IGN);
 	if (!pid)
 	{
+		signal(SIGQUIT, handle_sigquit);
+		signal(SIGINT, SIG_DFL);
 		execute_command(bash, env, tmp_cmd);
 	}
 	else
+	{
 		wait_for_child(bash, pid);
+		signal(SIGINT, sigint_handler);
+	}
 	delete_heredoc_files(bash, cmd);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 19:48:10 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/25 20:20:51 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/27 18:48:17 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	ft_readline(t_minibash	*bash, t_token *tokens, t_cmd *cmd, t_env **env)
 
 	while (true)
 	{
+		system("leaks -q minishell");
 		line = readline("minishell $ ");
 		if (!line)
 			break ;

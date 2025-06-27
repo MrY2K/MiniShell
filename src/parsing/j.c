@@ -6,11 +6,12 @@
 /*   By: achoukri <achoukri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 02:07:58 by achoukri          #+#    #+#             */
-/*   Updated: 2025/06/21 02:55:13 by achoukri         ###   ########.fr       */
+/*   Updated: 2025/06/27 00:20:28 by achoukri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <stdlib.h>
 
 char	**ft_join_arg(char **arg, char **join)
 {
@@ -44,6 +45,7 @@ void	ft_join_arr(char ***arr_join, char *value)
 {
 	int		len_of_arr;
 	char	*str;
+	char	*tmp;
 
 	len_of_arr = ft_len_arg(*arr_join);
 	if (value == NULL)
@@ -59,7 +61,9 @@ void	ft_join_arr(char ***arr_join, char *value)
 	{
 		str = ft_strdup(value);
 		len_of_arr--;
-		(*arr_join)[len_of_arr] = ft_strjoin((*arr_join)[len_of_arr], str);
+		tmp = (*arr_join)[len_of_arr];
+		(*arr_join)[len_of_arr] = ft_strjoin(tmp, str);
+		free(tmp);
 		free(str);
 	}
 }

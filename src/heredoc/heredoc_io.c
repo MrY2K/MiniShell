@@ -6,7 +6,7 @@
 /*   By: ajelloul <ajelloul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:10:59 by ajelloul          #+#    #+#             */
-/*   Updated: 2025/06/24 16:40:38 by ajelloul         ###   ########.fr       */
+/*   Updated: 2025/06/27 18:47:41 by ajelloul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,20 +76,11 @@ void	append_regular_characters(t_expand_heredoc *ex, char *line)
 	ex->index--;
 }
 
-bool	fast_check(char *line)
-{
-	if (!line)
-		return (false);
-	return (line[0] == '\'' && line[1] == '$');
-}
-
 char	*expand_env_var_in_heredoc(t_minibash *bash, char *line, t_env *env)
 {
 	t_expand_heredoc	ex;
 	t_expand_info		info;
 
-	if (fast_check(line))
-		return (ft_strdup(line));
 	ft_memset(&ex, 0, sizeof(ex));
 	ft_memset(&info, 0, sizeof(info));
 	ex.expanded_line = ft_strdup("");
